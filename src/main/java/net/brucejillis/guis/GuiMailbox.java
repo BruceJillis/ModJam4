@@ -33,8 +33,8 @@ public class GuiMailbox extends GuiContainer {
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         fontRendererObj.drawString(StatCollector.translateToLocal("mailbox.title"), 8, 6, 0x00000);
-        //fontRendererObj.drawString(StatCollector.translateToLocal("mailbox.delivery"), 8, 8, 0x00000);
         fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, 43, 0x00000);
+        fontRendererObj.drawString(StatCollector.translateToLocal("mailbox.delivery") + " ~ 4 hrs", 134, 24, 0x00000);
     }
 
     @Override
