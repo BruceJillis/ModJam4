@@ -7,6 +7,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import sun.org.mozilla.javascript.internal.ast.Block;
 
@@ -24,9 +25,8 @@ public class BlockMailbox extends BlockContainer {
     }
 
     @Override
-    public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB aabb, List pool, Entity entity) {
-        setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, 1.925f, 1.0f);
-        super.addCollisionBoxesToList(world, x, y, z, aabb, pool, entity);
+    public void setBlockBoundsBasedOnState(IBlockAccess access, int x, int y, int z) {
+        setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, 1.65f, 1.0f);
     }
 
     @Override
