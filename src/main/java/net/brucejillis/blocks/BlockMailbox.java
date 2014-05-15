@@ -53,7 +53,7 @@ public class BlockMailbox extends BlockContainer {
         }
         Random rand = new Random();
         IInventory inventory = (IInventory) entity;
-        for(int i = 0; i <= inventory.getSizeInventory(); i++) {
+        for(int i = 0; i < inventory.getSizeInventory(); i++) {
             ItemStack stack = inventory.getStackInSlot(i);
             if (stack != null && stack.stackSize > 0) {
                 float rx = rand.nextFloat() * 0.8F + 0.1F;

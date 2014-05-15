@@ -38,8 +38,6 @@ public class MailboxMod {
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
-        // register GUI handler
-        NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
         // create mod specific tab
         mailboxTab = new CreativeTabs("mailboxTab") {
             @Override
@@ -53,7 +51,8 @@ public class MailboxMod {
         GameRegistry.registerTileEntity(TileEntityMailbox.class, "tileEntityMailbox");
         // register letter item
 
-        // register renders
+        // register various stuff
         proxy.registerRenderers();
+        NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
     }
 }

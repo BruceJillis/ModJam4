@@ -52,7 +52,7 @@ public class TileEntityMailbox extends TileEntity implements IInventory {
     @Override
     public void setInventorySlotContents(int i, ItemStack itemStack) {
         inventory[i] = itemStack;
-        if (itemStack != null && itemStack.stackSize > getInventoryStackLimit()) {
+        if ((itemStack != null) && (itemStack.stackSize > getInventoryStackLimit())) {
             itemStack.stackSize = getInventoryStackLimit();
         }
     }
