@@ -4,6 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 
 public class TileEntityMailbox extends TileEntity implements IInventory {
@@ -81,13 +82,17 @@ public class TileEntityMailbox extends TileEntity implements IInventory {
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         // read inv from nbt
+        NBTTagList tags = tag.getTagList("inventory", tag.getId());
+        for(int i = 0; i <= tags.tagCount(); i++) {
+            short slot = tag.getShort("slot");
+            NBTTagCompound compound = tags.getCompoundTagAt(i);
 
+        }
     }
 
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         // write inv to nbt
-
     }
 }
