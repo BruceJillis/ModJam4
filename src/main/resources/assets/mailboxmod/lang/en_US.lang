@@ -4,4 +4,5 @@ tile.blockMailbox.name=Mail Box
 
 mailbox.title=Mail Box
 mailbox.delivery=Next Delivery
+mailbox.short.duration=hrs.
 

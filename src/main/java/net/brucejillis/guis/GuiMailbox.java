@@ -34,7 +34,12 @@ public class GuiMailbox extends GuiContainer {
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         fontRendererObj.drawString(StatCollector.translateToLocal("mailbox.title"), 8, 6, 0x00000);
         fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, 43, 0x00000);
-        fontRendererObj.drawString(StatCollector.translateToLocal("mailbox.delivery") + " ~ 4 hrs", 134, 24, 0x00000);
+        GL11.glPushMatrix();
+        GL11.glScalef(0.65f, 0.65f, 0.65f);
+        fontRendererObj.drawString(StatCollector.translateToLocal("mailbox.delivery"), 190, 12, 0x00000);
+        fontRendererObj.drawString("~", 190, 27, 0x00000);
+        fontRendererObj.drawString("000 " + StatCollector.translateToLocal("mailbox.short.duration"), 200, 24, 0x00000);
+        GL11.glPopMatrix();
     }
 
     @Override
