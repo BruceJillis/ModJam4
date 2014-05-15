@@ -23,7 +23,7 @@ public class MailboxDeliveryData extends WorldSavedData {
     }
 
     public void tick() {
-        int hour = timeToHours(world.getWorldTime());
+        int hour = timeToHours(getDayTime(world));
         if (hour != prev) {
             LogHelper.log("hour: %d", hour);
             prev = hour;
@@ -46,11 +46,15 @@ public class MailboxDeliveryData extends WorldSavedData {
         }
     }
 
+    private static long getDayTime(World world) {
+        return (world.getTotalWorldTime() % 24000);
+    }
+
     private void doDelivery() {
     }
 
-    public static int hoursUntilDelivery(long time) {
-        int hour = timeToHours(time);
+    public static int hoursUntilDelivery(World world) {
+        int hour = timeToHours(getDayTime(world));
         // time to morning delivery
         if (hour >= 10) {
             return Math.abs(hour - 24) + 2;

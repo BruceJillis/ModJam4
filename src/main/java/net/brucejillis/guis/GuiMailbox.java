@@ -41,7 +41,7 @@ public class GuiMailbox extends GuiContainer {
         fontRendererObj.drawString(StatCollector.translateToLocal("mailbox.delivery"), 208, yoffset + 12, 0x00000);
         fontRendererObj.drawString("~", 208, yoffset + 27, 0x00000);
         String line;
-        int hours = MailboxDeliveryData.hoursUntilDelivery(mc.theWorld.getWorldTime());
+        int hours = MailboxDeliveryData.hoursUntilDelivery(mc.theWorld);
         if (hours != 0) {
             line = String.format("%d ", hours) + StatCollector.translateToLocal("mailbox.short.duration");
         } else {
