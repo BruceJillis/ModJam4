@@ -3,6 +3,7 @@ package net.brucejillis.handlers;
 import cpw.mods.fml.common.network.IGuiHandler;
 import net.brucejillis.MailboxMod;
 import net.brucejillis.containers.ContainerMailbox;
+import net.brucejillis.guis.GuiLetter;
 import net.brucejillis.guis.GuiMailbox;
 import net.brucejillis.tileentities.TileEntityMailbox;
 import net.minecraft.client.Minecraft;
@@ -32,6 +33,8 @@ public class GuiHandler implements IGuiHandler {
         switch (ID) {
             case MailboxMod.GUI_MAILBOX:
                 return new GuiMailbox(player, (TileEntityMailbox) entity);
+            case MailboxMod.GUI_LETTER:
+                return new GuiLetter(player);
         }
         return null;
     }

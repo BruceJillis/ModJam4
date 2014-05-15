@@ -16,6 +16,7 @@ public class ItemLetter extends Item {
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-
+        player.openGui(MailboxMod.instance, MailboxMod.GUI_LETTER, world, (int)player.posX, (int)player.posY, (int)player.posZ);
+        return stack;
     }
 }

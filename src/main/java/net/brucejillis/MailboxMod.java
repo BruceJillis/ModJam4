@@ -23,12 +23,12 @@ public class MailboxMod {
     // internal name and version
     public static final String ID = "mailboxmod";
     public static final String VERSION = "0.1";
-
     @Mod.Instance(MailboxMod.ID)
     public static MailboxMod instance;
 
     // GUI constants
     public static final int GUI_MAILBOX = 1;
+    public static final int GUI_LETTER  = 2;
 
     // proxies
     @SidedProxy(serverSide = "net.brucejillis.proxies.CommonProxy", clientSide = "net.brucejillis.proxies.ClientProxy")
