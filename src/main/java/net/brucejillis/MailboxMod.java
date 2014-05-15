@@ -1,5 +1,6 @@
 package net.brucejillis;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -7,8 +8,10 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.brucejillis.blocks.BlockMailbox;
 import net.brucejillis.handlers.GuiHandler;
+import net.brucejillis.handlers.MailboxDeliveryScheduler;
 import net.brucejillis.proxies.CommonProxy;
 import net.brucejillis.tileentities.TileEntityMailbox;
+import net.brucejillis.util.LogHelper;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -38,6 +41,7 @@ public class MailboxMod {
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
+        LogHelper.log("initializing %s (v %s)", ID, VERSION);
         // create mod specific tab
         mailboxTab = new CreativeTabs("mailboxTab") {
             @Override
@@ -54,5 +58,6 @@ public class MailboxMod {
         // register various stuff
         proxy.registerRenderers();
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
+        FMLCommonHandler.instance().bus().register(new MailboxDeliveryScheduler());
     }
 }
