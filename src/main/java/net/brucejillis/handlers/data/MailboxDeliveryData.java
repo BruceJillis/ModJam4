@@ -15,6 +15,7 @@ public class MailboxDeliveryData extends WorldSavedData {
 
     private World world;
     private String state = MORNING;
+    private int prev = -1;
 
     public MailboxDeliveryData(String name, World world) {
         super(name);
@@ -23,6 +24,10 @@ public class MailboxDeliveryData extends WorldSavedData {
 
     public void tick() {
         int hour = timeToHours(world.getWorldTime());
+        if (hour != prev) {
+            LogHelper.log("hour: %d", hour);
+            prev = hour;
+        }
         if ((hour == 2) && (state == MORNING)) {
             LogHelper.log("morning delivery!", hour);
             doDelivery();
