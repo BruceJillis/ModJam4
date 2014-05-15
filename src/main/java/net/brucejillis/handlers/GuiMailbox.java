@@ -23,8 +23,6 @@ public class GuiMailbox extends GuiContainer {
         this.entity = entity;
         xSize = 195;
         ySize = 136;
-
-
     }
 
     @Override
