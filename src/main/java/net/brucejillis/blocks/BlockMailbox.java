@@ -47,7 +47,7 @@ public class BlockMailbox extends BlockContainer {
     }
 
     @Override
-    public TileEntity createNewTileEntity(World var1, int var2) {
+    public TileEntity createNewTileEntity(World world, int metadata) {
         return new TileEntityMailbox();
     }
 

@@ -3,6 +3,7 @@ package net.brucejillis.tileentities;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
 public class TileEntityMailbox extends TileEntity implements IInventory {
@@ -46,7 +47,7 @@ public class TileEntityMailbox extends TileEntity implements IInventory {
 
     @Override
     public String getInventoryName() {
-        return "Mail Box";
+        return "MailBox";
     }
 
     @Override
@@ -74,5 +75,15 @@ public class TileEntityMailbox extends TileEntity implements IInventory {
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
         return true;
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound tag) {
+        super.readFromNBT(tag);
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound tag) {
+        super.writeToNBT(tag);
     }
 }

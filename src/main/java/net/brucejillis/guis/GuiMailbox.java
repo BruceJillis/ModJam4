@@ -1,8 +1,8 @@
-package net.brucejillis.handlers;
+package net.brucejillis.guis;
 
 import net.brucejillis.MailboxMod;
-import net.brucejillis.containers.MailboxContainer;import net.brucejillis.tileentities.TileEntityMailbox;
-import net.minecraft.client.gui.GuiScreen;
+import net.brucejillis.containers.ContainerMailbox;
+import net.brucejillis.tileentities.TileEntityMailbox;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -18,7 +18,7 @@ public class GuiMailbox extends GuiContainer {
     private int ySize = 0;
 
     public GuiMailbox(EntityPlayer player, TileEntityMailbox entity) {
-        super(new MailboxContainer(player.inventory, entity));
+        super(new ContainerMailbox(player.inventory, entity));
         this.player = player;
         this.entity = entity;
         xSize = 195;
