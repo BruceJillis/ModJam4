@@ -1,5 +1,7 @@
 package net.brucejillis.blocks;
 
+import net.brucejillis.MailboxMod;
+import net.brucejillis.tileentities.TileEntityMailbox;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
@@ -8,8 +10,13 @@ import sun.org.mozilla.javascript.internal.ast.Block;
 
 public class BlockMailbox extends BlockContainer {
 
-    protected BlockMailbox() {
-        super(Material.rock);
+    public BlockMailbox() {
+        super(Material.wood);
+        setBlockName("blockMailbox");
+        setBlockTextureName(MailboxMod.ID + ":" + getUnlocalizedName().substring(5));
+        setCreativeTab(MailboxMod.mailboxTab);
+        setHardness(0.8F);
+        setStepSound(soundTypeWood);
     }
 
     @Override
