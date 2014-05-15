@@ -17,6 +17,7 @@ public class MailboxDeliveryScheduler {
     public void serverTickHandler(TickEvent.ServerTickEvent event) {
         if (mc.theWorld == null)
             return;
-        MailboxDeliveryData deliveryData = MailboxDeliveryData.forWorld(mc.theWorld);
+        MailboxDeliveryData data = MailboxDeliveryData.forWorld(mc.theWorld);
+        data.tick();
     }
 }

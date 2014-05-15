@@ -9,15 +9,33 @@ import net.minecraft.world.storage.MapStorage;
 public class MailboxDeliveryData extends WorldSavedData {
     private static final String KEY = "mailboxdelivery";
 
-    private int day;
-    private int hour;
-    private String state = "0.null";
+    private static final String NONE = "none";
+    private static final String MORNING = "morning";
+    private static final String AFTERNOON = "afternoon";
+
+    private World world;
+    private String state = "";
 
     public MailboxDeliveryData(String par1Str, World world) {
         super(par1Str);
-        day = (int)Math.floor(world.getTotalWorldTime() / 24000.0f);
-        hour = (int)(world.getWorldTime() / 1000.0f);
-        LogHelper.log("day %d hour %d", day, hour);
+        this.world = world;
+    }
+
+    public void tick() {
+        int day = (int)Math.floor(world.getTotalWorldTime() / 24000.0f);
+        int hour = (int)(world.getWorldTime() / 1000.0f);
+        String state = NONE;
+        if ((hour == 2) && (this.state == NONE)) {
+            // morning delivery
+            state = MORNING;
+            markDirty();
+        }
+        if ((hour == 10) && (this.state == MORNING)) {
+            // morning delivery
+            this.state = AFTERNOON;
+            markDirty();
+            saveAllData();
+        }
     }
 
     public static MailboxDeliveryData forWorld(World world) {
@@ -30,17 +48,19 @@ public class MailboxDeliveryData extends WorldSavedData {
         return result;
     }
 
+    public void saveAllData() {
+        world.perWorldStorage.saveAllData();
+    }
+
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         day = tag.getInteger("day");
-        hour = tag.getInteger("hour");
-        state = tag.getString("state");
+        delivery = tag.getString("delivery");
     }
 
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         tag.setInteger("day", day);
-        tag.setInteger("hour", hour);
-        tag.setString("state", state);
+        tag.setString("delivery", delivery);
     }
 }
