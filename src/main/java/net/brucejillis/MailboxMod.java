@@ -1,9 +1,11 @@
 package net.brucejillis;
 
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.brucejillis.blocks.BlockMailbox;
+import net.brucejillis.proxies.CommonProxy;
 import net.brucejillis.tileentities.TileEntityMailbox;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
@@ -14,6 +16,10 @@ import net.minecraft.item.ItemBlock;
 public class MailboxMod {
     public static final String ID = "mailboxmod";
     public static final String VERSION = "0.1";
+
+    // proxies
+    @SidedProxy(serverSide = "net.brucejillis.proxies.CommonProxy", clientSide = "net.brucejillis.proxies.ClientProxy")
+    public static CommonProxy proxy;
 
     // tab where all the items and blocks are placed
     public static CreativeTabs mailboxTab;
@@ -35,5 +41,6 @@ public class MailboxMod {
         GameRegistry.registerBlock(blockMailbox, ItemBlock.class, "blockMailbox");
         GameRegistry.registerTileEntity(TileEntityMailbox.class, "tileEntityMailbox");
         // register letter item
+
     }
 }
