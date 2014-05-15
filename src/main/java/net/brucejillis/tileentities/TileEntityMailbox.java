@@ -75,7 +75,7 @@ public class TileEntityMailbox extends TileEntity implements IInventory {
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
-        return true;
+        return false;
     }
 
     @Override
@@ -86,7 +86,9 @@ public class TileEntityMailbox extends TileEntity implements IInventory {
         for(int i = 0; i <= tags.tagCount(); i++) {
             short slot = tag.getShort("slot");
             NBTTagCompound compound = tags.getCompoundTagAt(i);
-
+            if ((slot > 0) && (slot < inventory.length)) {
+                inventory[slot] = ItemStack.loadItemStackFromNBT(compound);
+            }
         }
     }
 
@@ -94,5 +96,16 @@ public class TileEntityMailbox extends TileEntity implements IInventory {
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         // write inv to nbt
+        NBTTagList list = new NBTTagList();
+        for (int i = 0; i < inventory.length; i++) {
+            ItemStack stack = inventory[i];
+            if (stack != null) {
+                NBTTagCompound compound = new NBTTagCompound();
+                compound.setShort("slot", (short) i);
+                stack.writeToNBT(compound);
+                list.appendTag(compound);
+            }
+        }
+        tag.setTag("inventory", list);
     }
 }
