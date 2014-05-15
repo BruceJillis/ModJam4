@@ -13,17 +13,17 @@ public class ContainerMailbox extends Container {
         this.entity = entity;
         // create and bind slots for mailbox queue
         for(int i = 0; i < 6; i++) {
-            addSlotToContainer(new Slot(entity, i, 116 + 42 + i * 16, 52 + 16));
+            addSlotToContainer(new Slot(entity, i, 32 + (i * 18), 10));
         }
         // bind inventory
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {
-                addSlotToContainer(new Slot(inventory, j + i * 9 + 9, 7 + 1 + j * 18, 139 + 1 + i * 18));
+                addSlotToContainer(new Slot(inventory, j + i * 9 + 9, 17 + j * 18, 53 + i * 18));
             }
         }
         // bind hotbar
         for (int i = 0; i < 9; i++) {
-            addSlotToContainer(new Slot(inventory, i, 7 + 1 + i * 18, 197 + 1));
+            addSlotToContainer(new Slot(inventory, i, 8 + i * 18, 111));
         }
     }
 
