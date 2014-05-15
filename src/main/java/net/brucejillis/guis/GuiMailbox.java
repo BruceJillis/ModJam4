@@ -35,10 +35,11 @@ public class GuiMailbox extends GuiContainer {
         fontRendererObj.drawString(StatCollector.translateToLocal("mailbox.title"), 8, 6, 0x00000);
         fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, 43, 0x00000);
         GL11.glPushMatrix();
-        GL11.glScalef(0.65f, 0.65f, 0.65f);
-        fontRendererObj.drawString(StatCollector.translateToLocal("mailbox.delivery"), 190, 12, 0x00000);
-        fontRendererObj.drawString("~", 190, 27, 0x00000);
-        fontRendererObj.drawString("000 " + StatCollector.translateToLocal("mailbox.short.duration"), 200, 24, 0x00000);
+        GL11.glScalef(0.6f, 0.6f, 0.6f);
+        int yoffset = 20;
+        fontRendererObj.drawString(StatCollector.translateToLocal("mailbox.delivery"), 208, yoffset + 12, 0x00000);
+        fontRendererObj.drawString("~", 208, yoffset + 27, 0x00000);
+        fontRendererObj.drawString(String.format("%d ", 0) + StatCollector.translateToLocal("mailbox.short.duration"), 218, yoffset + 24, 0x00000);
         GL11.glPopMatrix();
     }
 

@@ -28,36 +28,41 @@ public class ContainerMailbox extends Container {
         }
     }
 
-    @Override
-    public ItemStack transferStackInSlot(EntityPlayer player, int slot) {
-        ItemStack stack = null;
-        Slot slotObject = (Slot) inventorySlots.get(slot);
-        // null checks and checks if the item can be stacked (maxStackSize > 1)
-        if (slotObject != null && slotObject.getHasStack()) {
-            ItemStack stackInSlot = slotObject.getStack();
-            stack = stackInSlot.copy();
+    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
+    {
+        ItemStack itemstack = null;
+        Slot slot = (Slot)this.inventorySlots.get(par2);
 
-            // merges the item into player inventory since its in the tileEntity
-            if (slot < 9) {
-                if (!this.mergeItemStack(stackInSlot, 0, 35, true)) {
+        if (slot != null && slot.getHasStack())
+        {
+            ItemStack itemstack1 = slot.getStack();
+            itemstack = itemstack1.copy();
+
+            if (par2 < this.numRows * 9)
+            {
+                if (!this.mergeItemStack(itemstack1, this.numRows * 9, this.inventorySlots.size(), true))
+                {
                     return null;
                 }
-            } else if (!this.mergeItemStack(stackInSlot, 0, 9, false)) {
-                // places it into the tileEntity is possible since its in the player inventory
+            }
+            else if (!this.mergeItemStack(itemstack1, 0, this.numRows * 9, false))
+            {
                 return null;
             }
-            if (stackInSlot.stackSize == 0) {
-                slotObject.putStack(null);
-            } else {
-                slotObject.onSlotChanged();
+
+            if (itemstack1.stackSize == 0)
+            {
+                slot.putStack((ItemStack)null);
             }
-            if (stackInSlot.stackSize == stack.stackSize) {
-                return null;
+            else
+            {
+                slot.onSlotChanged();
             }
-            slotObject.onPickupFromSlot(player, stackInSlot);
         }
-        return stack;
+
+        return itemstack;
     }
+
 
     @Override
     public boolean canInteractWith(EntityPlayer player) {
