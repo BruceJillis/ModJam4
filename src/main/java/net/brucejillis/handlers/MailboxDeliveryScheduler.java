@@ -2,6 +2,7 @@ package net.brucejillis.handlers;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
+import net.brucejillis.handlers.data.MailboxDeliveryData;
 import net.brucejillis.util.LogHelper;
 import net.minecraft.client.Minecraft;
 
@@ -16,8 +17,6 @@ public class MailboxDeliveryScheduler {
     public void serverTickHandler(TickEvent.ServerTickEvent event) {
         if (mc.theWorld == null)
             return;
-        int day = (int)Math.floor((float)mc.theWorld.getTotalWorldTime() / 24000.0f);
-        int hour = (int)(mc.theWorld.getWorldTime() / 1000.0f);
-        LogHelper.log("day %d hour %d", day, hour);
+        MailboxDeliveryData deliveryData = MailboxDeliveryData.forWorld(mc.theWorld);
     }
 }

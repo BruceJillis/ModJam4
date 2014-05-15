@@ -1,5 +1,6 @@
 package net.brucejillis.containers;
 
+import net.brucejillis.containers.slots.MailboxSlot;
 import net.brucejillis.tileentities.TileEntityMailbox;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -21,12 +22,12 @@ public class ContainerMailbox extends Container {
         // bind inventory
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {
-                addSlotToContainer(new MailboxSlot(inventory, j + i * 9 + 9, 9 + j * 18, 54 + i * 18));
+                addSlotToContainer(new Slot(inventory, j + i * 9 + 9, 9 + j * 18, 54 + i * 18));
             }
         }
         // bind hotbar
         for (int i = 0; i < 9; i++) {
-            addSlotToContainer(new MailboxSlot(inventory, i, 9 + i * 18, 112));
+            addSlotToContainer(new Slot(inventory, i, 9 + i * 18, 112));
         }
     }
 
