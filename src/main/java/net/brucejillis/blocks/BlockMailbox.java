@@ -2,17 +2,21 @@ package net.brucejillis.blocks;
 
 import net.brucejillis.MailboxMod;
 import net.brucejillis.tileentities.TileEntityMailbox;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import sun.org.mozilla.javascript.internal.ast.Block;
-
 import java.util.List;
+import java.util.Random;
 
 public class BlockMailbox extends BlockContainer {
 
@@ -39,6 +43,35 @@ public class BlockMailbox extends BlockContainer {
         }
         player.openGui(MailboxMod.instance, MailboxMod.GUI_MAILBOX, world, x, y, z);
         return true;
+    }
+
+    @Override
+    public void breakBlock(World world, int x, int y, int z, Block block, int metadata) {
+        TileEntity entity = world.getTileEntity(x, y, z);
+        if (entity == null || !(entity instanceof TileEntityMailbox)) {
+            return;
+        }
+        Random rand = new Random();
+        IInventory inventory = (IInventory) entity;
+        for(int i = 0; i <= inventory.getSizeInventory(); i++) {
+            ItemStack stack = inventory.getStackInSlot(i);
+            if (stack != null && stack.stackSize > 0) {
+                float rx = rand.nextFloat() * 0.8F + 0.1F;
+                float ry = rand.nextFloat() * 0.8F + 0.1F;
+                float rz = rand.nextFloat() * 0.8F + 0.1F;
+                EntityItem entityItem = new EntityItem(world, x + rx, y + ry, z + rz, new ItemStack(stack.getItem(), stack.stackSize, stack.getItemDamage()));
+                if (stack.hasTagCompound()) {
+                    entityItem.getEntityItem().setTagCompound((NBTTagCompound) stack.getTagCompound().copy());
+                }
+                float factor = 0.05F;
+                entityItem.motionX = rand.nextGaussian() * factor;
+                entityItem.motionY = rand.nextGaussian() * factor + 0.2F;
+                entityItem.motionZ = rand.nextGaussian() * factor;
+                world.spawnEntityInWorld(entityItem);
+                stack.stackSize = 0;
+            }
+        }
+        super.breakBlock(world, x, y, z, block, metadata);
     }
 
     @Override

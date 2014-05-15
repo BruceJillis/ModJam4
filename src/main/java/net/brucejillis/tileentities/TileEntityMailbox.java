@@ -26,7 +26,18 @@ public class TileEntityMailbox extends TileEntity implements IInventory {
 
     @Override
     public ItemStack decrStackSize(int i, int amount) {
-        return null;
+        ItemStack stack = getStackInSlot(i);
+        if (stack != null) {
+            if (stack.stackSize <= amount) {
+                setInventorySlotContents(i, null);
+            } else {
+                stack = stack.splitStack(amount);
+                if (stack.stackSize == 0) {
+                    setInventorySlotContents(i, null);
+                }
+            }
+        }
+        return stack;
     }
 
     @Override
@@ -83,7 +94,7 @@ public class TileEntityMailbox extends TileEntity implements IInventory {
         super.readFromNBT(tag);
         // read inv from nbt
         NBTTagList tags = tag.getTagList("inventory", tag.getId());
-        for(int i = 0; i <= tags.tagCount(); i++) {
+        for(int i = 0; i < tags.tagCount(); i++) {
             short slot = tag.getShort("slot");
             NBTTagCompound compound = tags.getCompoundTagAt(i);
             if ((slot > 0) && (slot < inventory.length)) {
