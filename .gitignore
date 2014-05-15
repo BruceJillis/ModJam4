@@ -1,0 +1,11 @@
+build/
+eclipse/
+gradle/
+out/
+.gradle/
+*.txt
+gradlew*
+*.iml
+*.ipr
+*.iws
+.COMMIT

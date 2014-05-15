@@ -1,0 +1,16 @@
+[
+{
+  "modid": "examplemod",
+  "name": "Example Mod",
+  "description": "Example placeholder mod.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authors": ["Jillis ter Hove"],
+  "credits": "Notch, the dudes that created forge and last but not least the modjam people!",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
