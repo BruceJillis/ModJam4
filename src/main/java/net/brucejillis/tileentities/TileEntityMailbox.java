@@ -88,5 +88,6 @@ public class TileEntityMailbox extends TileEntity implements IInventory {
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         // write inv to nbt
+
     }
 }
