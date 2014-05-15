@@ -4,9 +4,13 @@ import net.brucejillis.MailboxMod;
 import net.brucejillis.tileentities.TileEntityMailbox;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import sun.org.mozilla.javascript.internal.ast.Block;
+
+import java.util.List;
 
 public class BlockMailbox extends BlockContainer {
 
@@ -15,8 +19,14 @@ public class BlockMailbox extends BlockContainer {
         setBlockName("blockMailbox");
         setBlockTextureName(MailboxMod.ID + ":" + getUnlocalizedName().substring(5));
         setCreativeTab(MailboxMod.mailboxTab);
-        setHardness(0.8F);
         setStepSound(soundTypeWood);
+        setHardness(0.8f);
+    }
+
+    @Override
+    public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB aabb, List pool, Entity entity) {
+        setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, 1.925f, 1.0f);
+        super.addCollisionBoxesToList(world, x, y, z, aabb, pool, entity);
     }
 
     @Override
