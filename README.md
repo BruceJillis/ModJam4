@@ -1,11 +1,8 @@
 
 
-
-
-
 To Do
 -----
-* make mailbox smaller
+* sizing + bounding box
 * textures:
     * mapping
     * making
