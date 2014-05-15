@@ -6,6 +6,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 import net.minecraft.world.storage.MapStorage;
 
+// constants in this class are based on the vanilla day/night cycle: http://minecraft.gamepedia.com/Day-night_cycle
 public class MailboxDeliveryData extends WorldSavedData {
     private static final String KEY = "mailboxdelivery";
 
@@ -46,7 +47,10 @@ public class MailboxDeliveryData extends WorldSavedData {
     public static int hoursUntilDelivery(long time) {
         int hour = timeToHours(time);
         // time to morning delivery
-        if ((hour <= 2) || (hour >= 10)) {
+        if (hour >= 10) {
+            return Math.abs(hour - 24) + 2;
+        }
+        if (hour <= 2) {
             return Math.abs(hour - 2);
         }
         // time to afternoon delivery

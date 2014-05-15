@@ -6,3 +6,5 @@ mailbox.title=Mail Box
 mailbox.delivery=Next Delivery
 mailbox.short.duration=hrs.
 
+item.itemLetter.name=Blank Letter
+

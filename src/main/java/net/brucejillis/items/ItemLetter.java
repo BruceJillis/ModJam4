@@ -9,6 +9,5 @@ public class ItemLetter extends Item {
         setTextureName(MailboxMod.ID + ":" + getUnlocalizedName().substring(5));
         setCreativeTab(MailboxMod.mailboxTab);
         setMaxStackSize(16);
-        set
     }
 }
