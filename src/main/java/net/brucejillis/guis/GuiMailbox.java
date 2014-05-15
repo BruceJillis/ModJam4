@@ -37,10 +37,16 @@ public class GuiMailbox extends GuiContainer {
         fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, 43, 0x00000);
         GL11.glPushMatrix();
         GL11.glScalef(0.6f, 0.6f, 0.6f);
-        int yoffset = 20;
+        int yoffset = 19;
         fontRendererObj.drawString(StatCollector.translateToLocal("mailbox.delivery"), 208, yoffset + 12, 0x00000);
         fontRendererObj.drawString("~", 208, yoffset + 27, 0x00000);
-        String line = String.format("%d ", MailboxDeliveryData.hoursUntilDelivery(mc.theWorld.getWorldTime())) + StatCollector.translateToLocal("mailbox.short.duration");
+        String line;
+        int hours = MailboxDeliveryData.hoursUntilDelivery(mc.theWorld.getWorldTime());
+        if (hours != 0) {
+            line = String.format("%d ", hours) + StatCollector.translateToLocal("mailbox.short.duration");
+        } else {
+            line = "any minute now!";
+        }
         fontRendererObj.drawString(line, 218, yoffset + 24, 0x00000);
         GL11.glPopMatrix();
     }

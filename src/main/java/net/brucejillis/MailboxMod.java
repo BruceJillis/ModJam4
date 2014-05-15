@@ -9,6 +9,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import net.brucejillis.blocks.BlockMailbox;
 import net.brucejillis.handlers.GuiHandler;
 import net.brucejillis.handlers.MailboxDeliveryScheduler;
+import net.brucejillis.items.ItemLetter;
 import net.brucejillis.proxies.CommonProxy;
 import net.brucejillis.tileentities.TileEntityMailbox;
 import net.brucejillis.util.LogHelper;
@@ -39,6 +40,9 @@ public class MailboxMod {
     // blocks
     public static Block blockMailbox;
 
+    // items
+    public static Item itemLetter;
+
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         LogHelper.log("initializing %s (v %s)", ID, VERSION);
@@ -54,7 +58,8 @@ public class MailboxMod {
         GameRegistry.registerBlock(blockMailbox, ItemBlock.class, "blockMailbox");
         GameRegistry.registerTileEntity(TileEntityMailbox.class, "tileEntityMailbox");
         // register letter item
-
+        itemLetter = new ItemLetter();
+        GameRegistry.registerItem(itemLetter, "itemLetter");
         // register various stuff
         proxy.registerRenderers();
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());

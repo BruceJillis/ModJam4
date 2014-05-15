@@ -43,10 +43,14 @@ public class MailboxDeliveryData extends WorldSavedData {
     private void doDelivery() {
     }
 
-    public static long hoursUntilDelivery(long time) {
-        long dMorning = Math.abs(timeToHours(time) - 2);
-        long dAfternoon = Math.abs(timeToHours(time) - 10);
-        return Math.min(dMorning, dAfternoon);
+    public static int hoursUntilDelivery(long time) {
+        int hour = timeToHours(time);
+        // time to morning delivery
+        if ((hour <= 2) || (hour >= 10)) {
+            return Math.abs(hour - 2);
+        }
+        // time to afternoon delivery
+        return Math.abs(hour - 10);
     }
 
     private static int timeToHours(long time) {
