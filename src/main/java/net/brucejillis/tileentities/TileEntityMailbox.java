@@ -7,7 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
 public class TileEntityMailbox extends TileEntity implements IInventory {
-    private final ItemStack[] inventory;
+    private ItemStack[] inventory;
 
     public TileEntityMailbox() {
         inventory = new ItemStack[6];

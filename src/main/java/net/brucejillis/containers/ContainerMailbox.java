@@ -15,6 +15,16 @@ public class ContainerMailbox extends Container {
         for(int i = 0; i < 6; i++) {
             addSlotToContainer(new Slot(entity, i, 116 + 42 + i * 16, 52 + 16));
         }
+        // bind inventory
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 9; j++) {
+                addSlotToContainer(new Slot(inventory, j + i * 9 + 9, 7 + 1 + j * 18, 139 + 1 + i * 18));
+            }
+        }
+        // bind hotbar
+        for (int i = 0; i < 9; i++) {
+            addSlotToContainer(new Slot(inventory, i, 7 + 1 + i * 18, 197 + 1));
+        }
     }
 
     @Override
