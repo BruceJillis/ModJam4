@@ -19,20 +19,22 @@ public class GuiMailbox extends GuiContainer {
         super(new ContainerMailbox(player.inventory, entity));
         xSize = 195;
         ySize = 136;
+        guiLeft = (int)((width - xSize) / 2.0f);
+        guiTop = (int)((width - xSize) / 2.0f);
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3) {
+    protected void drawGuiContainerBackgroundLayer(float partial, int mouseX, int mouseY) {
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         mc.renderEngine.bindTexture(background);
-        drawTexturedModalRect((width - xSize)/2, (height - ySize)/2, 0, 0, xSize, ySize);
+        drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int p_146979_1_, int p_146979_2_) {
-        fontRendererObj.drawString(StatCollector.translateToLocal("mailbox.title"), guiLeft + 4, guiTop + 4, 0x00000);
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+        fontRendererObj.drawString(StatCollector.translateToLocal("mailbox.title"), 8, 6, 0x00000);
         //fontRendererObj.drawString(StatCollector.translateToLocal("mailbox.delivery"), 8, 8, 0x00000);
-        fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, 58, 0x00000);
+        fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, 43, 0x00000);
     }
 
     @Override
