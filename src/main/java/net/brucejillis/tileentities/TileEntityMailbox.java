@@ -95,8 +95,8 @@ public class TileEntityMailbox extends TileEntity implements IInventory {
         // read inv from nbt
         NBTTagList tags = tag.getTagList("inventory", tag.getId());
         for(int i = 0; i < tags.tagCount(); i++) {
-            short slot = tag.getShort("slot");
             NBTTagCompound compound = tags.getCompoundTagAt(i);
+            short slot = compound.getShort("slot");
             if ((slot > 0) && (slot < inventory.length)) {
                 inventory[slot] = ItemStack.loadItemStackFromNBT(compound);
             }

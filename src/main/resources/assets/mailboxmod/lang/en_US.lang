@@ -2,3 +2,6 @@ itemGroup.mailboxTab=Mailbox Tab
 
 tile.blockMailbox.name=Mail Box
 
+mailbox.title=Mail Box
+mailbox.delivery=Next Delivery
+
