@@ -2,6 +2,7 @@ package net.brucejillis.guis;
 
 import net.brucejillis.MailboxMod;
 import net.brucejillis.containers.ContainerMailbox;
+import net.brucejillis.handlers.data.MailboxDeliveryData;
 import net.brucejillis.tileentities.TileEntityMailbox;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
@@ -39,7 +40,8 @@ public class GuiMailbox extends GuiContainer {
         int yoffset = 20;
         fontRendererObj.drawString(StatCollector.translateToLocal("mailbox.delivery"), 208, yoffset + 12, 0x00000);
         fontRendererObj.drawString("~", 208, yoffset + 27, 0x00000);
-        fontRendererObj.drawString(String.format("%d ", 0) + StatCollector.translateToLocal("mailbox.short.duration"), 218, yoffset + 24, 0x00000);
+        String line = String.format("%d ", MailboxDeliveryData.hoursUntilDelivery(mc.theWorld.getWorldTime())) + StatCollector.translateToLocal("mailbox.short.duration");
+        fontRendererObj.drawString(line, 218, yoffset + 24, 0x00000);
         GL11.glPopMatrix();
     }
 

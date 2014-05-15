@@ -9,33 +9,48 @@ import net.minecraft.world.storage.MapStorage;
 public class MailboxDeliveryData extends WorldSavedData {
     private static final String KEY = "mailboxdelivery";
 
-    private static final String NONE = "none";
     private static final String MORNING = "morning";
     private static final String AFTERNOON = "afternoon";
 
     private World world;
-    private String state = "";
+    private String state = MORNING;
 
-    public MailboxDeliveryData(String par1Str, World world) {
-        super(par1Str);
+    public MailboxDeliveryData(String name, World world) {
+        super(name);
         this.world = world;
     }
 
     public void tick() {
-        int day = (int)Math.floor(world.getTotalWorldTime() / 24000.0f);
-        int hour = (int)(world.getWorldTime() / 1000.0f);
-        String state = NONE;
-        if ((hour == 2) && (this.state == NONE)) {
-            // morning delivery
-            state = MORNING;
-            markDirty();
-        }
-        if ((hour == 10) && (this.state == MORNING)) {
-            // morning delivery
-            this.state = AFTERNOON;
+        int hour = timeToHours(world.getWorldTime());
+        if ((hour == 2) && (state == MORNING)) {
+            LogHelper.log("morning delivery!", hour);
+            doDelivery();
+            // mark delivery done
+            state = AFTERNOON;
             markDirty();
             saveAllData();
         }
+        if ((hour == 10) && (state == AFTERNOON)) {
+            LogHelper.log("afternoon delivery!", hour);
+            doDelivery();
+            // mark delivery done
+            state = MORNING;
+            markDirty();
+            saveAllData();
+        }
+    }
+
+    private void doDelivery() {
+    }
+
+    public static long hoursUntilDelivery(long time) {
+        long dMorning = Math.abs(timeToHours(time) - 2);
+        long dAfternoon = Math.abs(timeToHours(time) - 10);
+        return Math.min(dMorning, dAfternoon);
+    }
+
+    private static int timeToHours(long time) {
+        return (int)(time / 1000.0f);
     }
 
     public static MailboxDeliveryData forWorld(World world) {
@@ -54,13 +69,11 @@ public class MailboxDeliveryData extends WorldSavedData {
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
-        day = tag.getInteger("day");
-        delivery = tag.getString("delivery");
+        state = tag.getString("state");
     }
 
     @Override
     public void writeToNBT(NBTTagCompound tag) {
-        tag.setInteger("day", day);
-        tag.setString("delivery", delivery);
+        tag.setString("state", state);
     }
 }
