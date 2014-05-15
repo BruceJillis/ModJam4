@@ -2,7 +2,7 @@ import time, os, winsound, subprocess
 from datetime import date
 
 WAIT = 60 * 14.5
-START = date(2014, 5, 7)
+START = date(2014, 5, 15)
 
 def beep():
 	winsound.Beep(1035, 350)
