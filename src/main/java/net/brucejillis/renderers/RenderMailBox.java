@@ -28,6 +28,6 @@ public class RenderMailBox extends TileEntitySpecialRenderer {
         GL11.glScalef(0.5f, 0.5f, 0.5f);
         mc.renderEngine.bindTexture(textureLocation);
         model.renderAll();
-
+        GL11.glPopMatrix();
     }
 }

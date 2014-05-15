@@ -42,5 +42,7 @@ public class MailboxMod {
         GameRegistry.registerTileEntity(TileEntityMailbox.class, "tileEntityMailbox");
         // register letter item
 
+        // register renders
+        proxy.registerRenderers();
     }
 }
