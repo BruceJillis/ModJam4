@@ -21,6 +21,7 @@ public class GuiLetter extends GuiContainer {
     private ResourceLocation background = new ResourceLocation(MailboxMod.ID, "/textures/gui/letter.png");
     private EntityPlayer player;
     private GuiTextField subject;
+    private String DEFAULT_SUBJECT = "Subject..";
 
     public GuiLetter(EntityPlayer player) {
         super(new ContainerLetter(player.inventory, player.getCurrentEquippedItem()));
@@ -34,9 +35,10 @@ public class GuiLetter extends GuiContainer {
     public void initGui() {
         super.initGui();
         Keyboard.enableRepeatEvents(true);
-        subject = new GuiTextField(this.fontRendererObj, guiLeft + 37, guiTop + 34, 131, 12);
+        subject = new GuiTextField(this.fontRendererObj, guiLeft + 39, guiTop + 34, 129, 12);
         subject.setTextColor(-1);
         subject.setMaxStringLength(45);
+        subject.setText(DEFAULT_SUBJECT);
     }
 
     public void onGuiClosed() {
@@ -45,12 +47,16 @@ public class GuiLetter extends GuiContainer {
     }
 
     protected void keyTyped(char par1, int par2) {
+        super.keyTyped(par1, par2);
         this.subject.textboxKeyTyped(par1, par2);
     }
 
     protected void mouseClicked(int par1, int par2, int par3) {
         super.mouseClicked(par1, par2, par3);
-        this.subject.mouseClicked(par1, par2, par3);
+        if (!subject.isFocused() && subject.getText().equals(DEFAULT_SUBJECT)) {
+            subject.setText("");
+        }
+        subject.mouseClicked(par1, par2, par3);
     }
 
     public void drawScreen(int par1, int par2, float par3) {
@@ -65,14 +71,13 @@ public class GuiLetter extends GuiContainer {
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         mc.renderEngine.bindTexture(background);
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
-        renderEntityWithYawAndPitch(guiLeft + 21, guiTop + 42, 16, (float)(guiLeft + 21) - mouseX, (float)(guiTop + 31) - mouseY, mc.thePlayer);
+        renderEntityWithYawAndPitch(guiLeft + 21, guiTop + 47, 16, (float)(guiLeft + 21) - mouseX, (float)(guiTop + 31) - mouseY, mc.thePlayer);
     }
 
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_BLEND);
         fontRendererObj.drawString(I18n.format("container.letter", new Object[0]), 8, 6, 0x00000);
-
     }
 
     public static void renderEntityWithYawAndPitch(int x, int y, int scale, float yaw, float pitch, EntityLivingBase entity) {
