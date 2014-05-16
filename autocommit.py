@@ -18,7 +18,7 @@ def getCommitMessage():
 def autocommit():
 	while True:
 		print("git add .")
-		subprocess.call(["git", "add", "."])
+		subprocess.call(["git", "add", ".", "--all"])
 		msg = getCommitMessage()
 		print("git commit %s" % getCommitMessage())
 		subprocess.call(["git", "commit", "-m", msg])

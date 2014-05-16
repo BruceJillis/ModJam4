@@ -82,7 +82,16 @@ public class BlockMailbox extends BlockContainer {
 
     @Override
     public void setBlockBoundsBasedOnState(IBlockAccess access, int x, int y, int z) {
-        setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, 1.65f, 1.0f);
+        switch (access.getBlockMetadata(x, y, z)) {
+            case 1:
+                setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
+                break;
+            case 2:
+                setBlockBounds(0.0f, -1.0f, 0.0f, 1.0f, 0.65f, 1.0f);
+                break;
+            default:
+                throw new RuntimeException("incorect mailbox metadata");
+        }
     }
 
     @Override

@@ -23,6 +23,8 @@ public class RenderBlockMailbox extends TileEntitySpecialRenderer {
 
     @Override
     public void renderTileEntityAt(TileEntity entity, double x, double y, double z, float var8) {
+        if (entity.blockMetadata != 1)
+            return;
         GL11.glPushMatrix();
         GL11.glTranslated(x, y, z);
         // maybe make a comment
