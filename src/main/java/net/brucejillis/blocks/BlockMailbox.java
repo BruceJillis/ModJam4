@@ -28,8 +28,6 @@ public class BlockMailbox extends BlockContainer {
     public BlockMailbox() {
         super(Material.wood);
         setBlockName("blockMailbox");
-        //setBlockTextureName(MailboxMod.ID + ":" + getUnlocalizedName().substring(5));
-        //setCreativeTab(MailboxMod.mailboxTab);
         setStepSound(soundTypeWood);
         setHardness(0.8f);
     }
@@ -115,7 +113,9 @@ public class BlockMailbox extends BlockContainer {
 
     @Override
     public TileEntity createNewTileEntity(World world, int metadata) {
-        return new TileEntityMailbox();
+        if (isMailboxBase(metadata))
+            return new TileEntityMailbox();
+        return null;
     }
 
     @Override
