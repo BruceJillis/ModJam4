@@ -39,11 +39,9 @@ public class ContainerMailbox extends Container {
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
         ItemStack itemstack = null;
         Slot slot = (Slot) this.inventorySlots.get(par2);
-
         if (slot != null && slot.getHasStack()) {
             ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
-
             if (par2 < inventory.getSizeInventory()) {
                 if (!this.mergeItemStack(itemstack1, inventory.getSizeInventory(), this.inventorySlots.size(), true)) {
                     return null;
@@ -51,14 +49,12 @@ public class ContainerMailbox extends Container {
             } else if (!this.mergeItemStack(itemstack1, 0, inventory.getSizeInventory(), false)) {
                 return null;
             }
-
             if (itemstack1.stackSize == 0) {
                 slot.putStack((ItemStack) null);
             } else {
                 slot.onSlotChanged();
             }
         }
-
         return itemstack;
     }
 
