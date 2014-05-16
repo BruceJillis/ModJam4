@@ -24,21 +24,26 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 public class GuiLetter extends GuiScreen {
+    private static final int BUTTON_SIGN = 0;
     private ResourceLocation background = new ResourceLocation(MailboxMod.ID, "/textures/gui/letter.png");
-    private String DEFAULT_SUBJECT = "Subject..";
 
+    private String DEFAULT_SUBJECT = "Subject..";
     private int xSize;
+
     private int ySize;
     private int guiLeft;
     private int guiTop;
+
+    private ItemStack letter;
     private EntityPlayer player;
 
     private GuiTextField subject;
     private GuiTextField subject2;
     private GuiMultiLineTextField body;
 
-    public GuiLetter(EntityPlayer player, ItemLetter letter) {
+    public GuiLetter(EntityPlayer player, ItemStack letter) {
         this.player = player;
+        this.letter = letter;
     }
 
     public void initGui() {
@@ -53,7 +58,7 @@ public class GuiLetter extends GuiScreen {
         subject.setTextColor(-1);
         subject.setMaxStringLength(45);
         subject.setText(DEFAULT_SUBJECT);
-        // letter body
+        // temporary letter body
         subject2 = new GuiTextField(this.fontRendererObj, guiLeft + 39, guiTop + 34, 131, 12);
         subject2.setTextColor(-1);
         subject2.setMaxStringLength(45);
@@ -64,8 +69,16 @@ public class GuiLetter extends GuiScreen {
         //body.setText("Write a letter...\n\nand this?");
         // add buttons
         buttonList.clear();
-        buttonList.add(new GuiButton(0, guiLeft + 138, guiTop + 122, 32, 20, "Sign"));
+        buttonList.add(new GuiButton(BUTTON_SIGN, guiLeft + 138, guiTop + 122, 32, 20, "Sign"));
 
+    }
+
+    protected void actionPerformed(GuiButton guibutton) {
+        switch(guibutton.id) {
+            case BUTTON_SIGN:
+                //letter.stackTagCompound
+                break;
+        }
     }
 
     public void onGuiClosed() {

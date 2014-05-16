@@ -7,6 +7,7 @@ import net.brucejillis.tileentities.TileEntityMailbox;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -55,6 +56,7 @@ public class BlockMailbox extends BlockContainer {
             }
         }
         if (te instanceof TileEntityMailbox) {
+            world.playSoundAtEntity(player, MailboxMod.ID + ":" + "mailboxOpen.");
             // open the mailbox's gui
             player.openGui(MailboxMod.instance, MailboxMod.GUI_MAILBOX, world, x, y, z);
         }
