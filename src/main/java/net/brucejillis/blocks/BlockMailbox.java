@@ -15,6 +15,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
 import java.util.List;
 import java.util.Random;
 
@@ -53,7 +54,7 @@ public class BlockMailbox extends BlockContainer {
         }
         Random rand = new Random();
         IInventory inventory = (IInventory) entity;
-        for(int i = 0; i < inventory.getSizeInventory(); i++) {
+        for (int i = 0; i < inventory.getSizeInventory(); i++) {
             ItemStack stack = inventory.getStackInSlot(i);
             if (stack != null && stack.stackSize > 0) {
                 float rx = rand.nextFloat() * 0.8F + 0.1F;
@@ -75,6 +76,11 @@ public class BlockMailbox extends BlockContainer {
     }
 
     @Override
+    public void onBlockHarvested(World p_149681_1_, int p_149681_2_, int p_149681_3_, int p_149681_4_, int p_149681_5_, EntityPlayer p_149681_6_) {
+        super.onBlockHarvested(p_149681_1_, p_149681_2_, p_149681_3_, p_149681_4_, p_149681_5_, p_149681_6_);    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    @Override
     public void setBlockBoundsBasedOnState(IBlockAccess access, int x, int y, int z) {
         setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, 1.65f, 1.0f);
     }
@@ -82,6 +88,11 @@ public class BlockMailbox extends BlockContainer {
     @Override
     public TileEntity createNewTileEntity(World world, int metadata) {
         return new TileEntityMailbox();
+    }
+
+    @Override
+    public int getMobilityFlag() {
+        return 1;
     }
 
     @Override
