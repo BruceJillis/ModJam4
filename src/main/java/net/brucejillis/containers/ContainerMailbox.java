@@ -19,15 +19,20 @@ public class ContainerMailbox extends Container {
         for (int i = 0; i < 6; i++) {
             addSlotToContainer(new MailboxSlot(entity, i, 9 + (i * 18), 17));
         }
+        bindPlayerInventory(inventory, 9, 54, 9, 112);
+
+    }
+
+    private void bindPlayerInventory(InventoryPlayer inventory, int xOffInv, int yOffInv, int xOffHotbar, int yOffHotbar) {
         // bind inventory
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {
-                addSlotToContainer(new Slot(inventory, j + i * 9 + 9, 9 + j * 18, 54 + i * 18));
+                addSlotToContainer(new Slot(inventory, j + i * 9 + 9, xOffInv + j * 18, yOffInv + i * 18));
             }
         }
         // bind hotbar
         for (int i = 0; i < 9; i++) {
-            addSlotToContainer(new Slot(inventory, i, 9 + i * 18, 112));
+            addSlotToContainer(new Slot(inventory, i, xOffHotbar + i * 18, yOffHotbar));
         }
     }
 
