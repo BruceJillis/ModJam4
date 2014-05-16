@@ -6,6 +6,7 @@ import net.brucejillis.containers.ContainerMailbox;
 import net.brucejillis.guis.widgets.GuiMultiLineTextField;
 import net.brucejillis.items.ItemLetter;
 import net.brucejillis.util.LogHelper;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -33,7 +34,7 @@ public class GuiLetter extends GuiScreen {
     private EntityPlayer player;
 
     private GuiTextField subject;
-    private GuiTextField sender;
+    private GuiTextField subject2;
     private GuiMultiLineTextField body;
 
     public GuiLetter(EntityPlayer player, ItemLetter letter) {
@@ -53,10 +54,17 @@ public class GuiLetter extends GuiScreen {
         subject.setMaxStringLength(45);
         subject.setText(DEFAULT_SUBJECT);
         // letter body
-        body = new GuiMultiLineTextField(this.fontRendererObj, guiLeft + 39, guiTop + 34, 131, 12, 8);
-        body.setTextColor(-1);
+        subject2 = new GuiTextField(this.fontRendererObj, guiLeft + 39, guiTop + 34, 131, 12);
+        subject2.setTextColor(-1);
+        subject2.setMaxStringLength(45);
+        subject2.setText("");
+        //body = new GuiMultiLineTextField(this.fontRendererObj, guiLeft + 39, guiTop + 34, 131, 12, 8);
+        //body.setTextColor(-1);
         //body.setText("Write a letter...\n\nand this? does it split across lines? Yes it does.. so now \n\n we need to watch out for \n ... \n ... \n ... \n the end.");
         //body.setText("Write a letter...\n\nand this?");
+        // add buttons
+        buttonList.clear();
+        buttonList.add(new GuiButton(0, guiLeft + 138, guiTop + 122, 32, 20, "Sign"));
 
     }
 
@@ -68,7 +76,8 @@ public class GuiLetter extends GuiScreen {
     protected void keyTyped(char par1, int par2) {
         super.keyTyped(par1, par2);
         subject.textboxKeyTyped(par1, par2);
-        body.textboxKeyTyped(par1, par2);
+        subject2.textboxKeyTyped(par1, par2);
+//        body.textboxKeyTyped(par1, par2);
     }
 
     protected void mouseClicked(int x, int y, int button) {
@@ -88,18 +97,19 @@ public class GuiLetter extends GuiScreen {
         if (mouseInRect(x, y, guiLeft + 39, guiTop + 34, 131, 12 * 8)) {
 
         }
-        body.mouseClicked(x, y, button);
+        //body.mouseClicked(x, y, button);
+        subject2.mouseClicked(x, y, button);
     }
 
     @Override
     public void handleMouseInput() {
         super.handleMouseInput();
-        body.handleMouseInput();
+        //body.handleMouseInput();
     }
 
     @Override
     protected void mouseMovedOrUp(int mouseX, int mouseY, int button) {
-        body.mouseMovedOrUp(mouseX, mouseY, button);
+        //body.mouseMovedOrUp(mouseX, mouseY, button);
 //        if (!Mouse.isButtonDown(0) && mouseInRect(mouseX, mouseY, )) {
 //            isScrollPressed = false;
 //            LogHelper.log("mouseMovedOrUp");
@@ -138,7 +148,8 @@ public class GuiLetter extends GuiScreen {
         renderEntityWithYawAndPitch(guiLeft + 21, guiTop + 50, 16, (float)(guiLeft + 21) - mouseX, (float)(guiTop + 31) - mouseY, mc.thePlayer);
         // render textfields
         subject.drawTextBox();
-        body.drawTextField();
+        subject2.drawTextBox();
+        //body.drawTextField();
     }
 
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
