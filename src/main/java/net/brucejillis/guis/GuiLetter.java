@@ -35,8 +35,6 @@ public class GuiLetter extends GuiScreen {
     private GuiTextField subject;
     private GuiTextField sender;
     private GuiMultiLineTextField body;
-    private int scrollPos = 0;
-    private boolean isScrollPressed = false;
 
     public GuiLetter(EntityPlayer player, ItemLetter letter) {
         this.player = player;
@@ -96,16 +94,12 @@ public class GuiLetter extends GuiScreen {
     @Override
     public void handleMouseInput() {
         super.handleMouseInput();
-        int wheelState = Mouse.getEventDWheel();
-        if (wheelState != 0) {
-            scrollPos += wheelState > 0 ? -8 : 8;
-            scrollPos = scrollPos < 0 ? 0 : scrollPos;
-            scrollPos = scrollPos > 93 ? 93 : scrollPos;
-        }
+        body.handleMouseInput();
     }
 
     @Override
     protected void mouseMovedOrUp(int mouseX, int mouseY, int button) {
+        body.mouseMovedOrUp(mouseX, mouseY, button);
 //        if (!Mouse.isButtonDown(0) && mouseInRect(mouseX, mouseY, )) {
 //            isScrollPressed = false;
 //            LogHelper.log("mouseMovedOrUp");

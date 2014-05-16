@@ -7,6 +7,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ChatAllowedCharacters;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import java.util.Iterator;
@@ -15,6 +16,7 @@ import java.util.List;
 @SideOnly(Side.CLIENT)
 public class GuiMultiLineTextField {
     private static final int FONT_HEIGHT = 12;
+    private int scrollOffset = 0; // nr of lines of scroll offset
     private int lines;
     private int line_height;
     private boolean enableBackgroundDrawing = true;
@@ -32,6 +34,10 @@ public class GuiMultiLineTextField {
     private int backgroundColor = -16777216;
     private boolean isEnabled = true;
     private int cursorPosition = 0;
+    private int cursorX = 0;
+    private int cursorY = 0;
+    private int scrollPos = 0;
+    private boolean isScrollPressed = false;
 
     public GuiMultiLineTextField(FontRenderer fontRendererObj, int x, int y, int width, int line_height, int lines) {
         this.fontRenderer = fontRendererObj;
@@ -41,6 +47,7 @@ public class GuiMultiLineTextField {
         this.line_height = line_height;
         this.lines = lines;
         this.height = line_height * lines;
+        scrollOffset = 0;
     }
 
     public void drawTextField() {
@@ -50,8 +57,7 @@ public class GuiMultiLineTextField {
             drawRect(x, y, x + width, y + height, backgroundColor);
         }
         fontRenderer.drawSplitString(getCurrentPageOfText(text, width, height), x + 4, y + 2, width - 4, textColor);
-        if (isFocused)
-            fontRenderer.drawStringWithShadow("_", x + 4, y + 2, cursorColor);
+        if (isFocused) fontRenderer.drawStringWithShadow("_", x + 4, y + 2, cursorColor);
     }
 
     private String getCurrentPageOfText(String text, int width, int height) {
@@ -155,12 +161,111 @@ public class GuiMultiLineTextField {
         if (!this.isFocused) {
             return;
         } else {
-            if (ChatAllowedCharacters.isAllowedCharacter(c)) {
-                if (isEnabled) {
-                    writeText(Character.toString(c));
-                }
+            switch (c) {
+                case 1:
+                    setCursorPositionEnd();
+                    return;
+                case 22:
+                    // paster
+                    if (this.isEnabled) {
+                        this.writeText(GuiScreen.getClipboardString());
+                    }
+                    return;
+                default:
+                    switch (ext) {
+                        case 14:
+                            if (GuiScreen.isCtrlKeyDown()) {
+                                if (this.isEnabled) {
+                                    //deleteWords(-1);
+                                }
+                            } else if (this.isEnabled) {
+                                deleteFromCursor(-1);
+                            }
+
+                            return;
+                        case 203:
+                            if (GuiScreen.isCtrlKeyDown()) {
+                                setCursorPosition(getNthWordFromCursor(-1));
+                            } else {
+                                this.moveCursorBy(-1);
+                            }
+
+                            return true;
+                        case 205:
+                            if (GuiScreen.isShiftKeyDown()) {
+                                if (GuiScreen.isCtrlKeyDown()) {
+                                    this.setSelectionPos(this.getNthWordFromPos(1, this.getSelectionEnd()));
+                                } else {
+                                    this.setSelectionPos(this.getSelectionEnd() + 1);
+                                }
+                            } else if (GuiScreen.isCtrlKeyDown()) {
+                                this.setCursorPosition(this.getNthWordFromCursor(1));
+                            } else {
+                                this.moveCursorBy(1);
+                            }
+
+                            return true;
+                        case 207:
+                            if (GuiScreen.isShiftKeyDown()) {
+                                this.setSelectionPos(this.text.length());
+                            } else {
+                                this.setCursorPositionEnd();
+                            }
+
+                            return true;
+                        case 211:
+                            if (GuiScreen.isCtrlKeyDown()) {
+                                if (this.isEnabled) {
+                                    this.deleteWords(1);
+                                }
+                            } else if (this.isEnabled) {
+                                this.deleteFromCursor(1);
+                            }
+
+                            return true;
+                        default:
+                            if (ChatAllowedCharacters.isAllowedCharacter(c)) {
+                                if (this.isEnabled) {
+                                    this.writeText(Character.toString(c));
+                                }
+                            }
+                            return;
+                    }
+                    return;
             }
         }
+    }
+
+    private int getNthWordFromCursor(int i) {
+
+    }
+
+    private void deleteFromCursor(int i) {
+        boolean flag = i < 0;
+        int j = flag ? this.cursorPosition + i : this.cursorPosition;
+        int k = flag ? this.cursorPosition : this.cursorPosition + i;
+
+        String s = "";
+        if (j >= 0) {
+            s = this.text.substring(0, j);
+        }
+        if (k < this.text.length()) {
+            s = s + this.text.substring(k);
+        }
+        this.text = s;
+
+        if (flag) {
+            this.moveCursorBy(i);
+        }
+    }
+
+    public void setCursorPositionEnd() {
+        cursorX = (int) Math.floor(text.length() / charsPerLine());
+        cursorY = text.length() % lines;
+    }
+
+    private int charsPerLine() {
+        return width / fontRenderer.getCharWidth('_');
     }
 
     private void writeText(String s) {
@@ -170,5 +275,22 @@ public class GuiMultiLineTextField {
 
     private void moveCursorBy(int i) {
         setCursorPosition(cursorPosition + i);
+    }
+
+    public void handleMouseInput() {
+        int wheelState = Mouse.getEventDWheel();
+        if (wheelState != 0) {
+            scrollPos += wheelState > 0 ? -8 : 8;
+            scrollPos = scrollPos < 0 ? 0 : scrollPos;
+            scrollPos = scrollPos > 93 ? 93 : scrollPos;
+        }
+    }
+
+    public void mouseMovedOrUp(int mouseX, int mouseY, int button) {
+        isScrollPressed = false;
+        // todo: inrect with scroller
+        if (Mouse.isButtonDown(0) && isFocused) {
+            isScrollPressed = true;
+        }
     }
 }
