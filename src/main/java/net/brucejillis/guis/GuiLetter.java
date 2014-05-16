@@ -31,6 +31,7 @@ public class GuiLetter extends GuiScreen {
 
     private GuiTextField subject;
     private GuiTextField sender;
+    private GuiMultiLineTextField body;
 
     public GuiLetter(EntityPlayer player, ItemLetter letter) {
         this.player = player;
@@ -40,15 +41,18 @@ public class GuiLetter extends GuiScreen {
     public void initGui() {
         super.initGui();
         xSize = 178;
-        ySize = 212;
+        ySize = 225;
         guiLeft = (int) ((width - xSize) / 2.0f);
         guiTop = (int) ((height - ySize) / 2.0f);
         Keyboard.enableRepeatEvents(true);
         // subject line
-        subject = new GuiTextField(this.fontRendererObj, guiLeft + 39, guiTop + 17, 131, 12);
-        subject.setTextColor(-1);
+        subject = new GuiTextField(this.fontRendererObj, guiLeft + 39, guiTop + 18, 131, 12);
+        subject.setTextColor(0x00000);
         subject.setMaxStringLength(45);
         subject.setText(DEFAULT_SUBJECT);
+        // letter body
+        body = new GuiMultiLineTextField(this.fontRendererObj, guiLeft + 39, guiTop + 34, 131, 12, 8);
+        body.setTextColor(0x00000);
     }
 
     public void onGuiClosed() {
@@ -63,7 +67,7 @@ public class GuiLetter extends GuiScreen {
 
     protected void mouseClicked(int x, int y, int button) {
         super.mouseClicked(x, y, button);
-        if (mouseInRect(x, y, guiLeft + 39, guiTop + 34, 131, 12)) {
+        if (mouseInRect(x, y, guiLeft + 39, guiTop + 18, 131, 12)) {
             if (!subject.isFocused() && subject.getText().equals(DEFAULT_SUBJECT)) {
                 subject.setText("");
             }
@@ -104,7 +108,7 @@ public class GuiLetter extends GuiScreen {
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         mc.renderEngine.bindTexture(background);
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
-        renderEntityWithYawAndPitch(guiLeft + 21, guiTop + 47, 16, (float)(guiLeft + 21) - mouseX, (float)(guiTop + 31) - mouseY, mc.thePlayer);
+        renderEntityWithYawAndPitch(guiLeft + 21, guiTop + 50, 16, (float)(guiLeft + 21) - mouseX, (float)(guiTop + 31) - mouseY, mc.thePlayer);
         // render textfields
         subject.drawTextBox();
     }
