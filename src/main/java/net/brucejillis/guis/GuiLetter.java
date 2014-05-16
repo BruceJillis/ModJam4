@@ -58,6 +58,7 @@ public class GuiLetter extends GuiScreen {
         body = new GuiMultiLineTextField(this.fontRendererObj, guiLeft + 39, guiTop + 34, 131, 12, 8);
         body.setTextColor(-1);
         //body.setText("Write a letter...\n\nand this? does it split across lines? Yes it does.. so now \n\n we need to watch out for \n ... \n ... \n ... \n the end.");
+        //body.setText("Write a letter...\n\nand this?");
 
     }
 

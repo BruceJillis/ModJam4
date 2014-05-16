@@ -25,6 +25,9 @@ public class GuiMultiLineTextField {
     private String text = "";
     private boolean canLoseFocus = true;
     private boolean isFocused = false;
+    private int cursorColor = 0xffffff;
+    private int borderColor = -6250336;
+    private int backgroundColor = -16777216;
 
     public GuiMultiLineTextField(FontRenderer fontRendererObj, int x, int y, int width, int line_height, int lines) {
         this.fontRenderer = fontRendererObj;
@@ -39,13 +42,47 @@ public class GuiMultiLineTextField {
     public void drawTextField() {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         if (isEnabledBackgroundDrawing()) {
-            drawRect(x - 1, y - 1, x + width + 1, y + height + 1, -6250336);
-            drawRect(x, y, x + width, y + height, -16777216);
+            drawRect(x - 1, y - 1, x + width + 1, y + height + 1, borderColor);
+            drawRect(x, y, x + width, y + height, backgroundColor);
         }
-        fontRenderer.drawSplitString(getOnePageOfText(text, width, height), x + 1, y + 3, width - 1, textColor);
+        fontRenderer.drawSplitString(getCurrentPageOfText(text, width, height), x + 4, y + 2, width - 1, textColor);
+        fontRenderer.drawStringWithShadow("_", x + 4, y + 2, cursorColor);
     }
 
-    private String getOnePageOfText(String text, int width, int height) {
+    private void drawCursorVertical(int x, int y, int x1, int y1) {
+        int i1;
+        if (x < x1) {
+            i1 = x;
+            x = x1;
+            x1 = i1;
+        }
+        if (y < y1) {
+            i1 = y;
+            y = y1;
+            y1 = i1;
+        }
+        if (x1 > this.x + this.width) {
+            x1 = this.x + this.width;
+        }
+        if (x > this.x + this.width) {
+            x = this.x + this.width;
+        }
+        Tessellator tessellator = Tessellator.instance;
+        GL11.glColor4f(0.0F, 0.0F, 255.0F, 255.0F);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glEnable(GL11.GL_COLOR_LOGIC_OP);
+        GL11.glLogicOp(GL11.GL_OR_REVERSE);
+        tessellator.startDrawingQuads();
+        tessellator.addVertex((double) x, (double) y1, 0.0D);
+        tessellator.addVertex((double) x1, (double) y1, 0.0D);
+        tessellator.addVertex((double) x1, (double) y, 0.0D);
+        tessellator.addVertex((double) x, (double) y, 0.0D);
+        tessellator.draw();
+        GL11.glDisable(GL11.GL_COLOR_LOGIC_OP);
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+    }
+
+    private String getCurrentPageOfText(String text, int width, int height) {
         List list = fontRenderer.listFormattedStringToWidth(text, width);
         int current = 0;
         String page = "";
@@ -129,24 +166,12 @@ public class GuiMultiLineTextField {
             if (this.enableBackgroundDrawing) {
                 l -= 4;
             }
-            String s = fontRenderer.trimStringToWidth(text.substring(this.lineScrollOffset), width);
-            setCursorPosition(fontRenderer.trimStringToWidth(s, l).length() + this.lineScrollOffset);
+            //String s = fontRenderer.trimStringToWidth(text.substring(this.lineScrollOffset), width);
+            //setCursorPosition(fontRenderer.trimStringToWidth(s, l).length() + this.lineScrollOffset);
         }
     }
 
     public void setCursorPosition(int x) {
-        this.cursorPosition = x;
-        int j = this.text.length();
-
-        if (this.cursorPosition < 0) {
-            this.cursorPosition = 0;
-        }
-
-        if (this.cursorPosition > j) {
-            this.cursorPosition = j;
-        }
-
-        this.setSelectionPos(this.cursorPosition);
     }
 
     private void setFocused(boolean flag) {
