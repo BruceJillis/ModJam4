@@ -3,6 +3,7 @@ package net.brucejillis.guis;
 import net.brucejillis.MailboxMod;
 import net.brucejillis.containers.ContainerLetter;
 import net.brucejillis.containers.ContainerMailbox;
+import net.brucejillis.guis.widgets.GuiMultiLineTextField;
 import net.brucejillis.items.ItemLetter;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
@@ -47,12 +48,12 @@ public class GuiLetter extends GuiScreen {
         Keyboard.enableRepeatEvents(true);
         // subject line
         subject = new GuiTextField(this.fontRendererObj, guiLeft + 39, guiTop + 18, 131, 12);
-        subject.setTextColor(0x00000);
+        subject.setTextColor(-1);
         subject.setMaxStringLength(45);
         subject.setText(DEFAULT_SUBJECT);
         // letter body
-        body = new GuiMultiLineTextField(this.fontRendererObj, guiLeft + 39, guiTop + 34, 131, 12, 8);
-        body.setTextColor(0x00000);
+        body = new GuiMultiLineTextField(this.fontRendererObj, guiLeft + 39, guiTop + 34, 131, 96);
+        body.setTextColor(-1);
     }
 
     public void onGuiClosed() {
@@ -110,13 +111,15 @@ public class GuiLetter extends GuiScreen {
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
         renderEntityWithYawAndPitch(guiLeft + 21, guiTop + 50, 16, (float)(guiLeft + 21) - mouseX, (float)(guiTop + 31) - mouseY, mc.thePlayer);
         // render textfields
-        subject.drawTextBox();
+        body.drawTextField();
+        //subject.drawTextBox();
     }
 
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_BLEND);
         fontRendererObj.drawString(I18n.format("container.letter", new Object[0]), 8, 6, 0x00000);
+        fontRendererObj.drawString(I18n.format("container.inventory", new Object[0]), 8, 130, 0x00000);
     }
 
     private static void renderEntityWithYawAndPitch(int x, int y, int scale, float yaw, float pitch, EntityLivingBase entity) {
