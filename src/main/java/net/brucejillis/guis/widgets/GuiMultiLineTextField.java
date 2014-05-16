@@ -3,8 +3,10 @@ package net.brucejillis.guis.widgets;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.util.ChatAllowedCharacters;
 import org.lwjgl.opengl.GL11;
 
 import java.util.Iterator;
@@ -28,6 +30,8 @@ public class GuiMultiLineTextField {
     private int cursorColor = 0xffffff;
     private int borderColor = -6250336;
     private int backgroundColor = -16777216;
+    private boolean isEnabled = true;
+    private int cursorPosition = 0;
 
     public GuiMultiLineTextField(FontRenderer fontRendererObj, int x, int y, int width, int line_height, int lines) {
         this.fontRenderer = fontRendererObj;
@@ -45,48 +49,16 @@ public class GuiMultiLineTextField {
             drawRect(x - 1, y - 1, x + width + 1, y + height + 1, borderColor);
             drawRect(x, y, x + width, y + height, backgroundColor);
         }
-        fontRenderer.drawSplitString(getCurrentPageOfText(text, width, height), x + 4, y + 2, width - 1, textColor);
-        fontRenderer.drawStringWithShadow("_", x + 4, y + 2, cursorColor);
-    }
-
-    private void drawCursorVertical(int x, int y, int x1, int y1) {
-        int i1;
-        if (x < x1) {
-            i1 = x;
-            x = x1;
-            x1 = i1;
-        }
-        if (y < y1) {
-            i1 = y;
-            y = y1;
-            y1 = i1;
-        }
-        if (x1 > this.x + this.width) {
-            x1 = this.x + this.width;
-        }
-        if (x > this.x + this.width) {
-            x = this.x + this.width;
-        }
-        Tessellator tessellator = Tessellator.instance;
-        GL11.glColor4f(0.0F, 0.0F, 255.0F, 255.0F);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glEnable(GL11.GL_COLOR_LOGIC_OP);
-        GL11.glLogicOp(GL11.GL_OR_REVERSE);
-        tessellator.startDrawingQuads();
-        tessellator.addVertex((double) x, (double) y1, 0.0D);
-        tessellator.addVertex((double) x1, (double) y1, 0.0D);
-        tessellator.addVertex((double) x1, (double) y, 0.0D);
-        tessellator.addVertex((double) x, (double) y, 0.0D);
-        tessellator.draw();
-        GL11.glDisable(GL11.GL_COLOR_LOGIC_OP);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        fontRenderer.drawSplitString(getCurrentPageOfText(text, width, height), x + 4, y + 2, width - 4, textColor);
+        if (isFocused)
+            fontRenderer.drawStringWithShadow("_", x + 4, y + 2, cursorColor);
     }
 
     private String getCurrentPageOfText(String text, int width, int height) {
         List list = fontRenderer.listFormattedStringToWidth(text, width);
         int current = 0;
         String page = "";
-        for (Iterator iterator = list.iterator(); iterator.hasNext(); current += this.FONT_HEIGHT) {
+        for (Iterator iterator = list.iterator(); iterator.hasNext(); current += FONT_HEIGHT) {
             page += (String) iterator.next() + "\n";
             if (current >= height) break;
         }
@@ -172,9 +144,31 @@ public class GuiMultiLineTextField {
     }
 
     public void setCursorPosition(int x) {
+        cursorPosition = x;
     }
 
     private void setFocused(boolean flag) {
         isFocused = flag;
+    }
+
+    public void textboxKeyTyped(char c, int ext) {
+        if (!this.isFocused) {
+            return;
+        } else {
+            if (ChatAllowedCharacters.isAllowedCharacter(c)) {
+                if (isEnabled) {
+                    writeText(Character.toString(c));
+                }
+            }
+        }
+    }
+
+    private void writeText(String s) {
+        text = text + ChatAllowedCharacters.filerAllowedCharacters(s);
+        moveCursorBy(1);
+    }
+
+    private void moveCursorBy(int i) {
+        setCursorPosition(cursorPosition + i);
     }
 }
