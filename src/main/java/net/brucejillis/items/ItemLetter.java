@@ -91,7 +91,8 @@ public class ItemLetter extends Item {
     }
 
     private static NBTTagCompound getStackTagCompound(ItemStack stack) {
-        if (stack.stackTagCompound == null) stack.setTagCompound(new NBTTagCompound());
+        if (stack.stackTagCompound == null)
+            stack.setTagCompound(new NBTTagCompound());
         return stack.stackTagCompound;
     }
 
