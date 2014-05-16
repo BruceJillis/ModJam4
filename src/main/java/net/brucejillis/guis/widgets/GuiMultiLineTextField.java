@@ -16,6 +16,8 @@ import java.util.List;
 @SideOnly(Side.CLIENT)
 public class GuiMultiLineTextField {
     private static final int FONT_HEIGHT = 12;
+    private final int charWidth;
+
     private int scrollOffset = 0; // nr of lines of scroll offset
     private int lines;
     private int line_height;
@@ -41,6 +43,7 @@ public class GuiMultiLineTextField {
 
     public GuiMultiLineTextField(FontRenderer fontRendererObj, int x, int y, int width, int line_height, int lines) {
         this.fontRenderer = fontRendererObj;
+        charWidth = fontRenderer.getCharWidth('_');
         this.x = x;
         this.y = y;
         this.width = width;
@@ -57,7 +60,14 @@ public class GuiMultiLineTextField {
             drawRect(x, y, x + width, y + height, backgroundColor);
         }
         fontRenderer.drawSplitString(getCurrentPageOfText(text, width, height), x + 4, y + 2, width - 4, textColor);
-        if (isFocused) fontRenderer.drawStringWithShadow("_", x + 4, y + 2, cursorColor);
+        if (isFocused) {
+            drawCursor();
+        }
+    }
+
+    private void drawCursor() {
+        int cw = fontRenderer.getCharWidth('_');
+        fontRenderer.drawStringWithShadow("_",  x + (cursorX * cw) + 4, y + (cursorY * line_height) + 2, cursorColor);
     }
 
     private String getCurrentPageOfText(String text, int width, int height) {
@@ -184,60 +194,30 @@ public class GuiMultiLineTextField {
 
                             return;
                         case 203:
-                            if (GuiScreen.isCtrlKeyDown()) {
-                                setCursorPosition(getNthWordFromCursor(-1));
-                            } else {
-                                this.moveCursorBy(-1);
-                            }
-
-                            return true;
+                            moveCursorBy(-1);
+                            return;
                         case 205:
-                            if (GuiScreen.isShiftKeyDown()) {
-                                if (GuiScreen.isCtrlKeyDown()) {
-                                    this.setSelectionPos(this.getNthWordFromPos(1, this.getSelectionEnd()));
-                                } else {
-                                    this.setSelectionPos(this.getSelectionEnd() + 1);
-                                }
-                            } else if (GuiScreen.isCtrlKeyDown()) {
-                                this.setCursorPosition(this.getNthWordFromCursor(1));
-                            } else {
-                                this.moveCursorBy(1);
-                            }
-
-                            return true;
-                        case 207:
-                            if (GuiScreen.isShiftKeyDown()) {
-                                this.setSelectionPos(this.text.length());
-                            } else {
-                                this.setCursorPositionEnd();
-                            }
-
-                            return true;
+                            this.moveCursorBy(1);
+                            return;
                         case 211:
                             if (GuiScreen.isCtrlKeyDown()) {
                                 if (this.isEnabled) {
-                                    this.deleteWords(1);
+                                    //this.deleteWords(1);
                                 }
                             } else if (this.isEnabled) {
                                 this.deleteFromCursor(1);
                             }
-
-                            return true;
+                            return;
                         default:
                             if (ChatAllowedCharacters.isAllowedCharacter(c)) {
                                 if (this.isEnabled) {
                                     this.writeText(Character.toString(c));
                                 }
                             }
-                            return;
                     }
                     return;
             }
         }
-    }
-
-    private int getNthWordFromCursor(int i) {
-
     }
 
     private void deleteFromCursor(int i) {
@@ -274,7 +254,15 @@ public class GuiMultiLineTextField {
     }
 
     private void moveCursorBy(int i) {
-        setCursorPosition(cursorPosition + i);
+        cursorX += i;
+        if (cursorX < 4) {
+            cursorY -= 1;
+            cursorX = (width / charWidth) + cursorX;
+        }
+        if ((cursorX * charWidth) >= (width - 4)) {
+            cursorY += 1;
+            cursorX = cursorX - (cursorX * charWidth);
+        }
     }
 
     public void handleMouseInput() {
