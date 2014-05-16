@@ -1,5 +1,7 @@
 package net.brucejillis.blocks;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.brucejillis.MailboxMod;
 import net.brucejillis.tileentities.TileEntityMailbox;
 import net.minecraft.block.Block;
@@ -8,7 +10,9 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -48,6 +52,8 @@ public class BlockMailbox extends BlockContainer {
 
     @Override
     public void breakBlock(World world, int x, int y, int z, Block block, int metadata) {
+        if (!isMailboxBase(metadata))
+            return;
         TileEntity entity = world.getTileEntity(x, y, z);
         if (entity == null || !(entity instanceof TileEntityMailbox)) {
             return;
@@ -75,16 +81,6 @@ public class BlockMailbox extends BlockContainer {
         super.breakBlock(world, x, y, z, block, metadata);
     }
 
-    @Override
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
-        int metadata = world.getBlockMetadata(x, y, z);
-        if (isMailboxBase(metadata)) {
-
-        } else {
-
-        }
-    }
-
     public static boolean isMailboxBase(int metadata) {
         if (metadata == 1) {
             return true;
@@ -99,14 +95,20 @@ public class BlockMailbox extends BlockContainer {
             if (world.getBlock(x, y, z) == this) {
                 world.setBlockToAir(x, y + 1, z);
             }
+        } else {
+            if (world.getBlock(x, y, z) == this) {
+                world.setBlockToAir(x, y - 1, z);
+            }
         }
     }
 
     @Override
     public void setBlockBoundsBasedOnState(IBlockAccess access, int x, int y, int z) {
         if (isMailboxBase(access.getBlockMetadata(x, y, z))) {
+            //setBlockBounds(0.1f, 0.1f, 0.1f, 0.9f, 0.9f, 0.9f);
             setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, 1.65f, 1.0f);
         } else {
+            //setBlockBounds(0.1f, 0.1f, 0.1f, 0.9f, 0.9f, 0.9f);
             setBlockBounds(0.0f, -1.0f, 0.0f, 1.0f, 0.65f, 1.0f);
         }
     }
@@ -134,5 +136,10 @@ public class BlockMailbox extends BlockContainer {
     @Override
     public int getRenderType() {
         return -1;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public Item getItem(World world, int x, int y, int z) {
+        return MailboxMod.itemMailbox;
     }
 }
