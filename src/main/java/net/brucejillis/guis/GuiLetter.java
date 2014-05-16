@@ -5,6 +5,7 @@ import net.brucejillis.containers.ContainerLetter;
 import net.brucejillis.containers.ContainerMailbox;
 import net.brucejillis.guis.widgets.GuiMultiLineTextField;
 import net.brucejillis.items.ItemLetter;
+import net.brucejillis.util.LogHelper;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -17,6 +18,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -33,6 +35,8 @@ public class GuiLetter extends GuiScreen {
     private GuiTextField subject;
     private GuiTextField sender;
     private GuiMultiLineTextField body;
+    private int scrollPos = 0;
+    private boolean isScrollPressed = false;
 
     public GuiLetter(EntityPlayer player, ItemLetter letter) {
         this.player = player;
@@ -53,7 +57,7 @@ public class GuiLetter extends GuiScreen {
         // letter body
         body = new GuiMultiLineTextField(this.fontRendererObj, guiLeft + 39, guiTop + 34, 131, 12, 8);
         body.setTextColor(-1);
-        body.setText("Write a letter...\n\nand this? does it split across lines? Yes it does.. so now \n\n we need to watch out for \n ... \n ... \n ... \n the end.");
+        //body.setText("Write a letter...\n\nand this? does it split across lines? Yes it does.. so now \n\n we need to watch out for \n ... \n ... \n ... \n the end.");
 
     }
 
@@ -81,9 +85,29 @@ public class GuiLetter extends GuiScreen {
         }
         subject.mouseClicked(x, y, button);
         // body field
-        if (mouseInRect(x, y, guiLeft + 39, guiTop + 18, 131, 12)) {
+        if (mouseInRect(x, y, guiLeft + 39, guiTop + 34, 131, 12 * 8)) {
 
         }
+        body.mouseClicked(x, y, button);
+    }
+
+    @Override
+    public void handleMouseInput() {
+        super.handleMouseInput();
+        int wheelState = Mouse.getEventDWheel();
+        if (wheelState != 0) {
+            scrollPos += wheelState > 0 ? -8 : 8;
+            scrollPos = scrollPos < 0 ? 0 : scrollPos;
+            scrollPos = scrollPos > 93 ? 93 : scrollPos;
+        }
+    }
+
+    @Override
+    protected void mouseMovedOrUp(int mouseX, int mouseY, int button) {
+//        if (!Mouse.isButtonDown(0) && mouseInRect(mouseX, mouseY, )) {
+//            isScrollPressed = false;
+//            LogHelper.log("mouseMovedOrUp");
+//        }
     }
 
     public void drawScreen(int mouseX, int mouseY, float partial) {

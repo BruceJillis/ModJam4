@@ -30,10 +30,16 @@ public class GuiHandler implements IGuiHandler {
         // play nice with disabling the ui via F1
         if (!Minecraft.isGuiEnabled())
             return null;
-        TileEntity entity = world.getTileEntity(x, y, z);
         switch (ID) {
             case MailboxMod.GUI_MAILBOX:
-                return new GuiMailbox(player, (TileEntityMailbox) entity);
+                TileEntity entity = world.getTileEntity(x, y, z);
+                if (entity == null) {
+                    entity = world.getTileEntity(x, y - 1, z);
+                }
+                if ((entity != null) && (entity instanceof TileEntityMailbox)) {
+                    return new GuiMailbox(player, (TileEntityMailbox) entity);
+                }
+                break;
             case MailboxMod.GUI_LETTER:
                 return new GuiLetter(player, (ItemLetter) player.inventory.getCurrentItem().getItem());
         }

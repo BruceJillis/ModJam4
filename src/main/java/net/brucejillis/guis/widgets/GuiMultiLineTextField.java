@@ -21,8 +21,10 @@ public class GuiMultiLineTextField {
     private int height;
     private int x;
     private int y;
-    private int textColor;
-    private String text;
+    private int textColor = 0x000000;
+    private String text = "";
+    private boolean canLoseFocus = true;
+    private boolean isFocused = false;
 
     public GuiMultiLineTextField(FontRenderer fontRendererObj, int x, int y, int width, int line_height, int lines) {
         this.fontRenderer = fontRendererObj;
@@ -48,9 +50,8 @@ public class GuiMultiLineTextField {
         int current = 0;
         String page = "";
         for (Iterator iterator = list.iterator(); iterator.hasNext(); current += this.FONT_HEIGHT) {
-            page += (String)iterator.next() + "\n";
-            if (current >= height)
-                break;
+            page += (String) iterator.next() + "\n";
+            if (current >= height) break;
         }
         return page;
     }
@@ -114,5 +115,41 @@ public class GuiMultiLineTextField {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public void mouseClicked(int x, int y, int button) {
+        boolean flag = x >= this.x && x < this.x + this.width && y >= this.y && y < this.y + this.height;
+        if (canLoseFocus) {
+            setFocused(flag);
+        }
+
+        if (isFocused && button == 0) {
+            int l = x - this.x;
+
+            if (this.enableBackgroundDrawing) {
+                l -= 4;
+            }
+            String s = fontRenderer.trimStringToWidth(text.substring(this.lineScrollOffset), width);
+            setCursorPosition(fontRenderer.trimStringToWidth(s, l).length() + this.lineScrollOffset);
+        }
+    }
+
+    public void setCursorPosition(int x) {
+        this.cursorPosition = x;
+        int j = this.text.length();
+
+        if (this.cursorPosition < 0) {
+            this.cursorPosition = 0;
+        }
+
+        if (this.cursorPosition > j) {
+            this.cursorPosition = j;
+        }
+
+        this.setSelectionPos(this.cursorPosition);
+    }
+
+    private void setFocused(boolean flag) {
+        isFocused = flag;
     }
 }

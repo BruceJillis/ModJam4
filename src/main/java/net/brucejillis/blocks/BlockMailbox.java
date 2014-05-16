@@ -28,6 +28,7 @@ public class BlockMailbox extends BlockContainer {
     public BlockMailbox() {
         super(Material.wood);
         setBlockName("blockMailbox");
+        setBlockTextureName(MailboxMod.ID + ":" + getUnlocalizedName().substring(5));
         setStepSound(soundTypeWood);
         setHardness(0.8f);
     }
@@ -44,6 +45,7 @@ public class BlockMailbox extends BlockContainer {
         if (player.isSneaking()) {
             return false;
         }
+        // try to get the mailbox tileentity
         if (te == null) {
             // try to get base block entity
             te = world.getTileEntity(x, y - 1, z);
