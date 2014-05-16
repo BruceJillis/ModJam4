@@ -16,6 +16,7 @@ public class GuiMultiLineTextField {
     private int x;
     private int y;
     private int textColor;
+    private String text;
 
     public GuiMultiLineTextField(FontRenderer fontRendererObj, int x, int y, int width, int height) {
         this.fontRenderer = fontRendererObj;
@@ -26,10 +27,13 @@ public class GuiMultiLineTextField {
     }
 
     public void drawTextField() {
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         if (isEnabledBackgroundDrawing()) {
             drawRect(x - 1, y - 1, x + width + 1, y + height + 1, -6250336);
             drawRect(x, y, x + width, y + height, -16777216);
         }
+
+        fontRenderer.drawSplitString(text, x + 1, y + 1, width - 1, textColor);
     }
 
     /**
@@ -87,5 +91,9 @@ public class GuiMultiLineTextField {
 
     public int getTextColor() {
         return textColor;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 }
