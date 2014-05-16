@@ -1,5 +1,6 @@
 package net.brucejillis.containers.slots;
 
+import net.brucejillis.items.ItemLetter;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -11,7 +12,7 @@ public class MailboxSlot extends Slot {
 
     @Override
     public boolean isItemValid(ItemStack stack) {
-        return true;
+        return (stack.getItem() instanceof ItemLetter) && !ItemLetter.isBlank(stack);
     }
 
     @Override

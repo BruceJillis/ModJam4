@@ -16,10 +16,11 @@ import java.util.List;
 
 public class ItemLetter extends Item {
     private IIcon writtenIcon;
+    private IIcon unwrittenIcon;
 
     public ItemLetter() {
         setUnlocalizedName("itemLetter");
-        setTextureName(MailboxMod.ID + ":" + getUnlocalizedName().substring(5) + "_blank");
+        //setTextureName(MailboxMod.ID + ":" + getUnlocalizedName().substring(5) + "_blank");
         setCreativeTab(MailboxMod.mailboxTab);
         setMaxStackSize(16);
     }
@@ -50,43 +51,58 @@ public class ItemLetter extends Item {
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List par3List, boolean par4) {
         NBTTagCompound tag = getStackTagCompound(stack);
-        if (tag.hasKey("Sender"))
-            par3List.add(String.format("'%s' - %s ", tag.getString("Subject"), tag.getString("Sender")));
-        else
-            par3List.add("Unwritten");
+        if (tag.hasKey("Sender")) par3List.add(String.format("'%s' - %s ", tag.getString("Subject"), tag.getString("Sender")));
+        else par3List.add("Unwritten");
     }
 
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
         NBTTagCompound tag = getStackTagCompound(stack);
-        if (tag.hasKey("Sender"))
-            return ("" + StatCollector.translateToLocal("item.itemLetterWritten.name")).trim();
+        if (tag.hasKey("Sender")) return ("" + StatCollector.translateToLocal("item.itemLetterWritten.name")).trim();
         return ("" + StatCollector.translateToLocal(this.getUnlocalizedNameInefficiently(stack) + ".name")).trim();
     }
 
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIconIndex(ItemStack stack) {
+        NBTTagCompound tag = getStackTagCompound(stack);
+        if (tag.hasKey("Sender")) return writtenIcon;
+        return unwrittenIcon;
+    }
+
+    @Override
+    public IIcon getIcon(ItemStack stack, int pass) {
+        NBTTagCompound tag = getStackTagCompound(stack);
+        if (tag.hasKey("Sender")) return writtenIcon;
+        return unwrittenIcon;
+    }
 
     @Override
     public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
         NBTTagCompound tag = getStackTagCompound(stack);
-        if (tag.hasKey("Sender"))
-            return writtenIcon;
-        return itemIcon;
+        if (tag.hasKey("Sender")) return writtenIcon;
+        return unwrittenIcon;
     }
 
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister par1IconRegister) {
-        itemIcon = par1IconRegister.registerIcon(MailboxMod.ID + ":" + getUnlocalizedName().substring(5) + "_blank");
+        unwrittenIcon = par1IconRegister.registerIcon(MailboxMod.ID + ":" + getUnlocalizedName().substring(5) + "_blank");
         writtenIcon = par1IconRegister.registerIcon(MailboxMod.ID + ":" + getUnlocalizedName().substring(5) + "_written");
     }
 
-    private NBTTagCompound getStackTagCompound(ItemStack stack) {
-        if (stack.stackTagCompound == null)
-            stack.setTagCompound(new NBTTagCompound());
+    private static NBTTagCompound getStackTagCompound(ItemStack stack) {
+        if (stack.stackTagCompound == null) stack.setTagCompound(new NBTTagCompound());
         return stack.stackTagCompound;
     }
 
-    public boolean isBlank(ItemStack stack) {
+    public static boolean isBlank(ItemStack stack) {
         NBTTagCompound tag = getStackTagCompound(stack);
         return !tag.hasKey("Sender");
+    }
+
+    public int getItemStackLimit(ItemStack stack) {
+        if (isBlank(stack))
+            return maxStackSize;
+        return 1;
     }
 }
