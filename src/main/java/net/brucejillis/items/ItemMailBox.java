@@ -9,6 +9,9 @@ import net.minecraft.world.World;
 public class ItemMailBox extends Item {
     public ItemMailBox() {
         setCreativeTab(MailboxMod.mailboxTab);
+        setUnlocalizedName("itemMailbox");
+        setTextureName(MailboxMod.ID + ":" + getUnlocalizedName().substring(5));
+        setMaxStackSize(1);
     }
 
     @Override

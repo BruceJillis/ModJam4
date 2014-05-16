@@ -24,7 +24,7 @@ public class BlockMailbox extends BlockContainer {
         super(Material.wood);
         setBlockName("blockMailbox");
         setBlockTextureName(MailboxMod.ID + ":" + getUnlocalizedName().substring(5));
-        setCreativeTab(MailboxMod.mailboxTab);
+        //setCreativeTab(MailboxMod.mailboxTab);
         setStepSound(soundTypeWood);
         setHardness(0.8f);
     }

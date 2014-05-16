@@ -52,7 +52,7 @@ public class MailboxMod {
         mailboxTab = new CreativeTabs("mailboxTab") {
             @Override
             public Item getTabIconItem() {
-                return Item.getItemFromBlock(blockMailbox);
+                return itemMailbox;
             }
         };
         // register mailbox block and item (so we can place a multiblock like Item/BlockBed)
