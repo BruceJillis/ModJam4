@@ -7,8 +7,12 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import org.lwjgl.opengl.GL11;
 
+import java.util.Iterator;
+import java.util.List;
+
 @SideOnly(Side.CLIENT)
 public class GuiMultiLineTextField {
+    private static final int FONT_HEIGHT = 12;
     private boolean enableBackgroundDrawing = true;
     private FontRenderer fontRenderer;
     private int width;
@@ -33,7 +37,19 @@ public class GuiMultiLineTextField {
             drawRect(x, y, x + width, y + height, -16777216);
         }
 
-        fontRenderer.drawSplitString(text, x + 1, y + 1, width - 1, textColor);
+        fontRenderer.drawSplitString(getOnePageOfText(text, width, height), x + 1, y + 3, width - 1, textColor);
+    }
+
+    private String getOnePageOfText(String text, int width, int height) {
+        List list = fontRenderer.listFormattedStringToWidth(text, width);
+        int current = 0;
+        String page = "";
+        for (Iterator iterator = list.iterator(); iterator.hasNext(); current += this.FONT_HEIGHT) {
+            page += (String)iterator.next() + "\n";
+            if (current >= height)
+                break;
+        }
+        return page;
     }
 
     /**
