@@ -24,7 +24,7 @@ public class BlockMailbox extends BlockContainer {
     public BlockMailbox() {
         super(Material.wood);
         setBlockName("blockMailbox");
-        setBlockTextureName(MailboxMod.ID + ":" + getUnlocalizedName().substring(5));
+        //setBlockTextureName(MailboxMod.ID + ":" + getUnlocalizedName().substring(5));
         //setCreativeTab(MailboxMod.mailboxTab);
         setStepSound(soundTypeWood);
         setHardness(0.8f);
@@ -76,21 +76,38 @@ public class BlockMailbox extends BlockContainer {
     }
 
     @Override
-    public void onBlockHarvested(World p_149681_1_, int p_149681_2_, int p_149681_3_, int p_149681_4_, int p_149681_5_, EntityPlayer p_149681_6_) {
-        super.onBlockHarvested(p_149681_1_, p_149681_2_, p_149681_3_, p_149681_4_, p_149681_5_, p_149681_6_);    //To change body of overridden methods use File | Settings | File Templates.
+    public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
+        int metadata = world.getBlockMetadata(x, y, z);
+        if (isMailboxBase(metadata)) {
+
+        } else {
+
+        }
+    }
+
+    public static boolean isMailboxBase(int metadata) {
+        if (metadata == 1) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void onBlockHarvested(World world, int x, int y, int z, int metadata, EntityPlayer player) {
+        // erase extra block if the player harvest the primary (base)block
+        if (isMailboxBase(metadata)) {
+            if (world.getBlock(x, y, z) == this) {
+                world.setBlockToAir(x, y + 1, z);
+            }
+        }
     }
 
     @Override
     public void setBlockBoundsBasedOnState(IBlockAccess access, int x, int y, int z) {
-        switch (access.getBlockMetadata(x, y, z)) {
-            case 1:
-                setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
-                break;
-            case 2:
-                setBlockBounds(0.0f, -1.0f, 0.0f, 1.0f, 0.65f, 1.0f);
-                break;
-            default:
-                throw new RuntimeException("incorect mailbox metadata");
+        if (isMailboxBase(access.getBlockMetadata(x, y, z))) {
+            setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, 1.65f, 1.0f);
+        } else {
+            setBlockBounds(0.0f, -1.0f, 0.0f, 1.0f, 0.65f, 1.0f);
         }
     }
 

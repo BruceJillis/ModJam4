@@ -1,6 +1,7 @@
 package net.brucejillis.renderers;
 
 import net.brucejillis.MailboxMod;
+import net.brucejillis.blocks.BlockMailbox;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
@@ -23,7 +24,7 @@ public class RenderBlockMailbox extends TileEntitySpecialRenderer {
 
     @Override
     public void renderTileEntityAt(TileEntity entity, double x, double y, double z, float var8) {
-        if (entity.blockMetadata != 1)
+        if (!BlockMailbox.isMailboxBase(entity.blockMetadata))
             return;
         GL11.glPushMatrix();
         GL11.glTranslated(x, y, z);
