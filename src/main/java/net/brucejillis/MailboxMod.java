@@ -10,6 +10,7 @@ import net.brucejillis.blocks.BlockMailbox;
 import net.brucejillis.handlers.GuiHandler;
 import net.brucejillis.handlers.MailboxDeliveryScheduler;
 import net.brucejillis.items.ItemLetter;
+import net.brucejillis.items.ItemMailBox;
 import net.brucejillis.proxies.CommonProxy;
 import net.brucejillis.tileentities.TileEntityMailbox;
 import net.brucejillis.util.LogHelper;
@@ -42,6 +43,7 @@ public class MailboxMod {
 
     // items
     public static Item itemLetter;
+    public static Item itemMailbox;
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
@@ -53,7 +55,9 @@ public class MailboxMod {
                 return Item.getItemFromBlock(blockMailbox);
             }
         };
-        // register mailbox block
+        // register mailbox block and item (so we can place a multiblock like Item/BlockBed)
+        itemMailbox = new ItemMailBox();
+        GameRegistry.registerItem(itemMailbox, "itemMailbox");
         blockMailbox = new BlockMailbox();
         GameRegistry.registerBlock(blockMailbox, ItemBlock.class, "blockMailbox");
         GameRegistry.registerTileEntity(TileEntityMailbox.class, "tileEntityMailbox");
