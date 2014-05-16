@@ -7,6 +7,7 @@ mailbox.delivery=Next Delivery
 mailbox.short.duration=hrs.
 
 item.itemLetter.name=Blank Letter
+item.itemLetterWritten.name=Written Letter
 
 container.letter=Write Letter
 

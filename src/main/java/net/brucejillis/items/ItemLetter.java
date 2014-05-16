@@ -9,6 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -24,17 +25,39 @@ public class ItemLetter extends Item {
     }
 
     @Override
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+        NBTTagCompound tag = getStackTagCompound(stack);
+        if (!isBlank(stack) && player.isSneaking()) {
+            // erase letter
+            return new ItemStack(MailboxMod.itemLetter, 1, 0);
+        }
+        if (isBlank(stack) && !player.isSneaking()) {
+            player.openGui(MailboxMod.instance, MailboxMod.GUI_LETTER, world, (int) player.posX, (int) player.posY, (int) player.posZ);
+        }
+        return stack;
+    }
+
+    @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List par3List, boolean par4) {
         NBTTagCompound tag = getStackTagCompound(stack);
-        if (tag.hasKey("Sender")) par3List.add(String.format("'%s' - %s ", tag.getString("Subject"), tag.getString("Sender")));
-        else par3List.add("Unwritten");
+        if (tag.hasKey("Sender"))
+            par3List.add(String.format("'%s' - %s ", tag.getString("Subject"), tag.getString("Sender")));
+        else
+            par3List.add("Unwritten");
+    }
+
+    @Override
+    public String getItemStackDisplayName(ItemStack stack) {
+        NBTTagCompound tag = getStackTagCompound(stack);
+        if (tag.hasKey("Sender"))
+            return ("" + StatCollector.translateToLocal("item.itemLetterWritten.name")).trim();
+        return ("" + StatCollector.translateToLocal(this.getUnlocalizedNameInefficiently(stack) + ".name")).trim();
     }
 
     @Override
     public IIcon getIconIndex(ItemStack stack) {
         NBTTagCompound tag = getStackTagCompound(stack);
-        if (tag.hasKey("Sender"))
-            return writtenIcon;
+        if (tag.hasKey("Sender")) return writtenIcon;
         return itemIcon;
     }
 
@@ -47,12 +70,6 @@ public class ItemLetter extends Item {
     private NBTTagCompound getStackTagCompound(ItemStack stack) {
         if (stack.stackTagCompound == null) stack.setTagCompound(new NBTTagCompound());
         return stack.stackTagCompound;
-    }
-
-    @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-        player.openGui(MailboxMod.instance, MailboxMod.GUI_LETTER, world, (int) player.posX, (int) player.posY, (int) player.posZ);
-        return stack;
     }
 
     public boolean isBlank(ItemStack stack) {
