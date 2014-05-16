@@ -36,7 +36,6 @@ public class GuiLetter extends GuiScreen {
 
     public GuiLetter(EntityPlayer player, ItemLetter letter) {
         this.player = player;
-
     }
 
     public void initGui() {
@@ -55,6 +54,7 @@ public class GuiLetter extends GuiScreen {
         body = new GuiMultiLineTextField(this.fontRendererObj, guiLeft + 39, guiTop + 34, 131, 96);
         body.setTextColor(-1);
         body.setText("Write a letter...\n\nand this? does it split across lines? Yes it does.. so now \n\n we need to watch out for \n ... \n ... \n ... \n the end.");
+
     }
 
     public void onGuiClosed() {
@@ -65,7 +65,6 @@ public class GuiLetter extends GuiScreen {
     protected void keyTyped(char par1, int par2) {
         super.keyTyped(par1, par2);
         subject.textboxKeyTyped(par1, par2);
-
     }
 
     protected void mouseClicked(int x, int y, int button) {
