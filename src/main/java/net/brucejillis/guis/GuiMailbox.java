@@ -21,7 +21,7 @@ public class GuiMailbox extends GuiContainer {
         xSize = 195;
         ySize = 136;
         guiLeft = (int)((width - xSize) / 2.0f);
-        guiTop = (int)((width - xSize) / 2.0f);
+        guiTop = (int)((height - ySize) / 2.0f);
     }
 
     @Override
