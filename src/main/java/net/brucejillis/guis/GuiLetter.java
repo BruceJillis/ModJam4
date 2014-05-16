@@ -44,12 +44,8 @@ public class GuiLetter extends GuiScreen {
         guiLeft = (int) ((width - xSize) / 2.0f);
         guiTop = (int) ((height - ySize) / 2.0f);
         Keyboard.enableRepeatEvents(true);
-        // sender
-        sender = new GuiTextField(this.fontRendererObj, guiLeft + 39, guiTop + 20, 131, 12);
-        sender.setEnabled(false);
-        sender.setText(player.getDisplayName());
         // subject line
-        subject = new GuiTextField(this.fontRendererObj, guiLeft + 39, guiTop + 34, 131, 12);
+        subject = new GuiTextField(this.fontRendererObj, guiLeft + 39, guiTop + 17, 131, 12);
         subject.setTextColor(-1);
         subject.setMaxStringLength(45);
         subject.setText(DEFAULT_SUBJECT);
@@ -62,11 +58,7 @@ public class GuiLetter extends GuiScreen {
 
     protected void keyTyped(char par1, int par2) {
         super.keyTyped(par1, par2);
-        this.subject.textboxKeyTyped(par1, par2);
-    }
-
-    private boolean mouseInRect(int mouseX, int mouseY, int posX, int posY, int sizeX, int sizeY) {
-        return (mouseX >= posX) && (mouseX < (posX + sizeX)) && (mouseY >= posY) && (mouseY < (posY + sizeY));
+        subject.textboxKeyTyped(par1, par2);
     }
 
     protected void mouseClicked(int x, int y, int button) {
@@ -113,7 +105,8 @@ public class GuiLetter extends GuiScreen {
         mc.renderEngine.bindTexture(background);
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
         renderEntityWithYawAndPitch(guiLeft + 21, guiTop + 47, 16, (float)(guiLeft + 21) - mouseX, (float)(guiTop + 31) - mouseY, mc.thePlayer);
-        this.subject.drawTextBox();
+        // render textfields
+        subject.drawTextBox();
     }
 
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
@@ -122,7 +115,7 @@ public class GuiLetter extends GuiScreen {
         fontRendererObj.drawString(I18n.format("container.letter", new Object[0]), 8, 6, 0x00000);
     }
 
-    public static void renderEntityWithYawAndPitch(int x, int y, int scale, float yaw, float pitch, EntityLivingBase entity) {
+    private static void renderEntityWithYawAndPitch(int x, int y, int scale, float yaw, float pitch, EntityLivingBase entity) {
         GL11.glEnable(GL11.GL_COLOR_MATERIAL);
         GL11.glPushMatrix();
         GL11.glTranslatef((float) x, (float) y, 50.0F);
@@ -161,5 +154,9 @@ public class GuiLetter extends GuiScreen {
     @Override
     public boolean doesGuiPauseGame() {
         return false;
+    }
+
+    private boolean mouseInRect(int mouseX, int mouseY, int posX, int posY, int sizeX, int sizeY) {
+        return (mouseX >= posX) && (mouseX < (posX + sizeX)) && (mouseY >= posY) && (mouseY < (posY + sizeY));
     }
 }
