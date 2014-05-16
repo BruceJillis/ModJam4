@@ -38,6 +38,16 @@ public class ItemLetter extends Item {
     }
 
     @Override
+    public boolean requiresMultipleRenderPasses() {
+        return true;
+    }
+
+    @Override
+    public int getRenderPasses(int metadata) {
+        return 1;
+    }
+
+    @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List par3List, boolean par4) {
         NBTTagCompound tag = getStackTagCompound(stack);
         if (tag.hasKey("Sender"))
@@ -54,10 +64,12 @@ public class ItemLetter extends Item {
         return ("" + StatCollector.translateToLocal(this.getUnlocalizedNameInefficiently(stack) + ".name")).trim();
     }
 
+
     @Override
-    public IIcon getIconIndex(ItemStack stack) {
+    public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
         NBTTagCompound tag = getStackTagCompound(stack);
-        if (tag.hasKey("Sender")) return writtenIcon;
+        if (tag.hasKey("Sender"))
+            return writtenIcon;
         return itemIcon;
     }
 
@@ -68,7 +80,8 @@ public class ItemLetter extends Item {
     }
 
     private NBTTagCompound getStackTagCompound(ItemStack stack) {
-        if (stack.stackTagCompound == null) stack.setTagCompound(new NBTTagCompound());
+        if (stack.stackTagCompound == null)
+            stack.setTagCompound(new NBTTagCompound());
         return stack.stackTagCompound;
     }
 
