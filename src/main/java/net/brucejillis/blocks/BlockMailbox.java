@@ -56,7 +56,7 @@ public class BlockMailbox extends BlockContainer {
             }
         }
         if (te instanceof TileEntityMailbox) {
-            world.playSoundAtEntity(player, MailboxMod.ID + ":" + "mailboxOpen.");
+            world.playSoundAtEntity(player, MailboxMod.ID + ":" + "mailboxOpen", 1.0f, 1.0f);
             // open the mailbox's gui
             player.openGui(MailboxMod.instance, MailboxMod.GUI_MAILBOX, world, x, y, z);
         }
