@@ -13,6 +13,8 @@ import java.util.List;
 @SideOnly(Side.CLIENT)
 public class GuiMultiLineTextField {
     private static final int FONT_HEIGHT = 12;
+    private int lines;
+    private int line_height;
     private boolean enableBackgroundDrawing = true;
     private FontRenderer fontRenderer;
     private int width;
@@ -22,12 +24,14 @@ public class GuiMultiLineTextField {
     private int textColor;
     private String text;
 
-    public GuiMultiLineTextField(FontRenderer fontRendererObj, int x, int y, int width, int height) {
+    public GuiMultiLineTextField(FontRenderer fontRendererObj, int x, int y, int width, int line_height, int lines) {
         this.fontRenderer = fontRendererObj;
         this.x = x;
         this.y = y;
         this.width = width;
-        this.height = height;
+        this.line_height = line_height;
+        this.lines = lines;
+        this.height = line_height * lines;
     }
 
     public void drawTextField() {
@@ -36,7 +40,6 @@ public class GuiMultiLineTextField {
             drawRect(x - 1, y - 1, x + width + 1, y + height + 1, -6250336);
             drawRect(x, y, x + width, y + height, -16777216);
         }
-
         fontRenderer.drawSplitString(getOnePageOfText(text, width, height), x + 1, y + 3, width - 1, textColor);
     }
 

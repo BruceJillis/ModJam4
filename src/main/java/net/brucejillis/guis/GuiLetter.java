@@ -51,7 +51,7 @@ public class GuiLetter extends GuiScreen {
         subject.setMaxStringLength(45);
         subject.setText(DEFAULT_SUBJECT);
         // letter body
-        body = new GuiMultiLineTextField(this.fontRendererObj, guiLeft + 39, guiTop + 34, 131, 96);
+        body = new GuiMultiLineTextField(this.fontRendererObj, guiLeft + 39, guiTop + 34, 131, 12, 8);
         body.setTextColor(-1);
         body.setText("Write a letter...\n\nand this? does it split across lines? Yes it does.. so now \n\n we need to watch out for \n ... \n ... \n ... \n the end.");
 
@@ -69,6 +69,7 @@ public class GuiLetter extends GuiScreen {
 
     protected void mouseClicked(int x, int y, int button) {
         super.mouseClicked(x, y, button);
+        // subject line
         if (mouseInRect(x, y, guiLeft + 39, guiTop + 18, 131, 12)) {
             if (!subject.isFocused() && subject.getText().equals(DEFAULT_SUBJECT)) {
                 subject.setText("");
@@ -79,6 +80,10 @@ public class GuiLetter extends GuiScreen {
             }
         }
         subject.mouseClicked(x, y, button);
+        // body field
+        if (mouseInRect(x, y, guiLeft + 39, guiTop + 18, 131, 12)) {
+
+        }
     }
 
     public void drawScreen(int mouseX, int mouseY, float partial) {

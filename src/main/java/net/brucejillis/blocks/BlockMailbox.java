@@ -41,10 +41,21 @@ public class BlockMailbox extends BlockContainer {
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_) {
         TileEntity te = world.getTileEntity(x, y, z);
-        if (te == null || player.isSneaking()) {
+        if (player.isSneaking()) {
             return false;
         }
-        player.openGui(MailboxMod.instance, MailboxMod.GUI_MAILBOX, world, x, y, z);
+        if (te == null) {
+            // try to get base block entity
+            te = world.getTileEntity(x, y - 1, z);
+            if (te == null) {
+                // something is wrong
+                return false;
+            }
+        }
+        if (te instanceof TileEntityMailbox) {
+            // open the mailbox's gui
+            player.openGui(MailboxMod.instance, MailboxMod.GUI_MAILBOX, world, x, y, z);
+        }
         return true;
     }
 
