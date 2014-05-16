@@ -65,6 +65,7 @@ public class GuiLetter extends GuiScreen {
     protected void keyTyped(char par1, int par2) {
         super.keyTyped(par1, par2);
         subject.textboxKeyTyped(par1, par2);
+
     }
 
     protected void mouseClicked(int x, int y, int button) {
