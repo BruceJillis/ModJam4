@@ -20,15 +20,17 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 public class GuiLetter extends GuiScreen {
+    private ResourceLocation background = new ResourceLocation(MailboxMod.ID, "/textures/gui/letter.png");
+    private String DEFAULT_SUBJECT = "Subject..";
+
     private int xSize;
     private int ySize;
     private int guiLeft;
     private int guiTop;
-
-    private ResourceLocation background = new ResourceLocation(MailboxMod.ID, "/textures/gui/letter.png");
     private EntityPlayer player;
+
     private GuiTextField subject;
-    private String DEFAULT_SUBJECT = "Subject..";
+    private GuiTextField sender;
 
     public GuiLetter(EntityPlayer player, ItemLetter letter) {
         this.player = player;
@@ -42,6 +44,11 @@ public class GuiLetter extends GuiScreen {
         guiLeft = (int) ((width - xSize) / 2.0f);
         guiTop = (int) ((height - ySize) / 2.0f);
         Keyboard.enableRepeatEvents(true);
+        // sender
+        sender = new GuiTextField(this.fontRendererObj, guiLeft + 39, guiTop + 20, 131, 12);
+        sender.setEnabled(false);
+        sender.setText(player.getDisplayName());
+        // subject line
         subject = new GuiTextField(this.fontRendererObj, guiLeft + 39, guiTop + 34, 131, 12);
         subject.setTextColor(-1);
         subject.setMaxStringLength(45);
@@ -58,12 +65,22 @@ public class GuiLetter extends GuiScreen {
         this.subject.textboxKeyTyped(par1, par2);
     }
 
-    protected void mouseClicked(int par1, int par2, int par3) {
-        super.mouseClicked(par1, par2, par3);
-        if (!subject.isFocused() && subject.getText().equals(DEFAULT_SUBJECT)) {
-            subject.setText("");
+    private boolean mouseInRect(int mouseX, int mouseY, int posX, int posY, int sizeX, int sizeY) {
+        return (mouseX >= posX) && (mouseX < (posX + sizeX)) && (mouseY >= posY) && (mouseY < (posY + sizeY));
+    }
+
+    protected void mouseClicked(int x, int y, int button) {
+        super.mouseClicked(x, y, button);
+        if (mouseInRect(x, y, guiLeft + 39, guiTop + 34, 131, 12)) {
+            if (!subject.isFocused() && subject.getText().equals(DEFAULT_SUBJECT)) {
+                subject.setText("");
+            }
+        } else {
+            if (subject.isFocused() && subject.getText().equals("")) {
+                subject.setText(DEFAULT_SUBJECT);
+            }
         }
-        subject.mouseClicked(par1, par2, par3);
+        subject.mouseClicked(x, y, button);
     }
 
     public void drawScreen(int mouseX, int mouseY, float partial) {
@@ -78,7 +95,7 @@ public class GuiLetter extends GuiScreen {
         RenderHelper.enableGUIStandardItemLighting();
         GL11.glPushMatrix();
 
-        GL11.glTranslatef((float)guiLeft, (float)guiTop, 0.0F);
+        GL11.glTranslatef((float) guiLeft, (float) guiTop, 0.0F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         GL11.glDisable(GL11.GL_LIGHTING);
