@@ -17,6 +17,7 @@ import java.util.List;
 public class GuiMultiLineTextField {
     private static final int FONT_HEIGHT = 12;
     private final int charWidth;
+    private final int charsPerLine;
 
     private int scrollOffset = 0; // nr of lines of scroll offset
     private int lines;
@@ -47,6 +48,7 @@ public class GuiMultiLineTextField {
         this.x = x;
         this.y = y;
         this.width = width;
+        this.charsPerLine = (int)Math.round((float)width / (float)fontRenderer.getCharWidth('_'));
         this.line_height = line_height;
         this.lines = lines;
         this.height = line_height * lines;
@@ -240,12 +242,8 @@ public class GuiMultiLineTextField {
     }
 
     public void setCursorPositionEnd() {
-        cursorX = (int) Math.floor(text.length() / charsPerLine());
+        cursorX = (int) Math.floor(text.length() / charsPerLine);
         cursorY = text.length() % lines;
-    }
-
-    private int charsPerLine() {
-        return width / fontRenderer.getCharWidth('_');
     }
 
     private void writeText(String s) {
@@ -255,13 +253,21 @@ public class GuiMultiLineTextField {
 
     private void moveCursorBy(int i) {
         cursorX += i;
-        if (cursorX < 4) {
+        if (cursorX < 0) {
             cursorY -= 1;
-            cursorX = (width / charWidth) + cursorX;
+            if (cursorY < 0) {
+                cursorY = 0;
+            } else {
+                cursorX = charsPerLine;
+            }
         }
-        if ((cursorX * charWidth) >= (width - 4)) {
+        if (cursorX > charsPerLine) {
             cursorY += 1;
-            cursorX = cursorX - (cursorX * charWidth);
+            if (cursorY > lines) {
+                cursorY = lines;
+            } else {
+                cursorX = 0;
+            }
         }
     }
 
