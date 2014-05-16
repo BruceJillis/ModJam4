@@ -41,8 +41,11 @@ public class GuiHandler implements IGuiHandler {
                 }
                 break;
             case MailboxMod.GUI_LETTER:
-                if (player.inventory.getCurrentItem().getItem() instanceof ItemLetter)
-                    return new GuiLetter(player, player.inventory.getCurrentItem());
+                if (player.inventory.getCurrentItem().getItem() instanceof ItemLetter) {
+                    ItemLetter letter = (ItemLetter) player.inventory.getCurrentItem().getItem();
+                    if (letter.isBlank(player.inventory.getCurrentItem()))
+                        return new GuiLetter(player, player.inventory.getCurrentItem());
+                }
         }
         return null;
     }

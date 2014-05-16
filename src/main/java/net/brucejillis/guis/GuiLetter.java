@@ -76,7 +76,9 @@ public class GuiLetter extends GuiScreen {
     protected void actionPerformed(GuiButton guibutton) {
         switch(guibutton.id) {
             case BUTTON_SIGN:
-                //letter.stackTagCompound
+                letter.stackTagCompound.setString("Sender", player.getDisplayName());
+                letter.stackTagCompound.setString("Subject", subject.getText());
+                letter.stackTagCompound.setString("Body", subject2.getText());
                 break;
         }
     }
