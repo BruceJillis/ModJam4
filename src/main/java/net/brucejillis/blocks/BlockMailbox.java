@@ -81,6 +81,7 @@ public class BlockMailbox extends BlockContainer {
 
     @Override
     public void onBlockHarvested(World world, int x, int y, int z, int metadata, EntityPlayer player) {
+
         // erase extra block if the player harvest the primary (base)block
         if (isMailboxBase(metadata)) {
             if (world.getBlock(x, y, z) == this) {
