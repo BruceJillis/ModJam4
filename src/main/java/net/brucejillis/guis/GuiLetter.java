@@ -17,6 +17,7 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
@@ -84,6 +85,7 @@ public class GuiLetter extends GuiScreen {
                 tag.setString("Body", subject2.getText());
                 player.inventory.addItemStackToInventory(letter);
                 player.inventory.consumeInventoryItem(player.inventory.getCurrentItem().getItem());
+                player.inventoryContainer.detectAndSendChanges();
                 //player.inventory.markDirty();
                 player.closeScreen();
                 break;
