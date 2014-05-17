@@ -8,6 +8,7 @@ mailbox.short.duration=hrs.
 
 item.itemUnwrittenLetter.name=Unwritten Letter
 item.itemWrittenLetter.name=Written Letter
+item.itemMailbox.name=Mailbox
 
 container.letter=Write Letter
 
