@@ -75,15 +75,6 @@ public class BlockMailbox extends BlockContainer {
                 stack.stackSize = 0;
             }
         }
-        // drop ourselves as item
-        float rx = rand.nextFloat() * 0.8F + 0.1F;
-        float ry = rand.nextFloat() * 0.8F + 0.1F;
-        float rz = rand.nextFloat() * 0.8F + 0.1F;
-        EntityItem entityItem = new EntityItem(world, x + rx, y + ry, z + rz, new ItemStack(MailboxMod.itemMailbox, 1, 0));
-        entityItem.motionX = rand.nextGaussian() * factor;
-        entityItem.motionY = rand.nextGaussian() * factor + 0.2F;
-        entityItem.motionZ = rand.nextGaussian() * factor;
-        world.spawnEntityInWorld(entityItem);
         super.breakBlock(world, x, y, z, block, metadata);
     }
 
