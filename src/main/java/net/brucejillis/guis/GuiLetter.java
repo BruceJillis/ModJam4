@@ -8,6 +8,7 @@ import net.brucejillis.handlers.packets.PacketChangeInventory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -33,6 +34,7 @@ public class GuiLetter extends GuiContainer {
 
     private int currPage = 0;
     private int totalPages = 1;
+    private GuiTextField to;
 
     public GuiLetter(EntityPlayer player, ItemStack stack) {
         super(new ContainerLetter(player.inventory, stack));
@@ -50,6 +52,10 @@ public class GuiLetter extends GuiContainer {
         guiLeft = (int) ((width - xSize) / 2.0f);
         guiTop = (int) ((height - ySize) / 2.0f);
         Keyboard.enableRepeatEvents(true);
+        // to field
+        to = new GuiTextField(fontRendererObj, guiLeft + 36, guiTop + 9, 130, 12);
+        to.setTextColor(-1);
+        to.setEnableBackgroundDrawing(true);
         // add buttons
         buttonList.clear();
         buttonList.add(new GuiButton(BUTTON_SIGN, guiLeft + 138, guiTop + 150, 32, 20, "Sign"));
@@ -104,7 +110,14 @@ public class GuiLetter extends GuiContainer {
         if (par2 == 1) {
             player.closeScreen();
         }
-        keyTypedInLetter(par1, par2);
+        if (!to.isFocused())
+            keyTypedInLetter(par1, par2);
+        to.textboxKeyTyped(par1, par2);
+    }
+
+    protected void mouseClicked(int par1, int par2, int par3) {
+        super.mouseClicked(par1, par2, par3);
+        to.mouseClicked(par1, par2, par3);
     }
 
     private void keyTypedInLetter(char c, int ext) {
@@ -157,16 +170,21 @@ public class GuiLetter extends GuiContainer {
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         mc.renderEngine.bindTexture(background);
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+        // to field
+        to.drawTextBox();
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int p_146979_1_, int p_146979_2_) {
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+        // letter
         String text = "";
         if (pages != null && currPage >= 0 && currPage < pages.tagCount()) {
             text = pages.getStringTagAt(currPage);
         }
         text = text + "" + EnumChatFormatting.BLACK + "_";
-        this.fontRendererObj.drawSplitString(text, 42, 18, 118, 0);
+        fontRendererObj.drawSplitString(text, 42, 28, 120, 0);
+        // to field label
+        fontRendererObj.drawString("To:", 7, 9, 0x000000);
     }
 
     @SideOnly(Side.CLIENT)
