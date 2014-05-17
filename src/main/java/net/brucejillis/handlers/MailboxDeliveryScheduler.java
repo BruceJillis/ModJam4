@@ -24,6 +24,8 @@ public class MailboxDeliveryScheduler {
             return;
         if (event.side != Side.SERVER)
             return;
+        if (event.phase != TickEvent.Phase.START)
+            return;
         MailboxDeliveryData data = MailboxDeliveryData.forWorld(mc.theWorld);
         data.tick();
     }
