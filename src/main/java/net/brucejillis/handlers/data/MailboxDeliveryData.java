@@ -9,6 +9,9 @@ import net.minecraft.world.WorldSavedData;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraftforge.common.util.Constants;
 
+import java.util.HashMap;
+import java.util.Map;
+
 // constants in this class are based on the vanilla day/night cycle: http://minecraft.gamepedia.com/Day-night_cycle
 public class MailboxDeliveryData extends WorldSavedData {
     private static final String KEY = "mailboxdelivery";
@@ -33,6 +36,9 @@ public class MailboxDeliveryData extends WorldSavedData {
         int hour = timeToHours(getDayTime(world));
         if (hour != prev) {
             LogHelper.log("hour: %d", hour);
+            LogHelper.log("hourly delivery!", hour);
+            doDelivery();
+
             prev = hour;
         }
         if ((hour == 2) && (state == MORNING)) {
@@ -56,6 +62,22 @@ public class MailboxDeliveryData extends WorldSavedData {
     }
 
     private void doDelivery() {
+        // loop over all mailboxes and deliver letters
+        NBTTagList boxes = instance.boxes;
+        if (boxes == null)
+            return;
+        Map<String, TileEntityMailbox> boxMap = new HashMap<String, TileEntityMailbox>();
+        for(int i = 0; i <= boxes.tagCount(); i++) {
+            NBTTagCompound tag = boxes.getCompoundTagAt(i);
+            boxMap.put(tag.getString("name"), (TileEntityMailbox)world.getTileEntity(tag.getInteger("x"), tag.getInteger("y"), tag.getInteger("z")));
+        }
+        for(int i = 0; i <= boxes.tagCount(); i++) {
+            NBTTagCompound tag = boxes.getCompoundTagAt(i);
+            TileEntityMailbox entity = boxMap.get(tag.getString("name"));
+            if (entity != null) {
+                LogHelper.log(String.valueOf(entity.getStackInSlot(0)));
+            }
+        }
     }
 
     public static int hoursUntilDelivery(World world) {

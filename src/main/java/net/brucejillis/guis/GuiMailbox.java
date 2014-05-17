@@ -18,7 +18,7 @@ public class GuiMailbox extends GuiContainer {
     private int ySize = 0;
 
     public GuiMailbox(EntityPlayer player, TileEntityMailbox entity) {
-        super(new ContainerMailbox(player.inventory, entity, false));
+        super(new ContainerMailbox(player.inventory, entity, true));
         this.entity = entity;
         xSize = 195;
         ySize = 136;
