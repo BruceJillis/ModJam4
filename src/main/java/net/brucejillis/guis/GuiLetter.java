@@ -101,6 +101,7 @@ public class GuiLetter extends GuiContainer {
             case BUTTON_SIGN:
                 NBTTagCompound tag = new NBTTagCompound();
                 tag.setTag("Pages", pages);
+                tag.setString("To", to.getText());
                 MailboxMod.channel.sendToServer(PacketManager.createWriteLetterPacket(player, tag));
                 player.closeScreen();
                 break;

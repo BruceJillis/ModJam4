@@ -38,18 +38,18 @@ public class PacketManager {
     public static void processPacketOnServerSide(World world, EntityPlayer player, ByteBuf payload) throws IOException {
         ByteBufInputStream stream = new ByteBufInputStream(payload);
         switch (stream.readByte()) {
-            case PACKET_WRITE_LETTER: {
+            case PACKET_WRITE_LETTER:
                 NBTTagCompound pages = ByteBufUtils.readTag(payload);
                 // handle packet for real
                 player.inventory.consumeInventoryItem(player.inventory.getCurrentItem().getItem());
                 ItemStack letter = new ItemStack(MailboxMod.itemWrittenLetter, 1, 0);
                 NBTTagCompound tag = ItemWrittenLetter.ensureTagCompound(letter);
                 tag.setString("Sender", player.getDisplayName());
+                tag.setString("To", pages.getString("To"));
                 tag.setTag("Pages", pages.getTagList("Pages", Constants.NBT.TAG_STRING));
                 player.inventory.addItemStackToInventory(letter);
                 player.inventory.markDirty();
                 break;
-            }
             case PACKET_NAME_MAILBOX:
                 int x = stream.readInt();
                 int y = stream.readInt();
@@ -64,6 +64,7 @@ public class PacketManager {
                     // todo: name was taken
                 }
                 world.markBlockForUpdate(x, y, z);
+                break;
         }
         stream.close();
     }

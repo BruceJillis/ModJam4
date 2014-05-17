@@ -15,7 +15,7 @@ public class ContainerLetter extends Container {
     public ContainerLetter(InventoryPlayer inventoryPlayer, IInventory inventory, ItemStack item) {
         super();
         this.inventory = inventory;
-        //bind attachment slots
+        // bind attachment slots
         for (int i = 0; i < 4; i++) {
             addSlotToContainer(new AttachmentSlot(inventory, i, 9, 28 + (i * 18)));
         }
