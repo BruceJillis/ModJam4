@@ -1,5 +1,6 @@
 package net.brucejillis.handlers.data;
 
+import net.brucejillis.items.ItemWrittenLetter;
 import net.brucejillis.tileentities.TileEntityMailbox;
 import net.brucejillis.util.LogHelper;
 import net.minecraft.nbt.NBTTagCompound;
@@ -75,7 +76,18 @@ public class MailboxDeliveryData extends WorldSavedData {
             NBTTagCompound tag = boxes.getCompoundTagAt(i);
             TileEntityMailbox entity = boxMap.get(tag.getString("name"));
             if (entity != null) {
-                LogHelper.log(String.valueOf(entity.getStackInSlot(0)));
+                for(int j = 0; j < entity.getSizeInventory(); j++) {
+                    LogHelper.log(String.valueOf(entity.getStackInSlot(j)));
+                    if ((entity.getStackInSlot(j) != null) && (entity.getStackInSlot(j).getItem() instanceof ItemWrittenLetter)) {
+                        NBTTagCompound stack = ItemWrittenLetter.ensureTagCompound(entity.getStackInSlot(j));
+                        TileEntityMailbox toEntity = boxMap.get(stack.getString("To"));
+                        if (toEntity != null) {
+                            if (toEntity.hasInventorySpace(entity.getStackInSlot(j))) {
+
+                            }
+                        }
+                    }
+                }
             }
         }
     }
