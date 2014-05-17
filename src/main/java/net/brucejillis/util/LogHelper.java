@@ -11,4 +11,8 @@ public class LogHelper {
     public static void log(String message, Object ... args) {
         logger.log(Level.INFO, String.format(message, args));
     }
+
+    public static void error(String message, Object ... args) {
+        logger.log(Level.SEVERE, "Error: " + String.format(message, args));
+    }
 }

@@ -4,6 +4,7 @@ import net.brucejillis.MailboxMod;
 import net.brucejillis.containers.ContainerLetter;
 import net.brucejillis.containers.ContainerMailbox;
 import net.brucejillis.guis.widgets.GuiMultiLineTextField;
+import net.brucejillis.handlers.packets.PacketChangeInventory;
 import net.brucejillis.items.ItemLetter;
 import net.brucejillis.items.ItemWrittenLetter;
 import net.brucejillis.util.LogHelper;
@@ -63,13 +64,7 @@ public class GuiLetter extends GuiContainer {
     protected void actionPerformed(GuiButton guibutton) {
         switch(guibutton.id) {
             case BUTTON_SIGN:
-                NBTTagCompound tag = ItemWrittenLetter.ensureTagCompound(letter);
-                tag.setString("Sender", player.getDisplayName());
-                tag.setString("Subject", subject.getText());
-                player.inventory.addItemStackToInventory(letter);
-                player.inventory.consumeInventoryItem(player.inventory.getCurrentItem().getItem());
-                player.inventory.markDirty();
-                MailboxMod.channel.sendToServer(Packet);
+                MailboxMod.channel.sendToServer(PacketChangeInventory.createWriteLetterPacket(player, player.getDisplayName(), subject.getText()));
                 //inventorySlots.detectAndSendChanges();
                 player.closeScreen();
                 break;

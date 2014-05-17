@@ -27,7 +27,12 @@ public class MailboxMod {
     // internal name and version
     public static final String ID = "mailboxmod";
     public static final String VERSION = "0.1";
-    private static final String CHANNEL = "mailchannel";
+    public static final String CHANNEL = "mailchannel";
+
+    // net
+    public static FMLEventChannel channel;
+
+    // instance
     @Mod.Instance(MailboxMod.ID)
     public static MailboxMod instance;
 
@@ -39,8 +44,6 @@ public class MailboxMod {
     @SidedProxy(serverSide = "net.brucejillis.proxies.CommonProxy", clientSide = "net.brucejillis.proxies.ClientProxy")
     public static CommonProxy proxy;
 
-    // net
-    public static FMLEventChannel channel;
 
     // tab where all the items and blocks are placed
     public static CreativeTabs mailboxTab;
