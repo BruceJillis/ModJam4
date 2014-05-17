@@ -5,6 +5,7 @@ import net.brucejillis.containers.ContainerLetter;
 import net.brucejillis.containers.ContainerMailbox;
 import net.brucejillis.guis.widgets.GuiMultiLineTextField;
 import net.brucejillis.items.ItemLetter;
+import net.brucejillis.items.ItemWrittenLetter;
 import net.brucejillis.util.LogHelper;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -17,6 +18,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -41,9 +43,9 @@ public class GuiLetter extends GuiScreen {
     private GuiTextField subject2;
     private GuiMultiLineTextField body;
 
-    public GuiLetter(EntityPlayer player, ItemStack letter) {
+    public GuiLetter(EntityPlayer player) {
         this.player = player;
-        this.letter = letter;
+        this.letter = new ItemStack(MailboxMod.itemWrittenLetter, 1, 0);
     }
 
     public void initGui() {
@@ -76,12 +78,12 @@ public class GuiLetter extends GuiScreen {
     protected void actionPerformed(GuiButton guibutton) {
         switch(guibutton.id) {
             case BUTTON_SIGN:
-                letter.stackTagCompound.setString("Sender", player.getDisplayName());
-                letter.stackTagCompound.setString("Subject", subject.getText());
-                letter.stackTagCompound.setString("Body", subject2.getText());
-                //
-
-                //player.setItemInUse();
+                NBTTagCompound tag = ItemWrittenLetter.ensureTagCompound(letter);
+                tag.setString("Sender", player.getDisplayName());
+                tag.setString("Subject", subject.getText());
+                tag.setString("Body", subject2.getText());
+                player.inventory.addItemStackToInventory(letter);
+                player.inventory.getCurrentItem().stackSize--;
                 player.closeScreen();
                 break;
         }
