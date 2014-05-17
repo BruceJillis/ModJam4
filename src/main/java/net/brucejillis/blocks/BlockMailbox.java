@@ -1,8 +1,11 @@
 package net.brucejillis.blocks;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.brucejillis.MailboxMod;
+import net.brucejillis.events.MailBoxPlacedEvent;
+import net.brucejillis.events.MailBoxRemovedEvent;
 import net.brucejillis.tileentities.TileEntityMailbox;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -97,6 +100,10 @@ public class BlockMailbox extends BlockContainer {
                 world.setBlockToAir(x, y - 1, z);
             }
         }
+        // remove mailbox address
+        TileEntityMailbox te = (TileEntityMailbox)world.getTileEntity(x, y, z);
+        te = te.getPrimaryEntity(world);
+        FMLCommonHandler.instance().bus().post(new MailBoxRemovedEvent(te.getName()));
     }
 
     public static boolean isMailboxBase(int metadata) {

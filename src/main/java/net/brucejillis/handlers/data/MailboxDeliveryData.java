@@ -78,15 +78,15 @@ public class MailboxDeliveryData extends WorldSavedData {
     }
 
     public static MailboxDeliveryData forWorld(World world) {
-        if (instance != null)
-            return instance;
+        if (MailboxDeliveryData.instance != null)
+            return MailboxDeliveryData.instance;
         MapStorage storage = world.perWorldStorage;
         MailboxDeliveryData result = (MailboxDeliveryData)storage.loadData(MailboxDeliveryData.class, KEY);
         if (result == null) {
             result = new MailboxDeliveryData(KEY, world);
             storage.setData(KEY, result);
         }
-        instance = result;
+        MailboxDeliveryData.instance = result;
         return result;
     }
 
@@ -118,5 +118,16 @@ public class MailboxDeliveryData extends WorldSavedData {
         }
         boxes.appendTag(tag);
         saveAllData();
+    }
+
+    public void unregisterMailbox(String name) {
+        if (boxes == null)
+            return;
+        for(int i = 0; i <= boxes.tagCount(); i++) {
+            if (boxes.getCompoundTagAt(i).getString("name").equals("name")) {
+                boxes.removeTag(i);
+                return;
+            }
+        }
     }
 }
