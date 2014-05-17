@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 public class ContainerLetter extends Container {
     public ContainerLetter(InventoryPlayer inventory, ItemStack item) {
         super();
-        bindPlayerInventory(inventory, 9, 129, 9, 187);
+        bindPlayerInventory(inventory, 9, 159, 9, 218);
     }
 
     private void bindPlayerInventory(InventoryPlayer inventory, int xOffInv, int yOffInv, int xOffHotbar, int yOffHotbar) {

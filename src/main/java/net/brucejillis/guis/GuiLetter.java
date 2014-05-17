@@ -25,16 +25,12 @@ public class GuiLetter extends GuiContainer {
     public void initGui() {
         super.initGui();
         xSize = 178;
-        ySize = 229;
+        ySize = 242;
         guiLeft = (int) ((width - xSize) / 2.0f);
         guiTop = (int) ((height - ySize) / 2.0f);
         Keyboard.enableRepeatEvents(true);
-        // subject line
-        subject = new GuiTextField(this.fontRendererObj, guiLeft + 39, guiTop + 18, 131, 12);
-        subject.setTextColor(-1);
-        subject.setMaxStringLength(45);
         // add buttons
-        buttonList.add(new GuiButton(BUTTON_SIGN, guiLeft + 138, guiTop + 122, 32, 20, "Sign"));
+        buttonList.add(new GuiButton(BUTTON_SIGN, guiLeft + 138, guiTop + 138, 32, 20, "Sign"));
     }
 
     public void onGuiClosed() {
@@ -45,7 +41,7 @@ public class GuiLetter extends GuiContainer {
     protected void actionPerformed(GuiButton guibutton) {
         switch(guibutton.id) {
             case BUTTON_SIGN:
-                MailboxMod.channel.sendToServer(PacketChangeInventory.createWriteLetterPacket(player, subject.getText()));
+                MailboxMod.channel.sendToServer(PacketChangeInventory.createWriteLetterPacket(player, "etxt"));
                 player.closeScreen();
                 break;
         }
@@ -56,7 +52,5 @@ public class GuiLetter extends GuiContainer {
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         mc.renderEngine.bindTexture(background);
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
-        // render textfields
-        subject.drawTextBox();
     }
 }
