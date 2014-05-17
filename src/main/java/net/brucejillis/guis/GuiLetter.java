@@ -2,31 +2,14 @@ package net.brucejillis.guis;
 
 import net.brucejillis.MailboxMod;
 import net.brucejillis.containers.ContainerLetter;
-import net.brucejillis.containers.ContainerMailbox;
-import net.brucejillis.guis.widgets.GuiMultiLineTextField;
 import net.brucejillis.handlers.packets.PacketChangeInventory;
-import net.brucejillis.items.ItemLetter;
-import net.brucejillis.items.ItemWrittenLetter;
-import net.brucejillis.util.LogHelper;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.Container;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
 public class GuiLetter extends GuiContainer {
     private static final int BUTTON_SIGN = 1;

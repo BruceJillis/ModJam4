@@ -111,7 +111,7 @@ public class TileEntityMailbox extends TileEntity implements IInventory {
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
-        // read inv from nbt
+        // read inventory from nbt
         NBTTagList tags = tag.getTagList("inventory", tag.getId());
         for(int i = 0; i < tags.tagCount(); i++) {
             NBTTagCompound compound = tags.getCompoundTagAt(i);
