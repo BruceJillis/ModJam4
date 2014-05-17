@@ -3,6 +3,7 @@ package net.brucejillis.handlers;
 import cpw.mods.fml.common.network.IGuiHandler;
 import net.brucejillis.MailboxMod;
 import net.brucejillis.containers.ContainerMailbox;
+import net.brucejillis.containers.ContainerUnwrittenLetter;
 import net.brucejillis.guis.GuiLetter;
 import net.brucejillis.guis.GuiMailbox;
 import net.brucejillis.items.ItemLetter;
@@ -20,13 +21,18 @@ public class GuiHandler implements IGuiHandler {
         // play nice with disabling the ui via F1
         if (!Minecraft.isGuiEnabled())
             return null;
-        TileEntity entity = world.getTileEntity(x, y, z);
-        if (entity instanceof TileEntityMailbox) {
-            TileEntityMailbox te = (TileEntityMailbox)entity;
-            return new ContainerMailbox(player.inventory, te.getPrimaryEntity(world));
-        }
-        if (ID == MailboxMod.GUI_LETTER) {
-            return new ContainerUnwrittenLetter(player.inventory, );
+        switch (ID) {
+            case MailboxMod.GUI_MAILBOX:
+                TileEntity entity = world.getTileEntity(x, y, z);
+                if ((entity != null) && (entity instanceof TileEntityMailbox)) {
+                    TileEntityMailbox te = (TileEntityMailbox)entity;
+                    return new ContainerMailbox(player.inventory, te.getPrimaryEntity(world));
+                }
+                break;
+            case MailboxMod.GUI_LETTER:
+                if (player.inventory.getCurrentItem().getItem() instanceof ItemUnwrittenLetter) {
+                    return new ContainerUnwrittenLetter(player);
+                }
         }
         return null;
     }
