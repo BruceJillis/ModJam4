@@ -1,10 +1,13 @@
 package net.brucejillis.handlers.data;
 
+import net.brucejillis.tileentities.TileEntityMailbox;
 import net.brucejillis.util.LogHelper;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 import net.minecraft.world.storage.MapStorage;
+import net.minecraftforge.common.util.Constants;
 
 // constants in this class are based on the vanilla day/night cycle: http://minecraft.gamepedia.com/Day-night_cycle
 public class MailboxDeliveryData extends WorldSavedData {
@@ -14,12 +17,17 @@ public class MailboxDeliveryData extends WorldSavedData {
     private static final String AFTERNOON = "afternoon";
 
     private World world;
-    private String state = MORNING;
     private int prev = -1;
+    private String state = MORNING;
+
+    private NBTTagList boxes;
 
     public MailboxDeliveryData(String name, World world) {
         super(name);
         this.world = world;
+        if (boxes == null) {
+            boxes = new NBTTagList();
+        }
     }
 
     public void tick() {
@@ -87,10 +95,23 @@ public class MailboxDeliveryData extends WorldSavedData {
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         state = tag.getString("state");
+        boxes = tag.getTagList("boxes", Constants.NBT.TAG_COMPOUND);
     }
 
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         tag.setString("state", state);
+        tag.setTag("boxes", boxes);
+    }
+
+    public void registerMailbox(int x, int y, int z) {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setInteger("x", x);
+        tag.setInteger("y", y);
+        tag.setInteger("z", z);
+        TileEntityMailbox te = (TileEntityMailbox)world.getTileEntity(x, y, z);
+        tag.setString("name", te.getName());
+        boxes.appendTag(tag);
+        saveAllData();
     }
 }

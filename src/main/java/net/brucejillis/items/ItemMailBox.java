@@ -2,6 +2,7 @@ package net.brucejillis.items;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import net.brucejillis.MailboxMod;
+import net.brucejillis.events.MailBoxPlacedEvent;
 import net.brucejillis.tileentities.TileEntityMailbox;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -32,8 +33,8 @@ public class ItemMailBox extends Item {
                 te.setBasePosition(x, y + 1, z);
                 // use the item
                 --stack.stackSize;
-                //
-                FMLCommonHandler.instance().bus().post(new MailBoxPlacedEvent())
+                // publish mailbox to scheduler
+                FMLCommonHandler.instance().bus().post(new MailBoxPlacedEvent(x, y + 1, z));
                 return true;
             }
         }
