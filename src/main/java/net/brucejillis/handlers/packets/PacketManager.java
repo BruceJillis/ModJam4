@@ -1,5 +1,6 @@
 package net.brucejillis.handlers.packets;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import cpw.mods.fml.relauncher.Side;
@@ -8,6 +9,7 @@ import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.Unpooled;
 import net.brucejillis.MailboxMod;
+import net.brucejillis.events.MailBoxPlacedEvent;
 import net.brucejillis.items.ItemWrittenLetter;
 import net.brucejillis.tileentities.TileEntityMailbox;
 import net.brucejillis.util.LogHelper;
@@ -57,6 +59,7 @@ public class PacketManager {
                     TileEntityMailbox entity = (TileEntityMailbox)te;
                     entity.setName(name);
                     world.markBlockForUpdate(x, y, z);
+                    FMLCommonHandler.instance().bus().post(new MailBoxPlacedEvent(name, x, y, z));
                 }
         }
         stream.close();

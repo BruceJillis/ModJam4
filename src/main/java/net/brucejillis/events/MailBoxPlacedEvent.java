@@ -3,12 +3,12 @@ package net.brucejillis.events;
 import cpw.mods.fml.common.eventhandler.Event;
 
 public class MailBoxPlacedEvent extends Event {
-    private final String name;
-    private final int x;
-    private final int y;
-    private final int z;
+    private String name;
+    private int x;
+    private int y;
+    private int z;
 
-    public MailBoxPlacedEvent(int x, int y, int z, String name) {
+    public MailBoxPlacedEvent(String name, int x, int y, int z) {
         super();
         this.name = name;
         this.x = x;

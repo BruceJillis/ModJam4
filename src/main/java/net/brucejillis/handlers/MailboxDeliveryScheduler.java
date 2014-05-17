@@ -25,6 +25,6 @@ public class MailboxDeliveryScheduler {
     @SubscribeEvent
     public void mailboxPlaced(MailBoxPlacedEvent event) {
         MailboxDeliveryData data = MailboxDeliveryData.forWorld(mc.theWorld);
-        data.registerMailbox(event.getX(), event.getY(), event.getZ());
+        data.registerMailbox(event.getName(), event.getX(), event.getY(), event.getZ());
     }
 }

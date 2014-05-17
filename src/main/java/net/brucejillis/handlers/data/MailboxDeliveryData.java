@@ -16,6 +16,8 @@ public class MailboxDeliveryData extends WorldSavedData {
     private static final String MORNING = "morning";
     private static final String AFTERNOON = "afternoon";
 
+    private static MailboxDeliveryData instance;
+
     private World world;
     private int prev = -1;
     private String state = MORNING;
@@ -25,9 +27,6 @@ public class MailboxDeliveryData extends WorldSavedData {
     public MailboxDeliveryData(String name, World world) {
         super(name);
         this.world = world;
-        if (boxes == null) {
-            boxes = new NBTTagList();
-        }
     }
 
     public void tick() {
@@ -41,7 +40,6 @@ public class MailboxDeliveryData extends WorldSavedData {
             doDelivery();
             // mark delivery done
             state = AFTERNOON;
-            markDirty();
             saveAllData();
         }
         if ((hour == 10) && (state == AFTERNOON)) {
@@ -49,9 +47,10 @@ public class MailboxDeliveryData extends WorldSavedData {
             doDelivery();
             // mark delivery done
             state = MORNING;
-            markDirty();
             saveAllData();
         }
+        if (boxes != null)
+            LogHelper.log("%d", boxes.tagCount());
     }
 
     private static long getDayTime(World world) {
@@ -79,16 +78,20 @@ public class MailboxDeliveryData extends WorldSavedData {
     }
 
     public static MailboxDeliveryData forWorld(World world) {
+        if (instance != null)
+            return instance;
         MapStorage storage = world.perWorldStorage;
         MailboxDeliveryData result = (MailboxDeliveryData)storage.loadData(MailboxDeliveryData.class, KEY);
         if (result == null) {
             result = new MailboxDeliveryData(KEY, world);
             storage.setData(KEY, result);
         }
+        instance = result;
         return result;
     }
 
     public void saveAllData() {
+        markDirty();
         world.perWorldStorage.saveAllData();
     }
 
@@ -110,6 +113,9 @@ public class MailboxDeliveryData extends WorldSavedData {
         tag.setInteger("y", y);
         tag.setInteger("z", z);
         tag.setString("name", name);
+        if (boxes == null) {
+            boxes = new NBTTagList();
+        }
         boxes.appendTag(tag);
         saveAllData();
     }
