@@ -25,6 +25,9 @@ public class GuiHandler implements IGuiHandler {
             TileEntityMailbox te = (TileEntityMailbox)entity;
             return new ContainerMailbox(player.inventory, te.getPrimaryEntity(world));
         }
+        if (ID == MailboxMod.GUI_LETTER) {
+            return new ContainerUnwrittenLetter(player.inventory, );
+        }
         return null;
     }
 
