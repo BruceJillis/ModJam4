@@ -11,12 +11,15 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 public class ContainerLetter extends Container {
+    private UnwrittenLetterInventory inv;
+
     public ContainerLetter(InventoryPlayer inventory, ItemStack item) {
         super();
+//        inv = new UnwrittenLetterInventory();
         // bind attachment slots
-        for (int i = 0; i < 4; i++) {
-            addSlotToContainer(new AttachmentSlot(new UnwrittenLetterInventory(), i, 9, 17 + (i * 18)));
-        }
+//        for (int i = 0; i < 4; i++) {
+//            addSlotToContainer(new AttachmentSlot(inv, i, 9, 17 + (i * 18)));
+//        }
         bindPlayerInventory(inventory, 9, 159, 9, 217);
     }
 
