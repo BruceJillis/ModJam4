@@ -83,11 +83,8 @@ public class GuiLetter extends GuiScreen {
                 tag.setString("Subject", subject.getText());
                 tag.setString("Body", subject2.getText());
                 player.inventory.addItemStackToInventory(letter);
-                player.inventory.getCurrentItem().stackSize--;
-                if (player.inventory.getCurrentItem().stackSize == 0) {
-                    player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
-                }
-                player.inventoryContainer.detectAndSendChanges();
+                player.inventory.consumeInventoryItem(player.inventory.getCurrentItem().getItem());
+                player.inventory.markDirty();
                 player.closeScreen();
                 break;
         }
