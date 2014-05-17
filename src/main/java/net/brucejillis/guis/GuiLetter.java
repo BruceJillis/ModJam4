@@ -4,10 +4,9 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.brucejillis.MailboxMod;
 import net.brucejillis.containers.ContainerLetter;
-import net.brucejillis.handlers.packets.PacketChangeInventory;
+import net.brucejillis.handlers.packets.PacketManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
@@ -96,7 +95,7 @@ public class GuiLetter extends GuiContainer {
             case BUTTON_SIGN:
                 NBTTagCompound tag = new NBTTagCompound();
                 tag.setTag("Pages", pages);
-                MailboxMod.channel.sendToServer(PacketChangeInventory.createWriteLetterPacket(player, tag));
+                MailboxMod.channel.sendToServer(PacketManager.createWriteLetterPacket(player, tag));
                 player.closeScreen();
                 break;
             case BUTTON_NEXT_PAGE:

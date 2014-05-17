@@ -18,12 +18,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
 import java.io.IOException;
 
-public class PacketChangeInventory {
+// i'm sorry, new stuff is new
+public class PacketManager {
     private static final int PACKET_WRITE_LETTER = 1;
     private static final int PACKET_NAME_MAILBOX = 2;
 
@@ -50,7 +52,12 @@ public class PacketChangeInventory {
                 int y = stream.readInt();
                 int z = stream.readInt();
                 String name = stream.readUTF();
-                TileEntityMailbox te = world.getTileEntity(x, y, z);
+                TileEntity te = world.getTileEntity(x, y, z);
+                if ((te != null) && (te instanceof TileEntityMailbox)) {
+                    TileEntityMailbox entity = (TileEntityMailbox)te;
+                    entity.setName(name);
+                    world.markBlockForUpdate(x, y, z);
+                }
         }
         stream.close();
     }

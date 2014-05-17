@@ -11,6 +11,7 @@ import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
 
 public class GuiMailbox extends GuiContainer {
+    private final TileEntityMailbox entity;
     private ResourceLocation background = new ResourceLocation(MailboxMod.ID, "/textures/gui/mailbox.png");
 
     private int xSize = 0;
@@ -18,6 +19,7 @@ public class GuiMailbox extends GuiContainer {
 
     public GuiMailbox(EntityPlayer player, TileEntityMailbox entity) {
         super(new ContainerMailbox(player.inventory, entity, false));
+        this.entity = entity;
         xSize = 195;
         ySize = 136;
         guiLeft = (int)((width - xSize) / 2.0f);
@@ -33,7 +35,8 @@ public class GuiMailbox extends GuiContainer {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        fontRendererObj.drawString(StatCollector.translateToLocal("mailbox.title"), 8, 6, 0x00000);
+        String title = StatCollector.translateToLocal("mailbox.title");
+        fontRendererObj.drawString(String.format("%s (address: %s)", title, entity.getName()), 8, 6, 0x00000);
         fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, 43, 0x00000);
         GL11.glPushMatrix();
         GL11.glScalef(0.6f, 0.6f, 0.6f);
