@@ -5,6 +5,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraftforge.common.util.Constants;
 
 import java.util.List;
 
@@ -19,7 +21,9 @@ public class ItemWrittenLetter extends Item {
     public void addInformation(ItemStack stack, EntityPlayer player, List par3List, boolean par4) {
         NBTTagCompound tag = ensureTagCompound(stack);
         String sender = tag.getString("Sender");
-        par3List.add(String.format("Written by %s / Unsent", sender));
+        NBTTagList pages = tag.getTagList("Pages", Constants.NBT.TAG_STRING);
+        par3List.add(String.format("Written by %s (%d pages) / Unsent", sender, pages.tagCount()));
+        par3List.add(pages.getStringTagAt(0));
     }
 
     public static NBTTagCompound ensureTagCompound(ItemStack stack) {

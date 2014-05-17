@@ -38,22 +38,9 @@ public class GuiLetter extends GuiContainer {
         super(new ContainerLetter(player.inventory, stack));
         this.player = player;
         this.letter = stack;
-        if (stack.hasTagCompound()) {
-            NBTTagCompound nbttagcompound = stack.getTagCompound();
-            pages = nbttagcompound.getTagList("pages", 8);
-            if (pages != null) {
-                pages = (NBTTagList) pages.copy();
-                totalPages = pages.tagCount();
-                if (totalPages < 1) {
-                    totalPages = 1;
-                }
-            }
-        }
-        if (pages == null) {
-            pages = new NBTTagList();
-            pages.appendTag(new NBTTagString(""));
-            totalPages = 1;
-        }
+        pages = new NBTTagList();
+        pages.appendTag(new NBTTagString(""));
+        totalPages = 1;
     }
 
     public void initGui() {
@@ -83,7 +70,9 @@ public class GuiLetter extends GuiContainer {
     protected void actionPerformed(GuiButton guibutton) {
         switch (guibutton.id) {
             case BUTTON_SIGN:
-                MailboxMod.channel.sendToServer(PacketChangeInventory.createWriteLetterPacket(player, pages));
+                NBTTagCompound tag = new NBTTagCompound();
+                tag.setTag("pages", pages);
+                MailboxMod.channel.sendToServer(PacketChangeInventory.createWriteLetterPacket(player, tag));
                 player.closeScreen();
                 break;
             case BUTTON_NEXT_PAGE:

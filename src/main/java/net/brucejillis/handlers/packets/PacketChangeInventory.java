@@ -28,33 +28,31 @@ public class PacketChangeInventory {
     }
 
     public static void processPacketOnServerSide(World world, EntityPlayer player, ByteBuf payload) throws IOException {
-        ByteBufInputStream bbis = new ByteBufInputStream(payload);
-        switch (bbis.readByte()) {
+        ByteBufInputStream stream = new ByteBufInputStream(payload);
+        switch (stream.readByte()) {
             case PACKET_WRITE_LETTER: {
-                String text = bbis.readUTF();
+                NBTTagCompound pages = ByteBufUtils.readTag(payload);
                 // handle packet for real
                 player.inventory.consumeInventoryItem(player.inventory.getCurrentItem().getItem());
                 ItemStack letter = new ItemStack(MailboxMod.itemWrittenLetter, 1, 0);
                 NBTTagCompound tag = ItemWrittenLetter.ensureTagCompound(letter);
                 tag.setString("Sender", player.getDisplayName());
-                tag.setString("Text", text);
+                tag.setTag("Pages", pages);
                 player.inventory.addItemStackToInventory(letter);
                 player.inventory.markDirty();
                 break;
             }
         }
-        bbis.close();
+        stream.close();
     }
 
-    public static FMLProxyPacket createWriteLetterPacket(EntityPlayer player, NBTTagList pages) {
-        ByteBufOutputStream dataStream = new ByteBufOutputStream(Unpooled.buffer());
+    public static FMLProxyPacket createWriteLetterPacket(EntityPlayer player, NBTTagCompound pages) {
+        ByteBufOutputStream stream = new ByteBufOutputStream(Unpooled.buffer());
         try {
-            dataStream.writeByte(PACKET_WRITE_LETTER);
-            ByteBufUtils.writeTag(dataStream.buffer(), pages);
-            dataStream.writeUTF(text);
-            dataStream.writeInt(player.getEntityId());
-            FMLProxyPacket packet = new FMLProxyPacket(dataStream.buffer(), MailboxMod.CHANNEL);
-            dataStream.close();
+            stream.writeByte(PACKET_WRITE_LETTER);
+            ByteBufUtils.writeTag(stream.buffer(), pages);
+            FMLProxyPacket packet = new FMLProxyPacket(stream.buffer(), MailboxMod.CHANNEL);
+            stream.close();
             return packet;
         } catch (IOException e) {
             LogHelper.error(e.getMessage());
