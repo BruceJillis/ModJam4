@@ -10,6 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.NetHandlerPlayServer;
+import net.minecraft.world.World;
 
 import java.io.IOException;
 
@@ -18,18 +19,13 @@ public class PacketHandler {
     public void onServerPacket(FMLNetworkEvent.ServerCustomPacketEvent event) {
         if (event.packet.channel().equals(MailboxMod.CHANNEL)) {
             LogHelper.log(event.packet.getTarget().name());
+            EntityPlayer player = ((NetHandlerPlayServer) event.handler).playerEntity;
+            World world = player.worldObj;
             try {
-                PacketChangeInventory.processPacketOnServerSide(event.packet.payload(), event.packet.getTarget());
+                PacketChangeInventory.processPacketOnServerSide(world, player, event.packet.payload());
             } catch (IOException e) {
                 LogHelper.error(e.getMessage());
             }
         }
-    }
-
-    @SubscribeEvent
-    public void onClientPacket(FMLNetworkEvent.ClientCustomPacketEvent event) {
-        LogHelper.log(event.toString());
-        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-        ByteBufInputStream bbis = new ByteBufInputStream(event.packet.payload());
     }
 }

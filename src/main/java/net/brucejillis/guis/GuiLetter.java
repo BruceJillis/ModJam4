@@ -31,14 +31,12 @@ import org.lwjgl.opengl.GL12;
 public class GuiLetter extends GuiContainer {
     private static final int BUTTON_SIGN = 1;
     private final EntityPlayer player;
-    private final ItemStack letter;
     private ResourceLocation background = new ResourceLocation(MailboxMod.ID, "/textures/gui/letter.png");
     private GuiTextField subject;
 
     public GuiLetter(EntityPlayer player) {
         super(new ContainerLetter(player.inventory, player.getCurrentEquippedItem()));
         this.player = player;
-        this.letter = new ItemStack(MailboxMod.itemWrittenLetter, 1, 0);
     }
 
     public void initGui() {
@@ -64,8 +62,7 @@ public class GuiLetter extends GuiContainer {
     protected void actionPerformed(GuiButton guibutton) {
         switch(guibutton.id) {
             case BUTTON_SIGN:
-                MailboxMod.channel.sendToServer(PacketChangeInventory.createWriteLetterPacket(player, player.getDisplayName(), subject.getText()));
-                //inventorySlots.detectAndSendChanges();
+                MailboxMod.channel.sendToServer(PacketChangeInventory.createWriteLetterPacket(player, subject.getText()));
                 player.closeScreen();
                 break;
         }

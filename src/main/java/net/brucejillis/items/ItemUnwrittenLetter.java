@@ -14,7 +14,7 @@ public class ItemUnwrittenLetter extends Item {
         setUnlocalizedName("itemUnwrittenLetter");
         setTextureName(MailboxMod.ID + ":" + getUnlocalizedName().substring(5));
         setCreativeTab(MailboxMod.mailboxTab);
-        setMaxStackSize(1);
+        setMaxStackSize(16);
     }
 
     @Override
