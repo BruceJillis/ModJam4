@@ -33,8 +33,6 @@ public class ItemMailBox extends Item {
                 te.setBasePosition(x, y + 1, z);
                 // use the item
                 --stack.stackSize;
-                // publish mailbox to scheduler
-                FMLCommonHandler.instance().bus().post(new MailBoxPlacedEvent(x, y + 1, z));
                 return true;
             }
         }

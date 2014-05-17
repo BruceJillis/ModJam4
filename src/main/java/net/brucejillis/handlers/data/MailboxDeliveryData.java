@@ -104,13 +104,12 @@ public class MailboxDeliveryData extends WorldSavedData {
         tag.setTag("boxes", boxes);
     }
 
-    public void registerMailbox(int x, int y, int z) {
+    public void registerMailbox(String name, int x, int y, int z) {
         NBTTagCompound tag = new NBTTagCompound();
         tag.setInteger("x", x);
         tag.setInteger("y", y);
         tag.setInteger("z", z);
-        TileEntityMailbox te = (TileEntityMailbox)world.getTileEntity(x, y, z);
-        tag.setString("name", te.getName());
+        tag.setString("name", name);
         boxes.appendTag(tag);
         saveAllData();
     }
