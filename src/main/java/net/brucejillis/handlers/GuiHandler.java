@@ -49,7 +49,7 @@ public class GuiHandler implements IGuiHandler {
                 break;
             case MailboxMod.GUI_LETTER:
                 if (player.inventory.getCurrentItem().getItem() instanceof ItemUnwrittenLetter) {
-                    return new GuiLetter(player);
+                    return new GuiLetter(player, player.getCurrentEquippedItem());
                 }
         }
         return null;

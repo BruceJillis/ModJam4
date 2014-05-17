@@ -1,5 +1,8 @@
 package net.brucejillis.containers;
 
+import com.sun.xml.internal.ws.api.message.Attachment;
+import net.brucejillis.containers.slots.AttachmentSlot;
+import net.brucejillis.containers.slots.MailboxSlot;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -9,6 +12,10 @@ import net.minecraft.item.ItemStack;
 public class ContainerLetter extends Container {
     public ContainerLetter(InventoryPlayer inventory, ItemStack item) {
         super();
+        // bind attachment slots
+        for (int i = 0; i < 4; i++) {
+            addSlotToContainer(new AttachmentSlot(inventory, i, 9, 17 + (i * 18)));
+        }
         bindPlayerInventory(inventory, 9, 159, 9, 217);
     }
 

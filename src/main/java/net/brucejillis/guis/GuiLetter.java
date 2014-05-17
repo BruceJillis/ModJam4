@@ -8,20 +8,48 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 public class GuiLetter extends GuiContainer {
+    private static ResourceLocation background = new ResourceLocation(MailboxMod.ID, "/textures/gui/letter.png");
+
     private static final int BUTTON_SIGN = 1;
     private static final int BUTTON_NEXT_PAGE = 2;
-    private final EntityPlayer player;
-    private static ResourceLocation background = new ResourceLocation(MailboxMod.ID, "/textures/gui/letter.png");
-    private GuiTextField subject;
+    private static final int BUTTON_PREV_PAGE = 3;
 
-    public GuiLetter(EntityPlayer player) {
-        super(new ContainerLetter(player.inventory, player.getCurrentEquippedItem()));
+    private final EntityPlayer player;
+    private final ItemStack letter;
+    private NBTTagList pages;
+
+    private int currPage = 0;
+    private int totalPages = 1;
+
+    public GuiLetter(EntityPlayer player, ItemStack stack) {
+        super(new ContainerLetter(player.inventory, stack));
         this.player = player;
+        this.letter = stack;
+        if (stack.hasTagCompound()) {
+            NBTTagCompound nbttagcompound = stack.getTagCompound();
+            pages = nbttagcompound.getTagList("pages", 8);
+            if (pages != null) {
+                pages = (NBTTagList) pages.copy();
+                totalPages = pages.tagCount();
+                if (totalPages < 1) {
+                    totalPages = 1;
+                }
+            }
+        }
+        if (pages == null) {
+            pages = new NBTTagList();
+            pages.appendTag(new NBTTagString(""));
+            totalPages = 1;
+        }
     }
 
     public void initGui() {
@@ -32,9 +60,10 @@ public class GuiLetter extends GuiContainer {
         guiTop = (int) ((height - ySize) / 2.0f);
         Keyboard.enableRepeatEvents(true);
         // add buttons
+        buttonList.clear();
         buttonList.add(new GuiButton(BUTTON_SIGN, guiLeft + 137, guiTop + 137, 32, 20, "Sign"));
         buttonList.add(new GuiLetter.NextPageButton(BUTTON_NEXT_PAGE, true, guiLeft + 136, guiTop + 124));
-        buttonList.add(new GuiLetter.NextPageButton(BUTTON_NEXT_PAGE, false, guiLeft + 40, guiTop + 124));
+        buttonList.add(new GuiLetter.NextPageButton(BUTTON_PREV_PAGE, false, guiLeft + 40, guiTop + 124));
     }
 
     public void onGuiClosed() {
@@ -48,6 +77,26 @@ public class GuiLetter extends GuiContainer {
                 MailboxMod.channel.sendToServer(PacketChangeInventory.createWriteLetterPacket(player, "etxt"));
                 player.closeScreen();
                 break;
+            case BUTTON_NEXT_PAGE:
+                if (currPage < totalPages - 1) {
+                    ++currPage;
+                } else {
+                    addNewPage();
+                    if (currPage < totalPages - 1) {
+                        ++currPage;
+                    }
+                }
+                break;
+            case BUTTON_PREV_PAGE:
+
+                break;
+        }
+    }
+
+    private void addNewPage() {
+        if (pages != null && pages.tagCount() < 50) {
+            pages.appendTag(new NBTTagString(""));
+            ++totalPages;
         }
     }
 
