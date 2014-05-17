@@ -6,12 +6,31 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 
 public class TileEntityMailbox extends TileEntity implements IInventory {
     private ItemStack[] inventory;
 
+    // position of the primary multiblock block
+    private int baseX = -1;
+    private int baseY = -1;
+    private int baseZ = -1;
+
     public TileEntityMailbox() {
         inventory = new ItemStack[6];
+    }
+
+    public void setBasePosition(int baseX, int baseY, int baseZ) {
+        this.baseX = baseX;
+        this.baseY = baseY;
+        this.baseZ = baseZ;
+    }
+
+    public TileEntityMailbox getPrimaryEntity(World world) {
+        if (baseX == -1) {
+            return this;
+        }
+        return (TileEntityMailbox) world.getTileEntity(baseX, baseY, baseZ);
     }
 
     @Override
@@ -101,12 +120,16 @@ public class TileEntityMailbox extends TileEntity implements IInventory {
                 inventory[slot] = ItemStack.loadItemStackFromNBT(compound);
             }
         }
+        // read base block position
+        baseX = tag.getInteger("baseX");
+        baseY = tag.getInteger("baseY");
+        baseZ = tag.getInteger("baseZ");
     }
 
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
-        // write inv to nbt
+        // write inventory to nbt
         NBTTagList list = new NBTTagList();
         for (int i = 0; i < inventory.length; i++) {
             ItemStack stack = inventory[i];
@@ -118,5 +141,9 @@ public class TileEntityMailbox extends TileEntity implements IInventory {
             }
         }
         tag.setTag("inventory", list);
+        // base block position
+        tag.setInteger("baseX", baseX);
+        tag.setInteger("baseY", baseY);
+        tag.setInteger("baseZ", baseZ);
     }
 }
