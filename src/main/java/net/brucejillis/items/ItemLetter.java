@@ -30,7 +30,7 @@ public class ItemLetter extends Item {
         NBTTagCompound tag = getStackTagCompound(stack);
         if (!isBlank(stack) && player.isSneaking()) {
             // erase letter
-            return new ItemStack(MailboxMod.itemLetter, 1, 0);
+            return new ItemStack(MailboxMod.itemUnwrittenLetter, 1, 0);
         }
         if (isBlank(stack) && !player.isSneaking()) {
             player.openGui(MailboxMod.instance, MailboxMod.GUI_LETTER, world, (int) player.posX, (int) player.posY, (int) player.posZ);

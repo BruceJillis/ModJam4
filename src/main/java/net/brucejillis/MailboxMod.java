@@ -11,6 +11,8 @@ import net.brucejillis.handlers.GuiHandler;
 import net.brucejillis.handlers.MailboxDeliveryScheduler;
 import net.brucejillis.items.ItemLetter;
 import net.brucejillis.items.ItemMailBox;
+import net.brucejillis.items.ItemUnwrittenLetter;
+import net.brucejillis.items.ItemWrittenLetter;
 import net.brucejillis.proxies.CommonProxy;
 import net.brucejillis.tileentities.TileEntityMailbox;
 import net.brucejillis.util.LogHelper;
@@ -42,7 +44,8 @@ public class MailboxMod {
     public static Block blockMailbox;
 
     // items
-    public static Item itemLetter;
+    public static Item itemUnwrittenLetter;
+    public static Item itemWrittenLetter;
     public static Item itemMailbox;
 
     @Mod.EventHandler
@@ -61,9 +64,11 @@ public class MailboxMod {
         blockMailbox = new BlockMailbox();
         GameRegistry.registerBlock(blockMailbox, ItemBlock.class, "blockMailbox");
         GameRegistry.registerTileEntity(TileEntityMailbox.class, "tileEntityMailbox");
-        // register letter item
-        itemLetter = new ItemLetter();
-        GameRegistry.registerItem(itemLetter, "itemLetter");
+        // register letter items
+        itemUnwrittenLetter = new ItemUnwrittenLetter();
+        GameRegistry.registerItem(itemUnwrittenLetter, "itemUnwrittenLetter");
+        itemWrittenLetter = new ItemWrittenLetter();
+        GameRegistry.registerItem(itemWrittenLetter, "itemWrittenLetter");
         // register various stuff
         proxy.registerRenderers();
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());

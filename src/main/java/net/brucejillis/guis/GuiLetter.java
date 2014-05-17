@@ -79,6 +79,9 @@ public class GuiLetter extends GuiScreen {
                 letter.stackTagCompound.setString("Sender", player.getDisplayName());
                 letter.stackTagCompound.setString("Subject", subject.getText());
                 letter.stackTagCompound.setString("Body", subject2.getText());
+                //
+
+                //player.setItemInUse();
                 player.closeScreen();
                 break;
         }
