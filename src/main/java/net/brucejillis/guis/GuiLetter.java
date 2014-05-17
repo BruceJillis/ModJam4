@@ -69,7 +69,7 @@ public class GuiLetter extends GuiContainer {
                 player.inventory.addItemStackToInventory(letter);
                 player.inventory.consumeInventoryItem(player.inventory.getCurrentItem().getItem());
                 player.inventory.markDirty();
-                inventorySlots.detectAndSendChanges();
+                //inventorySlots.detectAndSendChanges();
                 player.closeScreen();
                 break;
         }

@@ -4,12 +4,13 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.network.FMLEventChannel;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.brucejillis.blocks.BlockMailbox;
 import net.brucejillis.handlers.GuiHandler;
 import net.brucejillis.handlers.MailboxDeliveryScheduler;
-import net.brucejillis.items.ItemLetter;
+import net.brucejillis.handlers.PacketHandler;
 import net.brucejillis.items.ItemMailBox;
 import net.brucejillis.items.ItemUnwrittenLetter;
 import net.brucejillis.items.ItemWrittenLetter;
@@ -26,6 +27,7 @@ public class MailboxMod {
     // internal name and version
     public static final String ID = "mailboxmod";
     public static final String VERSION = "0.1";
+    private static final String CHANNEL = "mailchannel";
     @Mod.Instance(MailboxMod.ID)
     public static MailboxMod instance;
 
@@ -73,5 +75,8 @@ public class MailboxMod {
         proxy.registerRenderers();
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
         FMLCommonHandler.instance().bus().register(new MailboxDeliveryScheduler());
+        //
+        FMLEventChannel channel = NetworkRegistry.INSTANCE.newEventDrivenChannel(CHANNEL);
+        channel.register(new PacketHandler());
     }
 }
