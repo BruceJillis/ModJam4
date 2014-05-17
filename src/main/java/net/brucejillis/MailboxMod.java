@@ -39,6 +39,9 @@ public class MailboxMod {
     @SidedProxy(serverSide = "net.brucejillis.proxies.CommonProxy", clientSide = "net.brucejillis.proxies.ClientProxy")
     public static CommonProxy proxy;
 
+    // net
+    public static FMLEventChannel channel;
+
     // tab where all the items and blocks are placed
     public static CreativeTabs mailboxTab;
 
@@ -76,7 +79,7 @@ public class MailboxMod {
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
         FMLCommonHandler.instance().bus().register(new MailboxDeliveryScheduler());
         //
-        FMLEventChannel channel = NetworkRegistry.INSTANCE.newEventDrivenChannel(CHANNEL);
+        channel = NetworkRegistry.INSTANCE.newEventDrivenChannel(CHANNEL);
         channel.register(new PacketHandler());
     }
 }

@@ -69,6 +69,7 @@ public class GuiLetter extends GuiContainer {
                 player.inventory.addItemStackToInventory(letter);
                 player.inventory.consumeInventoryItem(player.inventory.getCurrentItem().getItem());
                 player.inventory.markDirty();
+                MailboxMod.channel.sendToServer(Packet);
                 //inventorySlots.detectAndSendChanges();
                 player.closeScreen();
                 break;
