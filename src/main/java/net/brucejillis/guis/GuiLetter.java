@@ -11,6 +11,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -36,8 +37,8 @@ public class GuiLetter extends GuiContainer {
     private int totalPages = 1;
     private GuiTextField to;
 
-    public GuiLetter(EntityPlayer player, ItemStack stack) {
-        super(new ContainerLetter(player.inventory, stack));
+    public GuiLetter(EntityPlayer player, IInventory inventory, ItemStack stack) {
+        super(new ContainerLetter(player.inventory, inventory, stack));
         this.player = player;
         this.letter = stack;
         pages = new NBTTagList();
@@ -63,14 +64,31 @@ public class GuiLetter extends GuiContainer {
         buttonList.add(new GuiLetter.NextPageButton(BUTTON_PREV_PAGE, false, guiLeft + 40, guiTop + 136));
     }
 
-    @Override
-    public boolean doesGuiPauseGame() {
-        return false;
-    }
-
     public void onGuiClosed() {
         super.onGuiClosed();
         Keyboard.enableRepeatEvents(false);
+    }
+
+    @Override
+    protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3) {
+        GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+        mc.renderEngine.bindTexture(background);
+        drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+        // to field
+        to.drawTextBox();
+    }
+
+    @Override
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+        // letter
+        String text = "";
+        if (pages != null && currPage >= 0 && currPage < pages.tagCount()) {
+            text = pages.getStringTagAt(currPage);
+        }
+        text = text + "" + EnumChatFormatting.BLACK + "_";
+        fontRendererObj.drawSplitString(text, 42, 28, 120, 0);
+        // to field label
+        fontRendererObj.drawString("To:", 7, 9, 0x000000);
     }
 
     protected void actionPerformed(GuiButton guibutton) {
@@ -161,30 +179,9 @@ public class GuiLetter extends GuiContainer {
         }
     }
 
-    private boolean mouseInRect(int mouseX, int mouseY, int posX, int posY, int sizeX, int sizeY) {
-        return (mouseX >= posX) && (mouseX < (posX + sizeX)) && (mouseY >= posY) && (mouseY < (posY + sizeY));
-    }
-
     @Override
-    protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3) {
-        GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-        mc.renderEngine.bindTexture(background);
-        drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
-        // to field
-        to.drawTextBox();
-    }
-
-    @Override
-    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        // letter
-        String text = "";
-        if (pages != null && currPage >= 0 && currPage < pages.tagCount()) {
-            text = pages.getStringTagAt(currPage);
-        }
-        text = text + "" + EnumChatFormatting.BLACK + "_";
-        fontRendererObj.drawSplitString(text, 42, 28, 120, 0);
-        // to field label
-        fontRendererObj.drawString("To:", 7, 9, 0x000000);
+    public boolean doesGuiPauseGame() {
+        return false;
     }
 
     @SideOnly(Side.CLIENT)

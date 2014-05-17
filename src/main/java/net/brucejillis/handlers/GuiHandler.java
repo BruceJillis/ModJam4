@@ -4,6 +4,7 @@ import cpw.mods.fml.common.network.IGuiHandler;
 import net.brucejillis.MailboxMod;
 import net.brucejillis.containers.ContainerLetter;
 import net.brucejillis.containers.ContainerMailbox;
+import net.brucejillis.containers.inventories.UnwrittenLetterInventory;
 import net.brucejillis.guis.GuiLetter;
 import net.brucejillis.guis.GuiMailbox;
 import net.brucejillis.items.ItemUnwrittenLetter;
@@ -29,7 +30,7 @@ public class GuiHandler implements IGuiHandler {
                 }
                 break;
             case MailboxMod.GUI_LETTER:
-                return new ContainerLetter(player.inventory, player.getCurrentEquippedItem());
+                return new ContainerLetter(player.inventory, new UnwrittenLetterInventory(), player.getCurrentEquippedItem());
         }
         return null;
     }
@@ -49,7 +50,7 @@ public class GuiHandler implements IGuiHandler {
                 break;
             case MailboxMod.GUI_LETTER:
                 if (player.inventory.getCurrentItem().getItem() instanceof ItemUnwrittenLetter) {
-                    return new GuiLetter(player, player.getCurrentEquippedItem());
+                    return new GuiLetter(player, new UnwrittenLetterInventory(), player.getCurrentEquippedItem());
                 }
         }
         return null;
