@@ -49,8 +49,6 @@ public class MailboxDeliveryData extends WorldSavedData {
             state = MORNING;
             saveAllData();
         }
-        if (boxes != null)
-            LogHelper.log("%d", boxes.tagCount());
     }
 
     private static long getDayTime(World world) {
@@ -107,24 +105,33 @@ public class MailboxDeliveryData extends WorldSavedData {
         tag.setTag("boxes", boxes);
     }
 
-    public void registerMailbox(String name, int x, int y, int z) {
+    public boolean registerMailbox(String name, int x, int y, int z) {
+        if (boxes == null) {
+            boxes = new NBTTagList();
+        } else {
+            for(int i = 0; i <= boxes.tagCount(); i++) {
+                if (boxes.getCompoundTagAt(i).getString("name").equals(name)) {
+                    return false;
+                }
+            }
+        }
         NBTTagCompound tag = new NBTTagCompound();
         tag.setInteger("x", x);
         tag.setInteger("y", y);
         tag.setInteger("z", z);
         tag.setString("name", name);
-        if (boxes == null) {
-            boxes = new NBTTagList();
-        }
         boxes.appendTag(tag);
         saveAllData();
+        return true;
     }
 
     public void unregisterMailbox(String name) {
-        if (boxes == null)
+        if (boxes == null) {
+            LogHelper.error("a mailbox tried to unregister on null list");
             return;
+        }
         for(int i = 0; i <= boxes.tagCount(); i++) {
-            if (boxes.getCompoundTagAt(i).getString("name").equals("name")) {
+            if (boxes.getCompoundTagAt(i).getString("name").equals(name)) {
                 boxes.removeTag(i);
                 return;
             }

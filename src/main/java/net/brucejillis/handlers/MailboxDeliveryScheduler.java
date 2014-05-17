@@ -7,6 +7,7 @@ import net.brucejillis.events.MailBoxRemovedEvent;
 import net.brucejillis.handlers.data.MailboxDeliveryData;
 import net.brucejillis.util.LogHelper;
 import net.minecraft.client.Minecraft;
+import net.minecraft.tileentity.TileEntity;
 
 public class MailboxDeliveryScheduler {
     private final Minecraft mc;
@@ -26,7 +27,9 @@ public class MailboxDeliveryScheduler {
     @SubscribeEvent
     public void mailboxPlaced(MailBoxPlacedEvent event) {
         MailboxDeliveryData data = MailboxDeliveryData.forWorld(mc.theWorld);
-        data.registerMailbox(event.getName(), event.getX(), event.getY(), event.getZ());
+        if (!data.registerMailbox(event.getName(), event.getX(), event.getY(), event.getZ())) {
+            TileEntity te = mc.theWorld.getTileEntity(event.getX(), event.getY(), event.getZ());
+        }
     }
 
     @SubscribeEvent

@@ -2,8 +2,10 @@ package net.brucejillis.guis;
 
 import net.brucejillis.MailboxMod;
 import net.brucejillis.containers.ContainerMailbox;
+import net.brucejillis.handlers.data.MailboxDeliveryData;
 import net.brucejillis.handlers.packets.PacketManager;
 import net.brucejillis.tileentities.TileEntityMailbox;
+import net.brucejillis.util.LogHelper;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -65,7 +67,7 @@ public class GuiNameMailbox extends GuiContainer {
         switch (guibutton.id) {
             case BUTTON_OK:
                 if (!name.getText().equals("")) {
-                    entity.setName(name.getText());
+//                    entity.setName(name.getText());
                     MailboxMod.channel.sendToServer(PacketManager.createNameMailboxPacket(entity, name.getText()));
                     mc.thePlayer.closeScreen();
                     mc.thePlayer.openGui(MailboxMod.instance, MailboxMod.GUI_MAILBOX, mc.theWorld, entity.xCoord, entity.yCoord, entity.zCoord);
