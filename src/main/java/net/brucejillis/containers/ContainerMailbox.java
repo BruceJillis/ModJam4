@@ -34,6 +34,7 @@ public class ContainerMailbox extends Container {
         for (int i = 0; i < 9; i++) {
             addSlotToContainer(new Slot(inventory, i, xOffHotbar + i * 18, yOffHotbar));
         }
+
     }
 
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
