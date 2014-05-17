@@ -23,11 +23,15 @@ public class ItemWrittenLetter extends Item {
         NBTTagCompound tag = ensureTagCompound(stack);
         String sender = tag.getString("Sender");
         String to = tag.getString("To");
+        String sent = tag.getString("Sent");
+        if (sent == null || sent.equals("")) {
+            sent = "Unsent";
+        }
         NBTTagList pages = tag.getTagList("Pages", Constants.NBT.TAG_STRING);
         if (pages.tagCount() == 1)
-            list.add(String.format("From %s To %s (1 page) / Unsent", sender, to));
+            list.add(String.format("From %s To %s (1 page) / %s", sender, to, sent));
         else
-            list.add(String.format("From %s To %s (%d pages) / Unsent", sender, to, pages.tagCount()));
+            list.add(String.format("From %s To %s (%d pages) / %s", sender, to, pages.tagCount(), sent));
         String sneak = pages.getStringTagAt(0).split("\n")[0];
         list.add(StringUtils.abbreviate(sneak, 16));
     }

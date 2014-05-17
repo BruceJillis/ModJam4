@@ -176,7 +176,7 @@ public class TileEntityMailbox extends TileEntity implements IInventory {
         this.name = name;
     }
 
-    public int hasInventorySpace(ItemStack stack) {
+    public int getFirstFreeInventorySlot(ItemStack stack) {
         for(int j = 0; j < getSizeInventory(); j++) {
             if (getStackInSlot(j) == null)
                 return j;

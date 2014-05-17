@@ -82,8 +82,12 @@ public class MailboxDeliveryData extends WorldSavedData {
                         NBTTagCompound stack = ItemWrittenLetter.ensureTagCompound(entity.getStackInSlot(j));
                         TileEntityMailbox toEntity = boxMap.get(stack.getString("To"));
                         if (toEntity != null) {
-                            if (toEntity.hasInventorySpace(entity.getStackInSlot(j))) {
-
+                            int slot = toEntity.getFirstFreeInventorySlot(entity.getStackInSlot(j));
+                            if (slot != -1) {
+                                toEntity.setInventorySlotContents(slot, entity.getStackInSlot(j));
+                                entity.setInventorySlotContents(j, null);
+                                world.markBlockForUpdate(entity.xCoord, entity.yCoord, entity.zCoord);
+                                world.markBlockForUpdate(toEntity.xCoord, toEntity.yCoord, toEntity.zCoord);
                             }
                         }
                     }

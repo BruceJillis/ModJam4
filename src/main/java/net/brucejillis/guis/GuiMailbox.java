@@ -47,10 +47,11 @@ public class GuiMailbox extends GuiContainer {
         if (hours != 0) {
             fontRendererObj.drawString("~", 208, yoffset + 27, 0x00000);
             line = String.format("%d ", hours) + StatCollector.translateToLocal("mailbox.short.duration");
+            fontRendererObj.drawString(line, 218, yoffset + 24, 0x00000);
         } else {
             line = "any minute now!";
+            fontRendererObj.drawString(line, 208, yoffset + 24, 0x00000);
         }
-        fontRendererObj.drawString(line, 218, yoffset + 24, 0x00000);
         GL11.glPopMatrix();
     }
 
