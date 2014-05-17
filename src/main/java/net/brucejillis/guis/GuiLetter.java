@@ -46,15 +46,15 @@ public class GuiLetter extends GuiContainer {
     public void initGui() {
         super.initGui();
         xSize = 178;
-        ySize = 242;
+        ySize = 256;
         guiLeft = (int) ((width - xSize) / 2.0f);
         guiTop = (int) ((height - ySize) / 2.0f);
         Keyboard.enableRepeatEvents(true);
         // add buttons
         buttonList.clear();
-        buttonList.add(new GuiButton(BUTTON_SIGN, guiLeft + 137, guiTop + 137, 32, 20, "Sign"));
-        buttonList.add(new GuiLetter.NextPageButton(BUTTON_NEXT_PAGE, true, guiLeft + 136, guiTop + 124));
-        buttonList.add(new GuiLetter.NextPageButton(BUTTON_PREV_PAGE, false, guiLeft + 40, guiTop + 124));
+        buttonList.add(new GuiButton(BUTTON_SIGN, guiLeft + 138, guiTop + 150, 32, 20, "Sign"));
+        buttonList.add(new GuiLetter.NextPageButton(BUTTON_NEXT_PAGE, true, guiLeft + 136, guiTop + 136));
+        buttonList.add(new GuiLetter.NextPageButton(BUTTON_PREV_PAGE, false, guiLeft + 40, guiTop + 136));
     }
 
     @Override
@@ -71,7 +71,7 @@ public class GuiLetter extends GuiContainer {
         switch (guibutton.id) {
             case BUTTON_SIGN:
                 NBTTagCompound tag = new NBTTagCompound();
-                tag.setTag("pages", pages);
+                tag.setTag("Pages", pages);
                 MailboxMod.channel.sendToServer(PacketChangeInventory.createWriteLetterPacket(player, tag));
                 player.closeScreen();
                 break;

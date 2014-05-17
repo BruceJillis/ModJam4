@@ -18,7 +18,6 @@ public class PacketHandler {
     @SubscribeEvent
     public void onServerPacket(FMLNetworkEvent.ServerCustomPacketEvent event) {
         if (event.packet.channel().equals(MailboxMod.CHANNEL)) {
-            LogHelper.log(event.packet.getTarget().name());
             EntityPlayer player = ((NetHandlerPlayServer) event.handler).playerEntity;
             World world = player.worldObj;
             try {

@@ -18,6 +18,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 
 import java.io.IOException;
 
@@ -37,7 +38,7 @@ public class PacketChangeInventory {
                 ItemStack letter = new ItemStack(MailboxMod.itemWrittenLetter, 1, 0);
                 NBTTagCompound tag = ItemWrittenLetter.ensureTagCompound(letter);
                 tag.setString("Sender", player.getDisplayName());
-                tag.setTag("Pages", pages);
+                tag.setTag("Pages", pages.getTagList("Pages", Constants.NBT.TAG_STRING));
                 player.inventory.addItemStackToInventory(letter);
                 player.inventory.markDirty();
                 break;

@@ -18,12 +18,14 @@ public class ItemWrittenLetter extends Item {
     }
 
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List par3List, boolean par4) {
+    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
         NBTTagCompound tag = ensureTagCompound(stack);
         String sender = tag.getString("Sender");
         NBTTagList pages = tag.getTagList("Pages", Constants.NBT.TAG_STRING);
-        par3List.add(String.format("Written by %s (%d pages) / Unsent", sender, pages.tagCount()));
-        par3List.add(pages.getStringTagAt(0));
+        if (pages.tagCount() == 1)
+            list.add(String.format("Written by %s (%d page) / Unsent", sender, pages.tagCount()));
+        else
+            list.add(String.format("Written by %s (%d pages) / Unsent", sender, pages.tagCount()));
     }
 
     public static NBTTagCompound ensureTagCompound(ItemStack stack) {
