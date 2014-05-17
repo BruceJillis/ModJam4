@@ -42,12 +42,12 @@ public class GuiNameMailbox extends GuiContainer {
     public void initGui() {
         super.initGui();
         // name field
-        name = new GuiTextField(fontRendererObj, 25, 60, 125, 12);
+        name = new GuiTextField(fontRendererObj, guiLeft + 25, guiTop + 60, 125, 12);
         name.setEnableBackgroundDrawing(true);
         name.setTextColor(-1);
         // add ok button
         buttonList.clear();
-        buttonList.add(new GuiButton(BUTTON_OK, guiLeft + 73, guiTop + 130, 20, 20, "Ok"));
+        buttonList.add(new GuiButton(BUTTON_OK, guiLeft + 73, guiTop + 100, 25, 20, "Ok"));
     }
 
     @Override
@@ -55,12 +55,12 @@ public class GuiNameMailbox extends GuiContainer {
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         mc.renderEngine.bindTexture(background);
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+        name.drawTextBox();
     }
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        fontRendererObj.drawString(StatCollector.translateToLocal("mailbox.title.name"), 20, 45, 0x00000);
-        name.drawTextBox();
+        fontRendererObj.drawString(StatCollector.translateToLocal("mailbox.title.name"), 30, 45, 0x00000);
     }
 
     protected void actionPerformed(GuiButton guibutton) {
@@ -68,6 +68,7 @@ public class GuiNameMailbox extends GuiContainer {
             case BUTTON_OK:
                 if (!name.getText().equals("")) {
                     entity.setName(name.getText());
+                    MailboxMod.channel.sendToServer(PacketChangeInventory.createNameMailboxPacket(entity, name.getText()));
                     mc.thePlayer.closeScreen();
                     mc.thePlayer.openGui(MailboxMod.instance, MailboxMod.GUI_MAILBOX, mc.theWorld, entity.xCoord, entity.yCoord, entity.zCoord);
                 }

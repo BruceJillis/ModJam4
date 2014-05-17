@@ -43,7 +43,7 @@ public class BlockMailbox extends BlockContainer {
         if ((te != null) && (te instanceof TileEntityMailbox)) {
             world.playSoundEffect((double) te.xCoord + 0.5D, (double) te.yCoord + 0.5D, (double) te.zCoord + 0.5D, MailboxMod.ID + ":mailbox_open", 1.0f, 1.0f);
             TileEntityMailbox entity = (TileEntityMailbox)te;
-            if (entity.getName() == null) {
+            if (entity.getName().equals("")) {
                 // open the mailbox's naming gui
                 player.openGui(MailboxMod.instance, MailboxMod.GUI_NAME_MAILBOX, world, x, y, z);
             } else {

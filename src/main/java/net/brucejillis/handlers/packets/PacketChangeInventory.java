@@ -9,6 +9,7 @@ import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.Unpooled;
 import net.brucejillis.MailboxMod;
 import net.brucejillis.items.ItemWrittenLetter;
+import net.brucejillis.tileentities.TileEntityMailbox;
 import net.brucejillis.util.LogHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,6 +25,7 @@ import java.io.IOException;
 
 public class PacketChangeInventory {
     private static final int PACKET_WRITE_LETTER = 1;
+    private static final int PACKET_NAME_MAILBOX = 2;
 
     public static void processPacketOnClientSide(ByteBuf parBB, Side parSide) throws IOException {
     }
@@ -43,6 +45,12 @@ public class PacketChangeInventory {
                 player.inventory.markDirty();
                 break;
             }
+            case PACKET_NAME_MAILBOX:
+                int x = stream.readInt();
+                int y = stream.readInt();
+                int z = stream.readInt();
+                String name = stream.readUTF();
+                TileEntityMailbox te = world.getTileEntity(x, y, z);
         }
         stream.close();
     }
@@ -52,6 +60,23 @@ public class PacketChangeInventory {
         try {
             stream.writeByte(PACKET_WRITE_LETTER);
             ByteBufUtils.writeTag(stream.buffer(), pages);
+            FMLProxyPacket packet = new FMLProxyPacket(stream.buffer(), MailboxMod.CHANNEL);
+            stream.close();
+            return packet;
+        } catch (IOException e) {
+            LogHelper.error(e.getMessage());
+        }
+        return null;
+    }
+
+    public static FMLProxyPacket createNameMailboxPacket(TileEntityMailbox entity, String text) {
+        ByteBufOutputStream stream = new ByteBufOutputStream(Unpooled.buffer());
+        try {
+            stream.writeByte(PACKET_NAME_MAILBOX);
+            stream.writeInt(entity.xCoord);
+            stream.writeInt(entity.yCoord);
+            stream.writeInt(entity.zCoord);
+            stream.writeUTF(text);
             FMLProxyPacket packet = new FMLProxyPacket(stream.buffer(), MailboxMod.CHANNEL);
             stream.close();
             return packet;
