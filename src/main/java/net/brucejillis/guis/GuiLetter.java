@@ -7,6 +7,7 @@ import net.brucejillis.containers.ContainerLetter;
 import net.brucejillis.handlers.packets.PacketChangeInventory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -82,7 +83,7 @@ public class GuiLetter extends GuiContainer {
     protected void actionPerformed(GuiButton guibutton) {
         switch (guibutton.id) {
             case BUTTON_SIGN:
-                MailboxMod.channel.sendToServer(PacketChangeInventory.createWriteLetterPacket(player, "etxt"));
+                MailboxMod.channel.sendToServer(PacketChangeInventory.createWriteLetterPacket(player, pages));
                 player.closeScreen();
                 break;
             case BUTTON_NEXT_PAGE:
@@ -111,7 +112,9 @@ public class GuiLetter extends GuiContainer {
     }
 
     protected void keyTyped(char par1, int par2) {
-        super.keyTyped(par1, par2);
+        if (par2 == 1) {
+            player.closeScreen();
+        }
         keyTypedInLetter(par1, par2);
     }
 
@@ -127,11 +130,11 @@ public class GuiLetter extends GuiContainer {
                         return;
                     case 28:
                     case 156:
-                        this.func_146459_b("\n");
+                        appendToCurrentPage("\n");
                         return;
                     default:
                         if (ChatAllowedCharacters.isAllowedCharacter(c)) {
-                            this.func_146459_b(Character.toString(c));
+                            appendToCurrentPage(Character.toString(c));
                         }
                 }
         }
@@ -147,13 +150,12 @@ public class GuiLetter extends GuiContainer {
         }
     }
 
-    private void func_146459_b(String p_146459_1_) {
+    private void appendToCurrentPage(String str) {
         String s1 = getCurrentPage();
-        String s2 = s1 + p_146459_1_;
+        String s2 = s1 + str;
         int i = this.fontRendererObj.splitStringWidth(s2 + "" + EnumChatFormatting.BLACK + "_", 118);
-
-        if (i <= 118 && s2.length() < 256) {
-            this.func_146457_a(s2);
+        if (i <= 108 && s2.length() < 256) {
+            setCurrentPage(s2);
         }
     }
 
@@ -168,14 +170,14 @@ public class GuiLetter extends GuiContainer {
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
     }
 
-    public void drawScreen(int mouseX, int mouseY, float partial) {
+    @Override
+    protected void drawGuiContainerForegroundLayer(int p_146979_1_, int p_146979_2_) {
         String text = "";
         if (pages != null && currPage >= 0 && currPage < pages.tagCount()) {
             text = pages.getStringTagAt(currPage);
         }
         text = text + "" + EnumChatFormatting.BLACK + "_";
-        this.fontRendererObj.drawSplitString(text, guiLeft + 42, guiTop + 18, 118, 0);
-        super.drawScreen(mouseX, mouseY, partial);
+        this.fontRendererObj.drawSplitString(text, 42, 18, 118, 0);
     }
 
     @SideOnly(Side.CLIENT)

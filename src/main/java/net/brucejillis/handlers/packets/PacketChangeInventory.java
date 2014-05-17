@@ -1,5 +1,6 @@
 package net.brucejillis.handlers.packets;
 
+import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import cpw.mods.fml.relauncher.Side;
 import io.netty.buffer.ByteBuf;
@@ -14,6 +15,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.world.World;
 
 import java.io.IOException;
@@ -43,10 +46,11 @@ public class PacketChangeInventory {
         bbis.close();
     }
 
-    public static FMLProxyPacket createWriteLetterPacket(EntityPlayer player, String text) {
+    public static FMLProxyPacket createWriteLetterPacket(EntityPlayer player, NBTTagList pages) {
         ByteBufOutputStream dataStream = new ByteBufOutputStream(Unpooled.buffer());
         try {
             dataStream.writeByte(PACKET_WRITE_LETTER);
+            ByteBufUtils.writeTag(dataStream.buffer(), pages);
             dataStream.writeUTF(text);
             dataStream.writeInt(player.getEntityId());
             FMLProxyPacket packet = new FMLProxyPacket(dataStream.buffer(), MailboxMod.CHANNEL);
