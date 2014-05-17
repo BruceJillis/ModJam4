@@ -77,13 +77,16 @@ public class MailboxDeliveryData extends WorldSavedData {
             TileEntityMailbox entity = boxMap.get(tag.getString("name"));
             if (entity != null) {
                 for(int j = 0; j < entity.getSizeInventory(); j++) {
-                    LogHelper.log(String.valueOf(entity.getStackInSlot(j)));
                     if ((entity.getStackInSlot(j) != null) && (entity.getStackInSlot(j).getItem() instanceof ItemWrittenLetter)) {
                         NBTTagCompound stack = ItemWrittenLetter.ensureTagCompound(entity.getStackInSlot(j));
                         TileEntityMailbox toEntity = boxMap.get(stack.getString("To"));
+                        if (toEntity == entity)
+                            continue;
+                        LogHelper.log(String.valueOf(entity.getStackInSlot(j)) + " " + stack.getString("To"));
                         if (toEntity != null) {
                             int slot = toEntity.getFirstFreeInventorySlot(entity.getStackInSlot(j));
                             if (slot != -1) {
+                                LogHelper.log(String.format("from %s to %s", entity.getName(), toEntity.getName()));
                                 toEntity.setInventorySlotContents(slot, entity.getStackInSlot(j));
                                 entity.setInventorySlotContents(j, null);
                                 world.markBlockForUpdate(entity.xCoord, entity.yCoord, entity.zCoord);

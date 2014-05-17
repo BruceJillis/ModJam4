@@ -103,7 +103,8 @@ public class BlockMailbox extends BlockContainer {
         // remove mailbox address
         TileEntityMailbox te = (TileEntityMailbox)world.getTileEntity(x, y, z);
         te = te.getPrimaryEntity(world);
-        FMLCommonHandler.instance().bus().post(new MailBoxRemovedEvent(te.getName()));
+        if (!te.getName().equals(""))
+            FMLCommonHandler.instance().bus().post(new MailBoxRemovedEvent(te.getName()));
     }
 
     public static boolean isMailboxBase(int metadata) {
