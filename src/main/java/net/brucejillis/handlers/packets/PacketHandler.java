@@ -1,4 +1,4 @@
-package net.brucejillis.handlers;
+package net.brucejillis.handlers.packets;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent;

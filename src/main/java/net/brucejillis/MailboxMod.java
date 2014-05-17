@@ -10,7 +10,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import net.brucejillis.blocks.BlockMailbox;
 import net.brucejillis.handlers.GuiHandler;
 import net.brucejillis.handlers.MailboxDeliveryScheduler;
-import net.brucejillis.handlers.PacketHandler;
+import net.brucejillis.handlers.packets.PacketHandler;
 import net.brucejillis.items.ItemMailBox;
 import net.brucejillis.items.ItemUnwrittenLetter;
 import net.brucejillis.items.ItemWrittenLetter;
