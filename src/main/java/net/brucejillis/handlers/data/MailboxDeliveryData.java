@@ -105,15 +105,21 @@ public class MailboxDeliveryData extends WorldSavedData {
         tag.setTag("boxes", boxes);
     }
 
+    public static boolean isNameFree(String name) {
+        NBTTagList boxes = instance.boxes;
+        if (boxes == null)
+            return true;
+        for(int i = 0; i <= boxes.tagCount(); i++) {
+            if (boxes.getCompoundTagAt(i).getString("name").equals(name)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public boolean registerMailbox(String name, int x, int y, int z) {
         if (boxes == null) {
             boxes = new NBTTagList();
-        } else {
-            for(int i = 0; i <= boxes.tagCount(); i++) {
-                if (boxes.getCompoundTagAt(i).getString("name").equals(name)) {
-                    return false;
-                }
-            }
         }
         NBTTagCompound tag = new NBTTagCompound();
         tag.setInteger("x", x);

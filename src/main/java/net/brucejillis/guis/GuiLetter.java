@@ -53,8 +53,9 @@ public class GuiLetter extends GuiContainer {
         guiTop = (int) ((height - ySize) / 2.0f);
         Keyboard.enableRepeatEvents(true);
         // to field
-        to = new GuiTextField(fontRendererObj, guiLeft + 36, guiTop + 9, 130, 12);
+        to = new GuiTextField(fontRendererObj, guiLeft + 20, guiTop + 9, 120, 12);
         to.setTextColor(-1);
+        to.setMaxStringLength(40);
         to.setEnableBackgroundDrawing(true);
         // add buttons
         buttonList.clear();
@@ -87,7 +88,7 @@ public class GuiLetter extends GuiContainer {
         text = text + "" + EnumChatFormatting.BLACK + "_";
         fontRendererObj.drawSplitString(text, 42, 28, 120, 0);
         // to field label
-        fontRendererObj.drawString("To:", 7, 9, 0x000000);
+        fontRendererObj.drawString("To:", 7, 11, 0x000000);
     }
 
     protected void actionPerformed(GuiButton guibutton) {

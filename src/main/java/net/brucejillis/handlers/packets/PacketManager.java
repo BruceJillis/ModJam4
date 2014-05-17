@@ -10,6 +10,7 @@ import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.Unpooled;
 import net.brucejillis.MailboxMod;
 import net.brucejillis.events.MailBoxPlacedEvent;
+import net.brucejillis.handlers.data.MailboxDeliveryData;
 import net.brucejillis.items.ItemWrittenLetter;
 import net.brucejillis.tileentities.TileEntityMailbox;
 import net.brucejillis.util.LogHelper;
@@ -55,12 +56,15 @@ public class PacketManager {
                 int z = stream.readInt();
                 String name = stream.readUTF();
                 TileEntity te = world.getTileEntity(x, y, z);
-                if ((te != null) && (te instanceof TileEntityMailbox)) {
+                if ((te != null) && (te instanceof TileEntityMailbox) && MailboxDeliveryData.isNameFree(name)) {
                     TileEntityMailbox entity = (TileEntityMailbox)te;
                     entity.setName(name);
-                    world.markBlockForUpdate(x, y, z);
                     FMLCommonHandler.instance().bus().post(new MailBoxPlacedEvent(name, x, y, z));
+                } else {
+                    TileEntityMailbox entity = (TileEntityMailbox)te;
+                    entity.setNameTaken();
                 }
+                world.markBlockForUpdate(x, y, z);
         }
         stream.close();
     }

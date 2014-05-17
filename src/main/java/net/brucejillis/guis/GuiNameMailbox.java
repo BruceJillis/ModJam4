@@ -44,6 +44,7 @@ public class GuiNameMailbox extends GuiContainer {
         // name field
         name = new GuiTextField(fontRendererObj, guiLeft + 25, guiTop + 60, 125, 12);
         name.setEnableBackgroundDrawing(true);
+        name.setMaxStringLength(40);
         name.setTextColor(-1);
         // add ok button
         buttonList.clear();
@@ -67,7 +68,7 @@ public class GuiNameMailbox extends GuiContainer {
         switch (guibutton.id) {
             case BUTTON_OK:
                 if (!name.getText().equals("")) {
-//                    entity.setName(name.getText());
+                    entity.setName(name.getText());
                     MailboxMod.channel.sendToServer(PacketManager.createNameMailboxPacket(entity, name.getText()));
                     mc.thePlayer.closeScreen();
                     mc.thePlayer.openGui(MailboxMod.instance, MailboxMod.GUI_MAILBOX, mc.theWorld, entity.xCoord, entity.yCoord, entity.zCoord);
