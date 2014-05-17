@@ -16,7 +16,7 @@ public class TileEntityMailbox extends TileEntity implements IInventory {
     private int baseY = -1;
     private int baseZ = -1;
 
-    private String name = null;
+    private String name = "";
 
     public TileEntityMailbox() {
         inventory = new ItemStack[6];

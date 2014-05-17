@@ -12,15 +12,16 @@ public class ContainerMailbox extends Container {
     private final TileEntityMailbox entity;
     private final InventoryPlayer inventory;
 
-    public ContainerMailbox(InventoryPlayer inventory, TileEntityMailbox entity) {
+    public ContainerMailbox(InventoryPlayer inventory, TileEntityMailbox entity, boolean slots) {
         this.entity = entity;
         this.inventory = inventory;
-        // create and bind slots for mailbox queue
-        for (int i = 0; i < 6; i++) {
-            addSlotToContainer(new MailboxSlot(entity, i, 9 + (i * 18), 17));
+        if (slots) {
+            // create and bind slots for mailbox queue
+            for (int i = 0; i < 6; i++) {
+                addSlotToContainer(new MailboxSlot(entity, i, 9 + (i * 18), 17));
+            }
+            bindPlayerInventory(inventory, 9, 54, 9, 112);
         }
-        bindPlayerInventory(inventory, 9, 54, 9, 112);
-
     }
 
     private void bindPlayerInventory(InventoryPlayer inventory, int xOffInv, int yOffInv, int xOffHotbar, int yOffHotbar) {
