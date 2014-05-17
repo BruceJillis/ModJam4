@@ -91,7 +91,7 @@ public class UnwrittenLetterInventory implements IInventory {
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
-        return false;
+        return true;
     }
 
     public void readFromNBT(NBTTagCompound tag) {

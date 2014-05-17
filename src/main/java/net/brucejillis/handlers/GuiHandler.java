@@ -7,6 +7,7 @@ import net.brucejillis.containers.ContainerMailbox;
 import net.brucejillis.containers.inventories.UnwrittenLetterInventory;
 import net.brucejillis.guis.GuiLetter;
 import net.brucejillis.guis.GuiMailbox;
+import net.brucejillis.guis.GuiNameMailbox;
 import net.brucejillis.items.ItemUnwrittenLetter;
 import net.brucejillis.tileentities.TileEntityMailbox;
 import net.minecraft.client.Minecraft;
@@ -22,6 +23,7 @@ public class GuiHandler implements IGuiHandler {
         if (!Minecraft.isGuiEnabled())
             return null;
         switch (ID) {
+            case MailboxMod.GUI_NAME_MAILBOX:
             case MailboxMod.GUI_MAILBOX:
                 TileEntity entity = world.getTileEntity(x, y, z);
                 if ((entity != null) && (entity instanceof TileEntityMailbox)) {
@@ -40,9 +42,14 @@ public class GuiHandler implements IGuiHandler {
         // play nice with disabling the ui via F1
         if (!Minecraft.isGuiEnabled())
             return null;
+        TileEntity entity = world.getTileEntity(x, y, z);
         switch (ID) {
+            case MailboxMod.GUI_NAME_MAILBOX:
+                if ((entity != null) && (entity instanceof TileEntityMailbox)) {
+                    TileEntityMailbox te = (TileEntityMailbox)entity;
+                    return new GuiNameMailbox(player, te.getPrimaryEntity(world));
+                }
             case MailboxMod.GUI_MAILBOX:
-                TileEntity entity = world.getTileEntity(x, y, z);
                 if ((entity != null) && (entity instanceof TileEntityMailbox)) {
                     TileEntityMailbox te = (TileEntityMailbox)entity;
                     return new GuiMailbox(player, te.getPrimaryEntity(world));

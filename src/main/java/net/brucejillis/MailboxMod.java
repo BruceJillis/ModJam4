@@ -28,7 +28,6 @@ public class MailboxMod {
     public static final String ID = "mailboxmod";
     public static final String VERSION = "0.1";
     public static final String CHANNEL = "mailchannel";
-
     // net
     public static FMLEventChannel channel;
 
@@ -37,8 +36,9 @@ public class MailboxMod {
     public static MailboxMod instance;
 
     // GUI constants
-    public static final int GUI_MAILBOX = 1;
-    public static final int GUI_LETTER  = 2;
+    public static final int GUI_MAILBOX      = 1;
+    public static final int GUI_LETTER       = 2;
+    public static final int GUI_NAME_MAILBOX = 3;
 
     // proxies
     @SidedProxy(serverSide = "net.brucejillis.proxies.CommonProxy", clientSide = "net.brucejillis.proxies.ClientProxy")

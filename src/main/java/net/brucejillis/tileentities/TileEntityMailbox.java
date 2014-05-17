@@ -16,6 +16,8 @@ public class TileEntityMailbox extends TileEntity implements IInventory {
     private int baseY = -1;
     private int baseZ = -1;
 
+    private String name = null;
+
     public TileEntityMailbox() {
         inventory = new ItemStack[6];
     }
@@ -124,6 +126,8 @@ public class TileEntityMailbox extends TileEntity implements IInventory {
         baseX = tag.getInteger("baseX");
         baseY = tag.getInteger("baseY");
         baseZ = tag.getInteger("baseZ");
+        // read name
+        name = tag.getString("name");
     }
 
     @Override
@@ -145,5 +149,15 @@ public class TileEntityMailbox extends TileEntity implements IInventory {
         tag.setInteger("baseX", baseX);
         tag.setInteger("baseY", baseY);
         tag.setInteger("baseZ", baseZ);
+        // store name
+        tag.setString("name", name);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
