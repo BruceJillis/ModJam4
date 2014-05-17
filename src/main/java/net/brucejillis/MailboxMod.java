@@ -81,7 +81,6 @@ public class MailboxMod {
         proxy.registerRenderers();
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
         FMLCommonHandler.instance().bus().register(new MailboxDeliveryScheduler());
-        //
         channel = NetworkRegistry.INSTANCE.newEventDrivenChannel(CHANNEL);
         channel.register(new PacketHandler());
     }
