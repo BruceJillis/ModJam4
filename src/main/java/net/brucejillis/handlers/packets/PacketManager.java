@@ -61,8 +61,7 @@ public class PacketManager {
                     entity.setName(name);
                     FMLCommonHandler.instance().bus().post(new MailBoxPlacedEvent(name, x, y, z));
                 } else {
-                    TileEntityMailbox entity = (TileEntityMailbox)te;
-                    entity.setNameTaken();
+                    // todo: name was taken
                 }
                 world.markBlockForUpdate(x, y, z);
         }
