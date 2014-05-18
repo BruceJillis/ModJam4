@@ -35,6 +35,7 @@ public class GuiHandler implements IGuiHandler {
                     return new ContainerMailbox(player.inventory, te.getPrimaryEntity(world), slots);
                 }
                 break;
+            case MailboxMod.GUI_READ_LETTER:
             case MailboxMod.GUI_LETTER:
                 return new ContainerUnwrittenLetter(player, player.inventory, new UnwrittenLetterInventory(player.getHeldItem()));
                 //return new ContainerUnwrittenLetter(player.inventory, new UnwrittenLetterInventory(player.getCurrentEquippedItem()), player.getCurrentEquippedItem());
