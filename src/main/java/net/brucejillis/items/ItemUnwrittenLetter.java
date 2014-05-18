@@ -19,11 +19,13 @@ public class ItemUnwrittenLetter extends Item {
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-        if (!player.isSneaking() && world.isRemote) {
+        if (!player.isSneaking() && !world.isRemote) {
             player.openGui(MailboxMod.instance, MailboxMod.GUI_LETTER, world, (int) player.posX, (int) player.posY, (int) player.posZ);
         }
         return stack;
     }
+
+
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List par3List, boolean par4) {
