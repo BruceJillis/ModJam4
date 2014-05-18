@@ -36,12 +36,7 @@ public class ItemWrittenLetter extends Item {
         String sender = tag.getString("Sender");
         String to = tag.getString("To");
         String sent = tag.getString("Sent");
-        if (sent == null || sent.equals("")) {
-            sent = "Unsent";
-        } else {
-            sent = String.format("Sent (from: %s)", sent);
-        }
-        list.add(String.format("To %s", to));
+        list.add(String.format("From %s To %s", sender, to));
         // attachements pages line
         NBTTagList pages = tag.getTagList("Pages", Constants.NBT.TAG_STRING);
         NBTTagList attachments = tag.getTagList("ItemInventory", Constants.NBT.TAG_COMPOUND);
@@ -64,8 +59,6 @@ public class ItemWrittenLetter extends Item {
             }
             //list.add(String.format("To %s (%d pages)", to, pages.tagCount()));
         }
-        list.add(sent);
-
         String sneak = pages.getStringTagAt(0).split("\n")[0];
         list.add(StringUtils.abbreviate(sneak, 16));
     }
