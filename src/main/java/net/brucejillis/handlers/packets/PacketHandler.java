@@ -25,4 +25,10 @@ public class PacketHandler {
             }
         }
     }
+    @SubscribeEvent
+    public void onClientPacket(FMLNetworkEvent.ClientCustomPacketEvent event) {
+        LogHelper.log("client packet!!");
+    }
+
+
 }

@@ -1,5 +1,6 @@
 package net.brucejillis.tileentities;
 
+import net.brucejillis.util.LogHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -117,11 +118,13 @@ public class TileEntityMailbox extends TileEntity implements IInventory {
     public Packet getDescriptionPacket() {
         NBTTagCompound nbtTag = new NBTTagCompound();
         writeToNBT(nbtTag);
+        LogHelper.log("packet made");
         return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, nbtTag);
     }
 
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+        LogHelper.log("packet read");
         readFromNBT(pkt.func_148857_g());
     }
 

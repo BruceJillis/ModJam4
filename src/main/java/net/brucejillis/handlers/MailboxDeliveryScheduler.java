@@ -2,7 +2,9 @@ package net.brucejillis.handlers;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import cpw.mods.fml.relauncher.Side;
+import net.brucejillis.MailboxMod;
 import net.brucejillis.events.MailBoxPlacedEvent;
 import net.brucejillis.events.MailBoxRemovedEvent;
 import net.brucejillis.handlers.data.MailboxDeliveryData;
@@ -19,15 +21,13 @@ public class MailboxDeliveryScheduler {
     }
 
     @SubscribeEvent
-    public void serverTickHandler(TickEvent.ServerTickEvent event) {
-        if (mc.theWorld == null)
+    public void serverTickHandler(TickEvent.PlayerTickEvent event) {
+        if (event.side == Side.CLIENT)
             return;
-        if (event.side != Side.SERVER)
-            return;
-        if (event.phase != TickEvent.Phase.START)
+        if (event.phase == TickEvent.Phase.END)
             return;
         MailboxDeliveryData data = MailboxDeliveryData.forWorld(mc.theWorld);
-        data.tick();
+        data.tick(event.player);
     }
 
     @SubscribeEvent

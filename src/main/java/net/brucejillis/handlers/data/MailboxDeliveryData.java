@@ -1,15 +1,25 @@
 package net.brucejillis.handlers.data;
 
+import cpw.mods.fml.common.network.internal.FMLProxyPacket;
+import io.netty.buffer.Unpooled;
+import net.brucejillis.MailboxMod;
 import net.brucejillis.items.ItemWrittenLetter;
 import net.brucejillis.tileentities.TileEntityMailbox;
 import net.brucejillis.util.LogHelper;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.server.management.PlayerManager;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraftforge.common.util.Constants;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,25 +43,26 @@ public class MailboxDeliveryData extends WorldSavedData {
         this.world = world;
     }
 
-    public void tick() {
-        int hour = timeToHours(getDayTime(world));
+    public void tick(EntityPlayer player) {
+        int hour = timeToHours(getDayTime(this.world));
         if (hour != prev) {
             LogHelper.log("hour: %d", hour);
             LogHelper.log("hourly delivery!", hour);
-            doDelivery();
-
+            doDelivery(player);
+            saveAllData();
             prev = hour;
+            return;
         }
         if ((hour == 2) && (state == MORNING)) {
             LogHelper.log("morning delivery!", hour);
-            doDelivery();
+            doDelivery(player);
             // mark delivery done
             state = AFTERNOON;
             saveAllData();
         }
         if ((hour == 10) && (state == AFTERNOON)) {
             LogHelper.log("afternoon delivery!", hour);
-            doDelivery();
+            doDelivery(player);
             // mark delivery done
             state = MORNING;
             saveAllData();
@@ -62,15 +73,16 @@ public class MailboxDeliveryData extends WorldSavedData {
         return (world.getTotalWorldTime() % 24000);
     }
 
-    private void doDelivery() {
+    private void doDelivery(EntityPlayer player) {
         // loop over all mailboxes and deliver letters
         NBTTagList boxes = instance.boxes;
         if (boxes == null)
             return;
+        EntityPlayerMP playerMP = (EntityPlayerMP)player;
         Map<String, TileEntityMailbox> boxMap = new HashMap<String, TileEntityMailbox>();
         for(int i = 0; i <= boxes.tagCount(); i++) {
             NBTTagCompound tag = boxes.getCompoundTagAt(i);
-            boxMap.put(tag.getString("name"), (TileEntityMailbox)world.getTileEntity(tag.getInteger("x"), tag.getInteger("y"), tag.getInteger("z")));
+            boxMap.put(tag.getString("name"), (TileEntityMailbox) playerMP.worldObj.getTileEntity(tag.getInteger("x"), tag.getInteger("y"), tag.getInteger("z")));
         }
         for(int i = 0; i <= boxes.tagCount(); i++) {
             NBTTagCompound tag = boxes.getCompoundTagAt(i);
@@ -88,9 +100,11 @@ public class MailboxDeliveryData extends WorldSavedData {
                             if (slot != -1) {
                                 LogHelper.log(String.format("from %s to %s", entity.getName(), toEntity.getName()));
                                 toEntity.setInventorySlotContents(slot, entity.getStackInSlot(j));
+                                toEntity.markDirty();
                                 entity.setInventorySlotContents(j, null);
-                                world.markBlockForUpdate(entity.xCoord, entity.yCoord, entity.zCoord);
-                                world.markBlockForUpdate(toEntity.xCoord, toEntity.yCoord, toEntity.zCoord);
+                                entity.markDirty();
+                                playerMP.worldObj.markBlockForUpdate(entity.xCoord, entity.yCoord, entity.zCoord);
+                                playerMP.worldObj.markBlockForUpdate(toEntity.xCoord, toEntity.yCoord, toEntity.zCoord);
                             }
                         }
                     }
@@ -117,8 +131,9 @@ public class MailboxDeliveryData extends WorldSavedData {
     }
 
     public static MailboxDeliveryData forWorld(World world) {
-        if (MailboxDeliveryData.instance != null)
+        if (MailboxDeliveryData.instance != null) {
             return MailboxDeliveryData.instance;
+        }
         MapStorage storage = world.perWorldStorage;
         MailboxDeliveryData result = (MailboxDeliveryData)storage.loadData(MailboxDeliveryData.class, KEY);
         if (result == null) {
@@ -127,6 +142,10 @@ public class MailboxDeliveryData extends WorldSavedData {
         }
         MailboxDeliveryData.instance = result;
         return result;
+    }
+
+    private void setWorld(World world) {
+        this.world = world;
     }
 
     public void saveAllData() {
@@ -183,5 +202,11 @@ public class MailboxDeliveryData extends WorldSavedData {
                 return;
             }
         }
+    }
+
+    public int getMailboxesCount() {
+        if (boxes != null)
+            return boxes.tagCount();
+        return -1;
     }
 }
