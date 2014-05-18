@@ -49,24 +49,24 @@ public class MailboxDeliveryData extends WorldSavedData {
             LogHelper.log("hour: %d", hour);
             LogHelper.log("hourly delivery!", hour);
             doDelivery(player);
-            saveAllData();
             prev = hour;
             return;
         }
-        if ((hour == 2) && (state == MORNING)) {
-            LogHelper.log("morning delivery!", hour);
-            doDelivery(player);
-            // mark delivery done
-            state = AFTERNOON;
-            saveAllData();
-        }
-        if ((hour == 10) && (state == AFTERNOON)) {
-            LogHelper.log("afternoon delivery!", hour);
-            doDelivery(player);
-            // mark delivery done
-            state = MORNING;
-            saveAllData();
-        }
+        return;
+//        if ((hour == 2) && (state == MORNING)) {
+//            LogHelper.log("morning delivery!", hour);
+//            doDelivery(player);
+//            // mark delivery done
+//            state = AFTERNOON;
+//            saveAllData();
+//        }
+//        if ((hour == 10) && (state == AFTERNOON)) {
+//            LogHelper.log("afternoon delivery!", hour);
+//            doDelivery(player);
+//            // mark delivery done
+//            state = MORNING;
+//            saveAllData();
+//        }
     }
 
     private static long getDayTime(World world) {
@@ -112,6 +112,7 @@ public class MailboxDeliveryData extends WorldSavedData {
                 }
             }
         }
+        markDirty();
     }
 
     public static int hoursUntilDelivery(World world) {
