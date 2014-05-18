@@ -1,5 +1,6 @@
 package net.brucejillis.containers.slots;
 
+import net.brucejillis.items.ItemUnwrittenLetter;
 import net.brucejillis.items.ItemWrittenLetter;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
@@ -12,7 +13,7 @@ public class AttachmentSlot extends Slot {
 
     @Override
     public boolean isItemValid(ItemStack stack) {
-        return true;
+        return !(stack.getItem() instanceof ItemUnwrittenLetter);
     }
 
     @Override

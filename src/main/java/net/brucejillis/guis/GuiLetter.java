@@ -40,8 +40,8 @@ public class GuiLetter extends GuiContainer {
     int totalPages = 1;
     GuiTextField to;
 
-    public GuiLetter(EntityPlayer player, InventoryPlayer inventory, UnwrittenLetterInventory containerItem) {
-        super(containerItem.i);
+    public GuiLetter(ContainerUnwrittenLetter containerUnwrittenLetter, EntityPlayer player) {
+        super(containerUnwrittenLetter);
         this.player = player;
         pages = new NBTTagList();
         pages.appendTag(new NBTTagString(""));
