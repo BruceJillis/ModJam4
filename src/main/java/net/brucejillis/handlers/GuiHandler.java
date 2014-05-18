@@ -62,7 +62,7 @@ public class GuiHandler implements IGuiHandler {
                 }
                 break;
             case MailboxMod.GUI_LETTER:
-                return new GuiLetter(new ContainerUnwrittenLetter(player, player.inventory, new UnwrittenLetterInventory(player.getHeldItem())), player);
+                return new GuiLetter(new ContainerUnwrittenLetter(player, player.inventory, new UnwrittenLetterInventory(player.getHeldItem())), player, player.getHeldItem());
             case MailboxMod.GUI_READ_LETTER:
                 return new GuiReadLetter(new ContainerUnwrittenLetter(player, player.inventory, new UnwrittenLetterInventory(player.getHeldItem())), player, player.getHeldItem());
         }

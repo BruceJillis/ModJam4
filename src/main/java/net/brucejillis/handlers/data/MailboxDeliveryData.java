@@ -113,6 +113,13 @@ public class MailboxDeliveryData extends WorldSavedData {
         markDirty();
         world.perWorldStorage.saveAllData();
     }
+    public static int minutesUntilDelivery(World world) {
+        long mins = getDayTime(world) % 1000;
+        if (mins < 250) {
+            return 0;
+        }
+        return 60 - ((int)Math.round((float)mins / 250.0) * 15);
+    }
 
     public static int hoursUntilDelivery(World world) {
         return 1;

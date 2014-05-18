@@ -34,16 +34,18 @@ public class GuiLetter extends GuiContainer {
     static final int BUTTON_PREV_NAME = 5;
 
     EntityPlayer player;
+    ItemStack inventoryItem;
     ContainerUnwrittenLetter container;
-    NBTTagList pages;
 
+    NBTTagList pages;
     int currPage = 0;
     int totalPages = 1;
     GuiTextField to;
 
-    public GuiLetter(ContainerUnwrittenLetter containerUnwrittenLetter, EntityPlayer player) {
+    public GuiLetter(ContainerUnwrittenLetter containerUnwrittenLetter, EntityPlayer player, ItemStack inventoryItem) {
         super(containerUnwrittenLetter);
         this.container = containerUnwrittenLetter;
+        this.inventoryItem = inventoryItem;
         this.player = player;
         pages = new NBTTagList();
         pages.appendTag(new NBTTagString(""));
@@ -104,6 +106,7 @@ public class GuiLetter extends GuiContainer {
                 NBTTagCompound tag = new NBTTagCompound();
                 tag.setTag("Pages", pages);
                 tag.setString("To", to.getText());
+                inventoryItem.writeToNBT(tag);
                 MailboxMod.channel.sendToServer(PacketManager.createWriteLetterPacket(player, tag));
                 player.closeScreen();
                 break;

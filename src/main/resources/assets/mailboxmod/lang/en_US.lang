@@ -4,7 +4,7 @@ tile.blockMailbox.name=Mail Box
 
 mailbox.title=Mail Box
 mailbox.delivery=Next Delivery
-mailbox.short.duration=hrs.
+mailbox.short.duration=mins.
 
 item.itemUnwrittenLetter.name=Unwritten Letter
 item.itemWrittenLetter.name=Written Letter

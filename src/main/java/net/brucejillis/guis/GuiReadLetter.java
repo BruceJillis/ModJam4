@@ -1,19 +1,12 @@
 package net.brucejillis.guis;
 
-import net.brucejillis.MailboxMod;
 import net.brucejillis.containers.ContainerUnwrittenLetter;
-import net.brucejillis.handlers.packets.PacketManager;
 import net.brucejillis.items.ItemWrittenLetter;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.Constants;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
@@ -23,7 +16,7 @@ public class GuiReadLetter extends GuiLetter {
     private static final int BUTTON_OK = 6;
 
     public GuiReadLetter(ContainerUnwrittenLetter containerUnwrittenLetter, EntityPlayer player, ItemStack stack) {
-        super(containerUnwrittenLetter, player);
+        super(containerUnwrittenLetter, player, player.getHeldItem());
         NBTTagCompound tag = ItemWrittenLetter.ensureTagCompound(stack);
         pages = tag.getTagList("Pages", Constants.NBT.TAG_STRING);
         totalPages = pages.tagCount();
