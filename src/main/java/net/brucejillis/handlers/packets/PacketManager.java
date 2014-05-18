@@ -31,6 +31,7 @@ import java.io.IOException;
 public class PacketManager {
     private static final int PACKET_WRITE_LETTER = 1;
     private static final int PACKET_NAME_MAILBOX = 2;
+    private static final int PACKET_OPEN_GUI = 3;
 
     public static void processPacketOnClientSide(ByteBuf parBB, Side parSide) throws IOException {
     }
@@ -65,6 +66,10 @@ public class PacketManager {
                 }
                 world.markBlockForUpdate(x, y, z);
                 break;
+            case PACKET_OPEN_GUI:
+                int id = stream.readInt();
+                player.openGui(MailboxMod.instance, id, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
+                break;
         }
         stream.close();
     }
@@ -74,6 +79,20 @@ public class PacketManager {
         try {
             stream.writeByte(PACKET_WRITE_LETTER);
             ByteBufUtils.writeTag(stream.buffer(), pages);
+            FMLProxyPacket packet = new FMLProxyPacket(stream.buffer(), MailboxMod.CHANNEL);
+            stream.close();
+            return packet;
+        } catch (IOException e) {
+            LogHelper.error(e.getMessage());
+        }
+        return null;
+    }
+
+    public static FMLProxyPacket createOpenGuiPacket(int gui_id) {
+        ByteBufOutputStream stream = new ByteBufOutputStream(Unpooled.buffer());
+        try {
+            stream.writeByte(PACKET_OPEN_GUI);
+            stream.writeInt(gui_id);
             FMLProxyPacket packet = new FMLProxyPacket(stream.buffer(), MailboxMod.CHANNEL);
             stream.close();
             return packet;

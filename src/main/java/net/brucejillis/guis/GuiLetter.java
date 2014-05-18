@@ -33,7 +33,8 @@ public class GuiLetter extends GuiContainer {
     static final int BUTTON_NEXT_NAME = 4;
     static final int BUTTON_PREV_NAME = 5;
 
-    final EntityPlayer player;
+    EntityPlayer player;
+    ContainerUnwrittenLetter container;
     NBTTagList pages;
 
     int currPage = 0;
@@ -42,6 +43,7 @@ public class GuiLetter extends GuiContainer {
 
     public GuiLetter(ContainerUnwrittenLetter containerUnwrittenLetter, EntityPlayer player) {
         super(containerUnwrittenLetter);
+        this.container = containerUnwrittenLetter;
         this.player = player;
         pages = new NBTTagList();
         pages.appendTag(new NBTTagString(""));

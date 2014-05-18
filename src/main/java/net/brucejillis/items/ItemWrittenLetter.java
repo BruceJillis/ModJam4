@@ -1,6 +1,7 @@
 package net.brucejillis.items;
 
 import net.brucejillis.MailboxMod;
+import net.brucejillis.handlers.packets.PacketManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -21,8 +22,9 @@ public class ItemWrittenLetter extends Item {
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-        if (!player.isSneaking() && !world.isRemote) {
+        if (!player.isSneaking() && world.isRemote) {
             player.openGui(MailboxMod.instance, MailboxMod.GUI_READ_LETTER, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
+            MailboxMod.channel.sendToServer(PacketManager.createOpenGuiPacket(MailboxMod.GUI_READ_LETTER));
         }
         return stack;
     }
