@@ -11,7 +11,7 @@ import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 
 public class RenderBlockMailbox extends TileEntitySpecialRenderer {
-    private final ResourceLocation modelLocation = new ResourceLocation(MailboxMod.ID, "/textures/models/mailbox2.obj");
+    private final ResourceLocation modelLocation = new ResourceLocation(MailboxMod.ID, "/models/mailbox2.obj");
     private final ResourceLocation textureLocation = new ResourceLocation(MailboxMod.ID, "/textures/models/texturemap.png");
 
     private final IModelCustom model;
