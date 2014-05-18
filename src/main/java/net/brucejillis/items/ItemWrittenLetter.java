@@ -7,6 +7,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import org.apache.commons.lang3.StringUtils;
@@ -38,13 +39,33 @@ public class ItemWrittenLetter extends Item {
         if (sent == null || sent.equals("")) {
             sent = "Unsent";
         } else {
-            sent = String.format("Sent (reply: %s)", sent);
+            sent = String.format("Sent (from: %s)", sent);
         }
+        list.add(String.format("To %s", to));
+        // attachements pages line
         NBTTagList pages = tag.getTagList("Pages", Constants.NBT.TAG_STRING);
-        if (pages.tagCount() == 1)
-            list.add(String.format("From %s To %s (1 page) / %s", sender, to, sent));
-        else
-            list.add(String.format("From %s To %s (%d pages) / %s", sender, to, pages.tagCount(), sent));
+        NBTTagList attachments = tag.getTagList("ItemInventory", Constants.NBT.TAG_COMPOUND);
+        if (pages.tagCount() == 1) {
+            //list.add(String.format("To %s (1 page)", to));
+            if (attachments.tagCount() == 1) {
+                list.add(EnumChatFormatting.DARK_GRAY + String.format("(1 page / 1 attachment)"));
+            } else if (attachments.tagCount() >= 1) {
+                list.add(EnumChatFormatting.DARK_GRAY + String.format("(1 page / %d attachments)", attachments.tagCount()));
+            } else {
+                list.add(EnumChatFormatting.DARK_GRAY + String.format("(1 page)"));
+            }
+        } else {
+            if (attachments.tagCount() == 1) {
+                list.add(EnumChatFormatting.DARK_GRAY + String.format("(%d pages / 1 attachment)", pages.tagCount()));
+            } else if (attachments.tagCount() >= 1) {
+                list.add(EnumChatFormatting.DARK_GRAY + String.format("(%d pages / %d attachments)", pages.tagCount(), attachments.tagCount()));
+            } else {
+                list.add(EnumChatFormatting.DARK_GRAY + String.format("(%d pages)", pages.tagCount()));
+            }
+            //list.add(String.format("To %s (%d pages)", to, pages.tagCount()));
+        }
+        list.add(sent);
+
         String sneak = pages.getStringTagAt(0).split("\n")[0];
         list.add(StringUtils.abbreviate(sneak, 16));
     }

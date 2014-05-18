@@ -16,21 +16,23 @@ import org.lwjgl.opengl.GL11;
 
 public class GuiNameMailbox extends GuiContainer {
     private ResourceLocation background = new ResourceLocation(MailboxMod.ID, "/textures/gui/name_mailbox.png");
-
     // buttons
     private static final int BUTTON_OK = 1;
 
     // width and height of the gui
     private int xSize = 0;
+
     private int ySize = 0;
 
     // mailbox primary entity
     private final TileEntityMailbox entity;
+    private EntityPlayer player;
 
     private GuiTextField name;
 
     public GuiNameMailbox(EntityPlayer player, TileEntityMailbox entity) {
         super(new ContainerMailbox(player.inventory, entity, false));
+        this.player = player;
         this.entity = entity;
         xSize = 195;
         ySize = 136;
@@ -46,6 +48,7 @@ public class GuiNameMailbox extends GuiContainer {
         name.setEnableBackgroundDrawing(true);
         name.setMaxStringLength(40);
         name.setTextColor(-1);
+        name.setText(player.getDisplayName());
         // add ok button
         buttonList.clear();
         buttonList.add(new GuiButton(BUTTON_OK, guiLeft + 73, guiTop + 100, 25, 20, "Ok"));
@@ -78,7 +81,8 @@ public class GuiNameMailbox extends GuiContainer {
     }
 
     protected void keyTyped(char par1, int par2) {
-        super.keyTyped(par1, par2);
+        if (!name.isFocused())
+            super.keyTyped(par1, par2);
         name.textboxKeyTyped(par1, par2);
     }
 
