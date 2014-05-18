@@ -39,8 +39,8 @@ public class RenderItemMailBox implements IItemRenderer {
             //GL11.glTranslatef(0f, -0.25f, 0f);
         } else {
             GL11.glScalef(0.5f, 0.40f, 0.5f);
-            GL11.glRotatef(130.0f, 0f, 1f, 0f);
-            //GL11.glTranslatef(0f, 0.5f, 0f);
+            GL11.glRotatef(180.0f, 0f, 1f, 0f);
+            GL11.glTranslatef(0.8f, -3.5f, 0f);
         }
         mc.renderEngine.bindTexture(textureLocation);
         model.renderAll();

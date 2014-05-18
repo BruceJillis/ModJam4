@@ -19,8 +19,10 @@ import net.brucejillis.tileentities.TileEntityMailbox;
 import net.brucejillis.util.LogHelper;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 
 @Mod(modid = MailboxMod.ID, version = MailboxMod.VERSION)
 public class MailboxMod {
@@ -77,6 +79,22 @@ public class MailboxMod {
         GameRegistry.registerItem(itemUnwrittenLetter, "itemUnwrittenLetter");
         itemWrittenLetter = new ItemWrittenLetter();
         GameRegistry.registerItem(itemWrittenLetter, "itemWrittenLetter");
+        // register recipes
+        // mailbox recipe
+        GameRegistry.addShapedRecipe(new ItemStack(itemMailbox, 1), new Object[] {
+         "AAA",
+         "  B",
+         "  B",
+         'A', Items.iron_ingot,
+         'B', Items.stick
+        });
+        // letter recipe
+        GameRegistry.addShapedRecipe(new ItemStack(itemUnwrittenLetter, 3), new Object[] {
+         " A ",
+         "AAA",
+         "AAA",
+         'A', Items.paper
+        });
         // register various stuff
         proxy.registerRenderers();
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
