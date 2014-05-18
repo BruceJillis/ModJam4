@@ -40,7 +40,7 @@ public class BlockMailbox extends BlockContainer {
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_) {
         if (player.isSneaking() || world.isRemote) {
-            return true;
+            return false;
         }
         TileEntity te = world.getTileEntity(x, y, z);
         if ((te != null) && (te instanceof TileEntityMailbox)) {
@@ -53,8 +53,9 @@ public class BlockMailbox extends BlockContainer {
                 // open the mailbox's gui
                 player.openGui(MailboxMod.instance, MailboxMod.GUI_MAILBOX, world, x, y, z);
             }
+            return true;
         }
-        return true;
+        return false;
     }
 
     @Override

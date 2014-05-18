@@ -21,8 +21,8 @@ public class ItemWrittenLetter extends Item {
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-        if (!player.isSneaking() && world.isRemote) {
-            player.openGui(MailboxMod.instance, MailboxMod.GUI_READ_LETTER, world, (int) player.posX, (int) player.posY, (int) player.posZ);
+        if (!player.isSneaking() && !world.isRemote) {
+            player.openGui(MailboxMod.instance, MailboxMod.GUI_READ_LETTER, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
         }
         return stack;
     }
