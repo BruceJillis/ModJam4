@@ -15,7 +15,7 @@ import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
 
 public class GuiNameMailbox extends GuiContainer {
-    private ResourceLocation background = new ResourceLocation(MailboxMod.ID, "/textures/gui/name_mailbox.png");
+    private ResourceLocation background = new ResourceLocation(MailboxMod.ID, "textures/gui/name_mailbox.png");
     // buttons
     private static final int BUTTON_OK = 1;
 

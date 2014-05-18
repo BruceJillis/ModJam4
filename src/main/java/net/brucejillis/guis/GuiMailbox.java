@@ -12,7 +12,7 @@ import org.lwjgl.opengl.GL11;
 
 public class GuiMailbox extends GuiContainer {
     private final TileEntityMailbox entity;
-    private ResourceLocation background = new ResourceLocation(MailboxMod.ID, "/textures/gui/mailbox.png");
+    private ResourceLocation background = new ResourceLocation(MailboxMod.ID, "textures/gui/mailbox.png");
 
     private int xSize = 0;
     private int ySize = 0;

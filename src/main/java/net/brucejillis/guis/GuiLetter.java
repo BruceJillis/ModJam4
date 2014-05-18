@@ -21,7 +21,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 public class GuiLetter extends GuiContainer {
-    static ResourceLocation background = new ResourceLocation(MailboxMod.ID, "/textures/gui/letter.png");
+    static ResourceLocation background = new ResourceLocation(MailboxMod.ID, "textures/gui/letter.png");
 
     // button ids
     static final int BUTTON_SIGN = 1;
