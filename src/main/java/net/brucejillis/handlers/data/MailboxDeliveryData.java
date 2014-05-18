@@ -44,15 +44,13 @@ public class MailboxDeliveryData extends WorldSavedData {
     }
 
     public void tick(EntityPlayer player) {
-        int hour = timeToHours(getDayTime(this.world));
+        int hour = timeToHours(getDayTime(((EntityPlayerMP)player).worldObj));
         if (hour != prev) {
             LogHelper.log("hour: %d", hour);
             LogHelper.log("hourly delivery!", hour);
             doDelivery(player);
             prev = hour;
-            return;
         }
-        return;
 //        if ((hour == 2) && (state == MORNING)) {
 //            LogHelper.log("morning delivery!", hour);
 //            doDelivery(player);
@@ -113,9 +111,12 @@ public class MailboxDeliveryData extends WorldSavedData {
             }
         }
         markDirty();
+        world.perWorldStorage.saveAllData();
     }
 
     public static int hoursUntilDelivery(World world) {
+        return 1;
+        /*
         int hour = timeToHours(getDayTime(world));
         // time to morning delivery
         if (hour >= 10) {
@@ -126,6 +127,7 @@ public class MailboxDeliveryData extends WorldSavedData {
         }
         // time to afternoon delivery
         return Math.abs(hour - 10);
+        */
     }
 
     private static int timeToHours(long time) {
