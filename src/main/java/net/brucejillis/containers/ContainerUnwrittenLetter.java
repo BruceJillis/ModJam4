@@ -9,10 +9,10 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class ContainerLetter extends Container {
+public class ContainerUnwrittenLetter extends Container {
     private IInventory inventory;
 
-    public ContainerLetter(InventoryPlayer inventoryPlayer, IInventory inventory, ItemStack item) {
+    public ContainerUnwrittenLetter(InventoryPlayer inventoryPlayer, IInventory inventory, ItemStack item) {
         super();
         this.inventory = inventory;
         // bind attachment slots

@@ -29,4 +29,10 @@ public class ItemUnwrittenLetter extends Item {
     public void addInformation(ItemStack stack, EntityPlayer player, List par3List, boolean par4) {
         par3List.add("Unwritten / Unsent");
     }
+
+    public static NBTTagCompound ensureTagCompound(ItemStack stack) {
+        if (stack.stackTagCompound == null)
+            stack.setTagCompound(new NBTTagCompound());
+        return stack.stackTagCompound;
+    }
 }

@@ -2,7 +2,7 @@ package net.brucejillis.handlers;
 
 import cpw.mods.fml.common.network.IGuiHandler;
 import net.brucejillis.MailboxMod;
-import net.brucejillis.containers.ContainerLetter;
+import net.brucejillis.containers.ContainerUnwrittenLetter;
 import net.brucejillis.containers.ContainerMailbox;
 import net.brucejillis.containers.inventories.UnwrittenLetterInventory;
 import net.brucejillis.guis.GuiLetter;
@@ -36,7 +36,7 @@ public class GuiHandler implements IGuiHandler {
                 }
                 break;
             case MailboxMod.GUI_LETTER:
-                return new ContainerLetter(player.inventory, new UnwrittenLetterInventory(), player.getCurrentEquippedItem());
+                return new ContainerUnwrittenLetter(player.inventory, new UnwrittenLetterInventory(player.getCurrentEquippedItem()), player.getCurrentEquippedItem());
         }
         return null;
     }
@@ -61,12 +61,12 @@ public class GuiHandler implements IGuiHandler {
                 break;
             case MailboxMod.GUI_LETTER:
                 if (player.inventory.getCurrentItem().getItem() instanceof ItemUnwrittenLetter) {
-                    return new GuiLetter(player, new UnwrittenLetterInventory(), player.getCurrentEquippedItem());
+                    return new GuiLetter(player, new UnwrittenLetterInventory(player.getCurrentEquippedItem()), player.getCurrentEquippedItem());
                 }
                 break;
             case MailboxMod.GUI_READ_LETTER:
                 if (player.inventory.getCurrentItem().getItem() instanceof ItemWrittenLetter) {
-                    return new GuiReadLetter(player, new UnwrittenLetterInventory(), player.getCurrentEquippedItem());
+                    return new GuiReadLetter(player, new UnwrittenLetterInventory(player.getCurrentEquippedItem()), player.getCurrentEquippedItem());
                 }
                 break;
         }

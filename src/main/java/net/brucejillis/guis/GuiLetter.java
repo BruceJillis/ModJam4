@@ -3,7 +3,7 @@ package net.brucejillis.guis;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.brucejillis.MailboxMod;
-import net.brucejillis.containers.ContainerLetter;
+import net.brucejillis.containers.ContainerUnwrittenLetter;
 import net.brucejillis.handlers.packets.PacketManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -40,7 +40,7 @@ public class GuiLetter extends GuiContainer {
     GuiTextField to;
 
     public GuiLetter(EntityPlayer player, IInventory inventory, ItemStack stack) {
-        super(new ContainerLetter(player.inventory, inventory, stack));
+        super(new ContainerUnwrittenLetter(player.inventory, inventory, stack));
         this.player = player;
         this.letter = stack;
         pages = new NBTTagList();
