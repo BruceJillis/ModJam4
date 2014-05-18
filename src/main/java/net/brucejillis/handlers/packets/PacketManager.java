@@ -48,6 +48,10 @@ public class PacketManager {
                 tag.setString("Sender", player.getDisplayName());
                 tag.setString("To", pages.getString("To"));
                 tag.setTag("Pages", pages.getTagList("Pages", Constants.NBT.TAG_STRING));
+                tag.setShort("id", pages.getShort("id"));
+                tag.setShort("Damage", pages.getShort("Damage"));
+                tag.setShort("Count", pages.getShort("Count"));
+                tag.setTag("ItemInventory", pages.getCompoundTag("tag").getTagList("ItemInventory", Constants.NBT.TAG_COMPOUND));
                 player.inventory.addItemStackToInventory(letter);
                 player.inventory.markDirty();
                 break;

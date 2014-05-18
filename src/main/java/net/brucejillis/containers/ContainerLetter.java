@@ -9,12 +9,12 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class ContainerUnwrittenLetter extends Container {
+public class ContainerLetter extends Container {
     private UnwrittenLetterInventory inventory;
 
     private static final int INV_START = UnwrittenLetterInventory.INV_SIZE, INV_END = INV_START + 26, HOTBAR_START = INV_END + 1, HOTBAR_END = HOTBAR_START + 8;
 
-    public ContainerUnwrittenLetter(EntityPlayer player, InventoryPlayer inventoryPlayer, UnwrittenLetterInventory inventoryItem) {
+    public ContainerLetter(EntityPlayer player, InventoryPlayer inventoryPlayer, UnwrittenLetterInventory inventoryItem) {
         super();
         this.inventory = inventoryItem;
         // bind attachment slots

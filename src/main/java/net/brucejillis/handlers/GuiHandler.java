@@ -2,15 +2,13 @@ package net.brucejillis.handlers;
 
 import cpw.mods.fml.common.network.IGuiHandler;
 import net.brucejillis.MailboxMod;
-import net.brucejillis.containers.ContainerUnwrittenLetter;
+import net.brucejillis.containers.ContainerLetter;
 import net.brucejillis.containers.ContainerMailbox;
 import net.brucejillis.containers.inventories.UnwrittenLetterInventory;
 import net.brucejillis.guis.GuiLetter;
 import net.brucejillis.guis.GuiMailbox;
 import net.brucejillis.guis.GuiNameMailbox;
 import net.brucejillis.guis.GuiReadLetter;
-import net.brucejillis.items.ItemUnwrittenLetter;
-import net.brucejillis.items.ItemWrittenLetter;
 import net.brucejillis.tileentities.TileEntityMailbox;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -37,8 +35,7 @@ public class GuiHandler implements IGuiHandler {
                 break;
             case MailboxMod.GUI_READ_LETTER:
             case MailboxMod.GUI_LETTER:
-                return new ContainerUnwrittenLetter(player, player.inventory, new UnwrittenLetterInventory(player.getHeldItem()));
-                //return new ContainerUnwrittenLetter(player.inventory, new UnwrittenLetterInventory(player.getCurrentEquippedItem()), player.getCurrentEquippedItem());
+                return new ContainerLetter(player, player.inventory, new UnwrittenLetterInventory(player.getHeldItem()));
         }
         return null;
     }
@@ -62,9 +59,9 @@ public class GuiHandler implements IGuiHandler {
                 }
                 break;
             case MailboxMod.GUI_LETTER:
-                return new GuiLetter(new ContainerUnwrittenLetter(player, player.inventory, new UnwrittenLetterInventory(player.getHeldItem())), player, player.getHeldItem());
+                return new GuiLetter(new ContainerLetter(player, player.inventory, new UnwrittenLetterInventory(player.getHeldItem())), player, player.getHeldItem());
             case MailboxMod.GUI_READ_LETTER:
-                return new GuiReadLetter(new ContainerUnwrittenLetter(player, player.inventory, new UnwrittenLetterInventory(player.getHeldItem())), player, player.getHeldItem());
+                return new GuiReadLetter(new ContainerLetter(player, player.inventory, new UnwrittenLetterInventory(player.getHeldItem())), player, player.getHeldItem());
         }
         return null;
     }

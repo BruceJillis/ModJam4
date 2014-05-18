@@ -1,6 +1,6 @@
 package net.brucejillis.guis;
 
-import net.brucejillis.containers.ContainerUnwrittenLetter;
+import net.brucejillis.containers.ContainerLetter;
 import net.brucejillis.items.ItemWrittenLetter;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
@@ -15,7 +15,7 @@ public class GuiReadLetter extends GuiLetter {
 
     private static final int BUTTON_OK = 6;
 
-    public GuiReadLetter(ContainerUnwrittenLetter containerUnwrittenLetter, EntityPlayer player, ItemStack stack) {
+    public GuiReadLetter(ContainerLetter containerUnwrittenLetter, EntityPlayer player, ItemStack stack) {
         super(containerUnwrittenLetter, player, player.getHeldItem());
         NBTTagCompound tag = ItemWrittenLetter.ensureTagCompound(stack);
         pages = tag.getTagList("Pages", Constants.NBT.TAG_STRING);
