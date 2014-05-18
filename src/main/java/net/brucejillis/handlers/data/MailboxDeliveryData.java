@@ -47,7 +47,7 @@ public class MailboxDeliveryData extends WorldSavedData {
         int hour = timeToHours(getDayTime(((EntityPlayerMP)player).worldObj));
         if (hour != prev) {
             LogHelper.log("hour: %d", hour);
-            LogHelper.log("hourly delivery!", hour);
+            LogHelper.log("boxes known: %s", boxes != null ? String.valueOf(boxes.tagCount()) : "null");
             doDelivery(player);
             prev = hour;
         }
