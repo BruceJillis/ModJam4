@@ -2,6 +2,7 @@ package net.brucejillis.guis;
 
 import net.brucejillis.MailboxMod;
 import net.brucejillis.handlers.packets.PacketManager;
+import net.brucejillis.items.ItemWrittenLetter;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
@@ -9,6 +10,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.Constants;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
@@ -18,6 +23,9 @@ public class GuiReadLetter extends GuiLetter {
 
     public GuiReadLetter(EntityPlayer player, IInventory inventory, ItemStack stack) {
         super(player, inventory, stack);
+        NBTTagCompound tag = ItemWrittenLetter.ensureTagCompound(stack);
+        pages = tag.getTagList("Pages", Constants.NBT.TAG_STRING);
+        totalPages = pages.tagCount();
     }
 
     @Override
@@ -48,6 +56,16 @@ public class GuiReadLetter extends GuiLetter {
     }
 
     @Override
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+        // letter
+        String text = "";
+        if (pages != null && currPage >= 0 && currPage < pages.tagCount()) {
+            text = pages.getStringTagAt(currPage);
+        }
+        fontRendererObj.drawSplitString(text, 42, 28, 120, 0);
+    }
+
+    @Override
     protected void actionPerformed(GuiButton guibutton) {
         switch (guibutton.id) {
             case BUTTON_OK:
@@ -68,4 +86,12 @@ public class GuiReadLetter extends GuiLetter {
                 break;
         }
     }
+
+    protected void keyTyped(char par1, int par2) {
+        if (par2 == 1 || par2 == this.mc.gameSettings.keyBindInventory.getKeyCode()) {
+            this.mc.thePlayer.closeScreen();
+        }
+    }
+
+
 }
