@@ -34,14 +34,7 @@ public class RenderItemMailBox implements IItemRenderer {
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
         GL11.glPushMatrix();
-        if (type == ItemRenderType.EQUIPPED_FIRST_PERSON) {
-            GL11.glScalef(0.5f, 0.5f, 0.5f);
-            //GL11.glTranslatef(0f, -0.25f, 0f);
-        } else {
-            GL11.glScalef(0.5f, 0.40f, 0.5f);
-            GL11.glRotatef(130.0f, 0f, 1f, 0f);
-            GL11.glTranslatef(0f, 0.5f, 0f);
-        }
+        GL11.glScalef(0.5f, 0.5f, 0.5f);
         mc.renderEngine.bindTexture(textureLocation);
         model.renderAll();
         GL11.glPopMatrix();
