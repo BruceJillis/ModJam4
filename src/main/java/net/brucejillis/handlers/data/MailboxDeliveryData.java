@@ -99,6 +99,7 @@ public class MailboxDeliveryData extends WorldSavedData {
                             int slot = toEntity.getFirstFreeInventorySlot(entity.getStackInSlot(j));
                             if (slot != -1) {
                                 LogHelper.log(String.format("from %s to %s", entity.getName(), toEntity.getName()));
+                                stack.setString("Sent", entity.getName());
                                 toEntity.setInventorySlotContents(slot, entity.getStackInSlot(j));
                                 toEntity.markDirty();
                                 entity.setInventorySlotContents(j, null);

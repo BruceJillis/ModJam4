@@ -8,7 +8,9 @@ import net.brucejillis.containers.inventories.UnwrittenLetterInventory;
 import net.brucejillis.guis.GuiLetter;
 import net.brucejillis.guis.GuiMailbox;
 import net.brucejillis.guis.GuiNameMailbox;
+import net.brucejillis.guis.GuiReadLetter;
 import net.brucejillis.items.ItemUnwrittenLetter;
+import net.brucejillis.items.ItemWrittenLetter;
 import net.brucejillis.tileentities.TileEntityMailbox;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -61,6 +63,12 @@ public class GuiHandler implements IGuiHandler {
                 if (player.inventory.getCurrentItem().getItem() instanceof ItemUnwrittenLetter) {
                     return new GuiLetter(player, new UnwrittenLetterInventory(), player.getCurrentEquippedItem());
                 }
+                break;
+            case MailboxMod.GUI_READ_LETTER:
+                if (player.inventory.getCurrentItem().getItem() instanceof ItemWrittenLetter) {
+                    return new GuiReadLetter(player, player.getCurrentEquippedItem());
+                }
+                break;
         }
         return null;
     }

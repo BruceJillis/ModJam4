@@ -22,22 +22,22 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 public class GuiLetter extends GuiContainer {
-    private static ResourceLocation background = new ResourceLocation(MailboxMod.ID, "/textures/gui/letter.png");
+    static ResourceLocation background = new ResourceLocation(MailboxMod.ID, "/textures/gui/letter.png");
 
     // button ids
-    private static final int BUTTON_SIGN = 1;
-    private static final int BUTTON_NEXT_PAGE = 2;
-    private static final int BUTTON_PREV_PAGE = 3;
-    private static final int BUTTON_NEXT_NAME = 4;
-    private static final int BUTTON_PREV_NAME = 5;
+    static final int BUTTON_SIGN = 1;
+    static final int BUTTON_NEXT_PAGE = 2;
+    static final int BUTTON_PREV_PAGE = 3;
+    static final int BUTTON_NEXT_NAME = 4;
+    static final int BUTTON_PREV_NAME = 5;
 
-    private final EntityPlayer player;
-    private final ItemStack letter;
-    private NBTTagList pages;
+    final EntityPlayer player;
+    final ItemStack letter;
+    NBTTagList pages;
 
-    private int currPage = 0;
-    private int totalPages = 1;
-    private GuiTextField to;
+    int currPage = 0;
+    int totalPages = 1;
+    GuiTextField to;
 
     public GuiLetter(EntityPlayer player, IInventory inventory, ItemStack stack) {
         super(new ContainerLetter(player.inventory, inventory, stack));
@@ -195,7 +195,7 @@ public class GuiLetter extends GuiContainer {
     }
 
     @SideOnly(Side.CLIENT)
-    private class NextPageButton extends GuiButton {
+    protected class NextPageButton extends GuiButton {
         private boolean direction;
 
         public NextPageButton(int id, boolean direction, int x, int y) {
@@ -224,7 +224,7 @@ public class GuiLetter extends GuiContainer {
         }
     }
 
-    private class NextNameButton extends GuiButton {
+    protected class NextNameButton extends GuiButton {
         private boolean direction;
 
         public NextNameButton(int id, boolean direction, int x, int y) {

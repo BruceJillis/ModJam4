@@ -6,6 +6,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import org.apache.commons.lang3.StringUtils;
 
@@ -19,6 +20,14 @@ public class ItemWrittenLetter extends Item {
     }
 
     @Override
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+        if (!player.isSneaking() && world.isRemote) {
+            player.openGui(MailboxMod.instance, MailboxMod.GUI_READ_LETTER, world, (int) player.posX, (int) player.posY, (int) player.posZ);
+        }
+        return stack;
+    }
+
+    @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
         NBTTagCompound tag = ensureTagCompound(stack);
         String sender = tag.getString("Sender");
@@ -26,6 +35,8 @@ public class ItemWrittenLetter extends Item {
         String sent = tag.getString("Sent");
         if (sent == null || sent.equals("")) {
             sent = "Unsent";
+        } else {
+            sent = String.format("Sent (reply: %s)", sent);
         }
         NBTTagList pages = tag.getTagList("Pages", Constants.NBT.TAG_STRING);
         if (pages.tagCount() == 1)
