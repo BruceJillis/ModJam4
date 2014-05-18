@@ -4,12 +4,14 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.brucejillis.MailboxMod;
 import net.brucejillis.containers.ContainerUnwrittenLetter;
+import net.brucejillis.containers.inventories.UnwrittenLetterInventory;
 import net.brucejillis.handlers.packets.PacketManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -32,17 +34,15 @@ public class GuiLetter extends GuiContainer {
     static final int BUTTON_PREV_NAME = 5;
 
     final EntityPlayer player;
-    final ItemStack letter;
     NBTTagList pages;
 
     int currPage = 0;
     int totalPages = 1;
     GuiTextField to;
 
-    public GuiLetter(EntityPlayer player, IInventory inventory, ItemStack stack) {
-        super(new ContainerUnwrittenLetter(player.inventory, inventory, stack));
+    public GuiLetter(EntityPlayer player, InventoryPlayer inventory, UnwrittenLetterInventory containerItem) {
+        super(containerItem.i);
         this.player = player;
-        this.letter = stack;
         pages = new NBTTagList();
         pages.appendTag(new NBTTagString(""));
         totalPages = 1;

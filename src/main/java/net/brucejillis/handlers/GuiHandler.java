@@ -36,7 +36,8 @@ public class GuiHandler implements IGuiHandler {
                 }
                 break;
             case MailboxMod.GUI_LETTER:
-                return new ContainerUnwrittenLetter(player.inventory, new UnwrittenLetterInventory(player.getCurrentEquippedItem()), player.getCurrentEquippedItem());
+                return new ContainerUnwrittenLetter(player, player.inventory, new UnwrittenLetterInventory(player.getHeldItem()));
+                //return new ContainerUnwrittenLetter(player.inventory, new UnwrittenLetterInventory(player.getCurrentEquippedItem()), player.getCurrentEquippedItem());
         }
         return null;
     }
@@ -60,10 +61,7 @@ public class GuiHandler implements IGuiHandler {
                 }
                 break;
             case MailboxMod.GUI_LETTER:
-                if (player.inventory.getCurrentItem().getItem() instanceof ItemUnwrittenLetter) {
-                    return new GuiLetter(player, new UnwrittenLetterInventory(player.getCurrentEquippedItem()), player.getCurrentEquippedItem());
-                }
-                break;
+                return new GuiLetter(player, player.inventory, new UnwrittenLetterInventory(player.getHeldItem()));
             case MailboxMod.GUI_READ_LETTER:
                 if (player.inventory.getCurrentItem().getItem() instanceof ItemWrittenLetter) {
                     return new GuiReadLetter(player, new UnwrittenLetterInventory(player.getCurrentEquippedItem()), player.getCurrentEquippedItem());

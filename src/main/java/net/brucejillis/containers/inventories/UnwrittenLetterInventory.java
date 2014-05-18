@@ -9,7 +9,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
 
 public class UnwrittenLetterInventory implements IInventory {
-    private static final int INV_SIZE = 4;
+    public static final int INV_SIZE = 4;
     private final ItemStack inventoryItem;
     private ItemStack[] inventory;
     private boolean dirty = false;
