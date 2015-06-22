@@ -1,7 +1,8 @@
 Description
 -----------
-
 MailboxMod is a no-frills addition to the base game meant for server play.
+
+**This mod is not functional in the current minecraft environment and I have no plans to update it**
 
 Known Problems
 --------------
